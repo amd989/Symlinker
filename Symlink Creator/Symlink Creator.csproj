@@ -36,15 +36,16 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>https://raw.github.com/amd989/Symlinker/master/Publish/</InstallUrl>
-    <UpdateUrl>https://raw.github.com/amd989/Symlinker/master/Publish/Symlink%2520Creator.application/</UpdateUrl>
+    <UpdateUrl>https://raw.github.com/amd989/Symlinker/master/Publish/</UpdateUrl>
     <SupportUrl>https://github.com/amd989/Symlinker/</SupportUrl>
     <ErrorReportUrl>https://github.com/amd989/Symlinker/issues</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
     <ProductName>Symlink Creator</ProductName>
     <PublisherName>Symlink Creator</PublisherName>
     <SuiteName>Symlink Creator</SuiteName>
-    <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>5</ApplicationRevision>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>6</ApplicationRevision>
     <ApplicationVersion>1.1.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>

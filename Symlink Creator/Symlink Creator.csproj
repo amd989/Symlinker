@@ -16,7 +16,7 @@
     <ManifestKeyFile>Symlink Creator_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Symlink Creator_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
@@ -27,7 +27,7 @@
     <TargetFrameworkProfile />
     <PublishUrl>D:\Alejandro\Dropbox\Projects\GitHub\Symlinker\Publish\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
+    <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
@@ -35,7 +35,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <UpdateUrl>https://github.com/amd989/Symlinker/blob/master/Publish/</UpdateUrl>
+    <InstallUrl>https://raw.github.com/amd989/Symlinker/master/Publish/</InstallUrl>
+    <UpdateUrl>https://raw.github.com/amd989/Symlinker/master/Publish/Symlink%2520Creator.application/</UpdateUrl>
     <SupportUrl>https://github.com/amd989/Symlinker/</SupportUrl>
     <ErrorReportUrl>https://github.com/amd989/Symlinker/issues</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>

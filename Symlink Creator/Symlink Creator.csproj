@@ -25,7 +25,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
-    <PublishUrl>D:\Alejandro\Desktop\symlink\</PublishUrl>
+    <PublishUrl>D:\Alejandro\Dropbox\Projects\GitHub\Symlinker\Publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>

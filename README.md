@@ -10,8 +10,13 @@ Better later than never some might say. I hope that is not too late for this app
 Previous Project link
 https://code.google.com/p/symlinker/
 
-Download installer
-http://amd989.github.io/Publish/Symlink%20Creator.application
+
+[Download ClickOnce Installer](http://amd989.github.io/Publish/Symlinker/Symlink%20Creator.application)
+
+
+In case the link above does not work download the whole package.
+
+[Download Package](http://amd989.github.io/Publish/Symlinker/Symlinker.zip)
 
 
 Overview

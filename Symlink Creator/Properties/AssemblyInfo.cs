@@ -9,9 +9,9 @@ using System.Resources;
 [assembly: AssemblyTitle("Symlink Creator")]
 [assembly: AssemblyDescription("Symbolic link creator app")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("ShiftMe")]
 [assembly: AssemblyProduct("Symlink Creator")]
-[assembly: AssemblyCopyright("Copyright © Alejandro Mora 2010")]
+[assembly: AssemblyCopyright("Copyright © Alejandro Mora 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

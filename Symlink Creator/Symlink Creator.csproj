@@ -12,14 +12,14 @@
     <AssemblyName>Symlink Creator</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ManifestCertificateThumbprint>5115ED7941C4DE2540785A94134CF2E0FC88635E</ManifestCertificateThumbprint>
-    <ManifestKeyFile>Symlink Creator_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>C37E9B5F3D26AE622B0D1265CF8C6A1EA5C57BD8</ManifestCertificateThumbprint>
+    <ManifestKeyFile>key.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Symlink Creator_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>key.pfx</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -35,8 +35,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>https://raw.github.com/amd989/Symlinker/master/Publish/</InstallUrl>
-    <UpdateUrl>https://raw.github.com/amd989/Symlinker/master/Publish/</UpdateUrl>
+    <InstallUrl>http://amd989.github.io/Publish/</InstallUrl>
+    <UpdateUrl>http://amd989.github.io/Publish/</UpdateUrl>
     <SupportUrl>https://github.com/amd989/Symlinker/</SupportUrl>
     <ErrorReportUrl>https://github.com/amd989/Symlinker/issues</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
@@ -45,7 +45,7 @@
     <SuiteName>Symlink Creator</SuiteName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>6</ApplicationRevision>
+    <ApplicationRevision>8</ApplicationRevision>
     <ApplicationVersion>1.1.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -79,6 +79,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Symlink_Creator.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -120,6 +123,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="key.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -130,8 +134,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="README.MD" />
-    <None Include="Symlink Creator_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="info.png">

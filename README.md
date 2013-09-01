@@ -1,5 +1,5 @@
 Symlinker
------------
+---------
 
 Back from the dead. Switched to GitHub instead of Google Code.
 
@@ -9,6 +9,9 @@ Better later than never some might say. I hope that is not too late for this app
 
 Previous Project link
 https://code.google.com/p/symlinker/
+
+Download installer
+http://amd989.github.io/Publish/Symlink%20Creator.application
 
 
 Overview
@@ -27,9 +30,10 @@ Thanks for your downloads and support, hope you like it!
 Change Log
 ----------
 
-Version 1.1.1.4 08/31/2013
+Version 1.1.1.7 08/31/2013
 Uploaded to GitHub
-Minor Changes (Almost nothing :P)
+Added ClickOnce check for updates support, get updates as automatically upon app launch
+Minor Changes (Almost nothing)
 
 Version 1.1.1.3 10/30/2010
 

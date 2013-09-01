@@ -35,8 +35,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://amd989.github.io/Publish/</InstallUrl>
-    <UpdateUrl>http://amd989.github.io/Publish/</UpdateUrl>
+    <InstallUrl>http://amd989.github.io/Publish/Symlinker/</InstallUrl>
+    <UpdateUrl>http://amd989.github.io/Publish/Symlinker/</UpdateUrl>
     <SupportUrl>https://github.com/amd989/Symlinker/</SupportUrl>
     <ErrorReportUrl>https://github.com/amd989/Symlinker/issues</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>

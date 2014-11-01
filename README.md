@@ -7,6 +7,9 @@ I will be updating this little app over the course of the next days and hopefull
 
 Better later than never some might say. I hope that is not too late for this app to get new light.
 
+*Featured On*:
+[addictivetips](http://www.addictivetips.com/windows-tips/symlinker-create-symlink-hardlink-and-directory-junction-in-windows/)
+
 Previous Project link
 https://code.google.com/p/symlinker/
 

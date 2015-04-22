@@ -1,7 +1,17 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AssemblyInfo.cs" company="ShiftMe, Inc.">
+//   2010-2013
+// </copyright>
+// <summary>
+//   AssemblyInfo.cs
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+
+
+using System.Reflection;
 using System.Resources;
+using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -9,7 +19,7 @@ using System.Resources;
 [assembly: AssemblyTitle("Symlink Creator")]
 [assembly: AssemblyDescription("Symbolic link creator app")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ShiftMe")]
+[assembly: AssemblyCompany("Alejandro Mora")]
 [assembly: AssemblyProduct("Symlink Creator")]
 [assembly: AssemblyCopyright("Copyright © Alejandro Mora 2013")]
 [assembly: AssemblyTrademark("")]
@@ -24,15 +34,13 @@ using System.Resources;
 [assembly: Guid("a4d6cdcb-5926-4556-be92-ef4dad31ecfa")]
 
 // Version information for an assembly consists of the following four values:
-//
 //      Major Version
 //      Minor Version 
 //      Build Number
 //      Revision
-//
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.1.1.0")]
 [assembly: AssemblyFileVersion("1.1.1.0")]
-[assembly: NeutralResourcesLanguageAttribute("en")]
+[assembly: NeutralResourcesLanguage("en")]

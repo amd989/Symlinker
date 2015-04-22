@@ -1,7 +1,7 @@
 Symlinker
 ---------
 
-Back from the dead. Switched to GitHub instead of Google Code.
+Back from the dead. Switched to GitHub instead of Google Code since they are going to close soon.
 
 I will be updating this little app over the course of the next days and hopefully release it in better shape. A lot of people has filed issues with it and I plan to sort them out.
 
@@ -11,7 +11,7 @@ Previous Project link
 https://code.google.com/p/symlinker/
 
 Download installer
-http://amd989.github.io/Publish/Symlink%20Creator.application
+http://alejandro.md/publish/Symlinker/Symlink%20Creator.application
 
 
 Overview
@@ -23,12 +23,24 @@ The goal is just make it easier to create symbolic links, hard links, or directo
 
 This application needs .Net Framework 3.5 to run (SP1 recommended) and as of 7/26/2010 this software will only work under Windows Vista or 7, Windows XP doesn't have the mklink command inside the cmd.exe app. I'll look for a workaround for this, but it isn't promising that I will find it...
 
-If you encounter a bug, please let me know, I will look into it when I have the time!
+If you encounter a bug, please let me know in the issues section, I will look into it when I have the time!
 
 Thanks for your downloads and support, hope you like it!
 
+
+TODO
+----
+
+Get a real certificate
+Rework the code
+
 Change Log
 ----------
+
+Version 1.1.1.14 04/22/2015
+Updated mail contact
+Moved issues from Google Code
+Updated installation link
 
 Version 1.1.1.7 08/31/2013
 Uploaded to GitHub

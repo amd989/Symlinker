@@ -12,8 +12,8 @@
     <AssemblyName>Symlink Creator</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ManifestCertificateThumbprint>C37E9B5F3D26AE622B0D1265CF8C6A1EA5C57BD8</ManifestCertificateThumbprint>
-    <ManifestKeyFile>key.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>8C30A37B19B6B2121A7B2E87F7A2287E4F31B5AA</ManifestCertificateThumbprint>
+    <ManifestKeyFile>Symlink Creator_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
     <IsWebBootstrapper>true</IsWebBootstrapper>
@@ -25,18 +25,18 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
-    <PublishUrl>D:\Alejandro\Dropbox\Projects\GitHub\Symlinker\Publish\</PublishUrl>
+    <PublishUrl>ftp://ftp.shift-me.com/public_html/alejandro.md/publish/Symlinker/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateMode>Background</UpdateMode>
+    <UpdateInterval>3</UpdateInterval>
+    <UpdateIntervalUnits>Weeks</UpdateIntervalUnits>
+    <UpdatePeriodically>true</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://amd989.github.io/Publish/Symlinker/</InstallUrl>
-    <UpdateUrl>http://amd989.github.io/Publish/Symlinker/</UpdateUrl>
+    <InstallUrl>http://alejandro.md/publish/Symlinker/</InstallUrl>
+    <UpdateUrl>http://alejandro.md/publish/Symlinker/</UpdateUrl>
     <SupportUrl>https://github.com/amd989/Symlinker/</SupportUrl>
     <ErrorReportUrl>https://github.com/amd989/Symlinker/issues</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
@@ -45,7 +45,7 @@
     <SuiteName>Symlink Creator</SuiteName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>8</ApplicationRevision>
+    <ApplicationRevision>15</ApplicationRevision>
     <ApplicationVersion>1.1.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -123,7 +123,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="key.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -134,6 +133,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="key.pfx" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="info.png">
@@ -173,7 +173,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="eula.rtf" />
     <Content Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

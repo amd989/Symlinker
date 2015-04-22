@@ -44,8 +44,8 @@ Thanks for your downloads and support, hope you like it!
 TODO
 ----
 
-Get a real certificate
-Rework the code
+* Get a real code signing certificate
+* Rework the code to be better
 
 Change Log
 ----------

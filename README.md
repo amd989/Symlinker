@@ -1,23 +1,30 @@
 Symlinker
 =========
 
+![Screenshot](http://alejandro.md/publish/Symlinker/screenshot.jpg)
+
 Back from the dead. Switched to GitHub instead of Google Code since they are going to close soon.
 
 I will be updating this little app over the course of the next days and hopefully release it in better shape. A lot of people has filed issues with it and I plan to sort them out.
 
 Better later than never some might say. I hope that is not too late for this app to get new light.
 
-*Featured On*:
-[addictivetips](http://www.addictivetips.com/windows-tips/symlinker-create-symlink-hardlink-and-directory-junction-in-windows/)
+**Featured On**:
+
+* [addictivetips](http://www.addictivetips.com/windows-tips/symlinker-create-symlink-hardlink-and-directory-junction-in-windows/)
+* [TecFlap](http://www.tecflap.com/2012/05/29/software-day-winautohide-symlinker-hyperdesktop/)
+* [Zhacks](http://www.zhacks.com/easily-create-symbolic-link-with-mklink-gui-symlinker/)
 
 Previous Project link
 https://code.google.com/p/symlinker/
 
-[Download ClickOnce Installer](http://alejandro.md/publish/Symlinker/Symlink%20Creator.application)
+Downloads
+---------
+[Download ClickOnce Installer (Supports auto updates)](http://bit.ly/symlinker_clickonce)
 
-In case the link above does not work download the whole package.
+[Download Standalone Executable](http://bit.ly/symlinker_executable)
 
-[Download Package](http://alejandro.md/publish/Symlinker/Symlinker.zip)
+[Download ClickOnce Full Package](http://bit.ly/symlinker_package)
 
 
 Overview

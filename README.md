@@ -50,6 +50,11 @@ TODO
 Change Log
 ----------
 
+Version 1.1.1.15 04/22/2015
+
+    Added. Added Drag&Drop into the directory fields
+    Fixed. Finally Error Handling has been implemented, now the app will show you if the link wasn't created and why.
+
 Version 1.1.1.14 04/22/2015
 
     Updated mail contact

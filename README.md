@@ -50,6 +50,11 @@ TODO
 Change Log
 ----------
 
+Version 1.1.2.0 04/22/2015
+
+    Added. Added ability to run as an administrator with UAC enabled, with this support for Windows 8 and 8.1 is done.
+    Disabled. Unfortunately Drag&Drop does not work when running as an administrator [More Info](http://serverfault.com/questions/39600/why-cant-i-drag-drop-a-file-for-editing-in-notepad-in-windows-server-2008)
+
 Version 1.1.1.15 04/22/2015
 
     Added. Added Drag&Drop into the directory fields

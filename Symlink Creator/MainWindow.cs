@@ -15,6 +15,7 @@ namespace Symlink_Creator
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Windows.Forms;
 
     using Symlink_Creator.Properties;
@@ -313,7 +314,9 @@ namespace Symlink_Creator
             }
             catch
             {
-                version = "1.1.1.14";
+                var assembly = Assembly.GetExecutingAssembly();
+                var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                version = fvi.FileVersion;
             }
 
             MessageBox.Show(

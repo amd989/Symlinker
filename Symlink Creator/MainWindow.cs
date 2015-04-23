@@ -323,5 +323,28 @@ namespace Symlink_Creator
                 MessageBoxIcon.Information);
         }
         #endregion
+
+        private void TextBox_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effect = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
+        }
+
+        private void TextBox_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
+            {
+                e.Effect = DragDropEffects.All;
+            } 
+        }
+        
+        private void TextBox_DragEnter(object sender, DragEventArgs e)
+        {
+            var textBox = (TextBox)sender;
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files != null && files.Length != 0)
+            {
+                textBox.Text = files[0];
+            }
+        }
     }
 }

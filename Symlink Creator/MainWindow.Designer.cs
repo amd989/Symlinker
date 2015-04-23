@@ -73,6 +73,9 @@
             this.linkLocationTextBox.Size = new System.Drawing.Size(312, 20);
             this.linkLocationTextBox.TabIndex = 1;
             this.linkLocationTextBox.WordWrap = false;
+            this.linkLocationTextBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.TextBox_DragDrop);
+            this.linkLocationTextBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.TextBox_DragEnter);
+            this.linkLocationTextBox.DragOver += new System.Windows.Forms.DragEventHandler(this.TextBox_DragOver);
             // 
             // folderBrowser
             // 
@@ -173,6 +176,9 @@
             this.destinationLocationTextBox.Name = "destinationLocationTextBox";
             this.destinationLocationTextBox.Size = new System.Drawing.Size(312, 20);
             this.destinationLocationTextBox.TabIndex = 1;
+            this.destinationLocationTextBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.TextBox_DragDrop);
+            this.destinationLocationTextBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.TextBox_DragEnter);
+            this.destinationLocationTextBox.DragOver += new System.Windows.Forms.DragEventHandler(this.TextBox_DragOver);
             // 
             // label3
             // 

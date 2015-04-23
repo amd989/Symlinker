@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.label1 = new System.Windows.Forms.Label();
             this.linkLocationTextBox = new System.Windows.Forms.TextBox();
@@ -47,10 +48,12 @@
             this.filesBrowser = new System.Windows.Forms.OpenFileDialog();
             this.TypeSelector = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.aboutButton)).BeginInit();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -165,6 +168,7 @@
             // 
             // destinationLocationTextBox
             // 
+            this.destinationLocationTextBox.AllowDrop = true;
             this.destinationLocationTextBox.Location = new System.Drawing.Point(11, 37);
             this.destinationLocationTextBox.Name = "destinationLocationTextBox";
             this.destinationLocationTextBox.Size = new System.Drawing.Size(312, 20);
@@ -223,8 +227,13 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Select the type of symlink that you want to create:";
             // 
+            // errorProvider
+            // 
+            this.errorProvider.ContainerControl = this;
+            // 
             // MainWindow
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(456, 317);
@@ -245,6 +254,7 @@
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.aboutButton)).EndInit();
             this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -269,6 +279,7 @@
         private System.Windows.Forms.OpenFileDialog filesBrowser;
         private System.Windows.Forms.ComboBox TypeSelector;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.ErrorProvider errorProvider;
     }
 }
 

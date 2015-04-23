@@ -36,6 +36,9 @@ namespace Symlink_Creator
 
         #region Constructors and Destructors
 
+        /// <summary>
+        /// The constructor
+        /// </summary>
         public MainWindow()
         {
             this.InitializeComponent();
@@ -184,24 +187,30 @@ namespace Symlink_Creator
         {
             try
             {
-                var target = "\"" + this.destinationLocationTextBox.Text + "\"";
-
+                var target = string.Format(CultureInfo.InvariantCulture,"\"{0}\"", this.destinationLocationTextBox.Text);
                 // concatenates a pair of "", this is to make folders with spaces to work
                 var typeLink = this.ComboBoxSelection();
                 var directory = this.folder ? "/D " : string.Empty;
-                var stringCommand = "/c mklink " + directory + typeLink + link + target;
+                var stringCommand = string.Format(CultureInfo.InvariantCulture, "/c mklink {0}{1}{2}{3}", directory, typeLink, link, target);
                 var processStartInfo = new ProcessStartInfo
                                            {
                                                FileName = "cmd",
                                                Arguments = stringCommand,
-                                               CreateNoWindow = true,
+                                               UseShellExecute = false,
+                                               CreateNoWindow = true, 
+                                               RedirectStandardError = true,
+                                               RedirectStandardOutput = true
                                            };
-                var process = Process.Start(processStartInfo);
-                process.EnableRaisingEvents = true;
+
+                var process = new Process { StartInfo = processStartInfo, EnableRaisingEvents = true };
                 process.ErrorDataReceived += this.process_ErrorDataReceived;
                 process.OutputDataReceived += this.process_OutputDataReceived;
-                MessageBox.Show(
-                    Resources.LinkSuccessfullyCreated, Resources.MessageBoxSuccessTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                process.WaitForExit();
+                process.Close();
+                process.Dispose();
             }
             catch (Exception)
             {
@@ -211,12 +220,18 @@ namespace Symlink_Creator
 
         void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-            // Do something
+            if (!string.IsNullOrEmpty(e.Data))
+            {
+                MessageBox.Show(e.Data, Resources.MessageBoxSuccessTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         void process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
-            // Do something
+            if (!string.IsNullOrEmpty(e.Data))
+            {
+                MessageBox.Show(e.Data, Resources.MessageBoxErrorTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -251,10 +266,8 @@ namespace Symlink_Creator
             this.toolTip.UseAnimation = true;
             this.toolTip.UseFading = true;
             this.toolTip.AutoPopDelay = 10000;
-            this.toolTip.ToolTipTitle = "Symbolic Link type selector";
-            this.toolTip.SetToolTip(
-                this.TypeSelector,
-                "With this option you can choose between creating file symbolic links; \nthis is using a file to point to another file, or folder symbolic links; this \nis using folders that point to other folders");
+            this.toolTip.ToolTipTitle = Resources.TooltipTypeSelectorTitle;
+            this.toolTip.SetToolTip(this.TypeSelector, Resources.TooltipTypeSelectorDescription);
         }
 
         /// <summary>The type selector_ selected index changed.</summary>
@@ -291,7 +304,6 @@ namespace Symlink_Creator
             this.CreateLink();
         }
 
-
         private void HelpImageClick(object sender, EventArgs e)
         {
             string version;
@@ -301,7 +313,7 @@ namespace Symlink_Creator
             }
             catch
             {
-                version = "1.1.1.11";
+                version = "1.1.1.14";
             }
 
             MessageBox.Show(

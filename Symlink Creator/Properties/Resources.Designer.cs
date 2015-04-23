@@ -290,5 +290,23 @@ namespace Symlink_Creator.Properties {
                 return ResourceManager.GetString("MessageBoxSuccessTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to With this option you can choose between creating file symbolic links; \nthis is using a file to point to another file, or folder symbolic links; this \nis using folders that point to other folders.
+        /// </summary>
+        internal static string TooltipTypeSelectorDescription {
+            get {
+                return ResourceManager.GetString("TooltipTypeSelectorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Symbolic Link type selector.
+        /// </summary>
+        internal static string TooltipTypeSelectorTitle {
+            get {
+                return ResourceManager.GetString("TooltipTypeSelectorTitle", resourceCulture);
+            }
+        }
     }
 }

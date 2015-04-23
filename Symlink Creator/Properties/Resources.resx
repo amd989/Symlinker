@@ -197,4 +197,10 @@ Thanks to Microsoft for the use of their shortcut arrow :)</value>
   <data name="MessageBoxExceptionOcurred" xml:space="preserve">
     <value>An error has ocurred:</value>
   </data>
+  <data name="TooltipTypeSelectorDescription" xml:space="preserve">
+    <value>With this option you can choose between creating file symbolic links; \nthis is using a file to point to another file, or folder symbolic links; this \nis using folders that point to other folders</value>
+  </data>
+  <data name="TooltipTypeSelectorTitle" xml:space="preserve">
+    <value>Symbolic Link type selector</value>
+  </data>
 </root>

@@ -34,7 +34,12 @@ With this utility you can use the symlink application Microsoft Windows has well
 
 The goal is just make it easier to create symbolic links, hard links, or directory junctions, using a pretty simple interface, so no more bogus command line to do it...
 
-This application needs .Net Framework 3.5 to run (SP1 recommended) and as of 7/26/2010 this software will only work under Windows Vista or 7, Windows XP doesn't have the mklink command inside the cmd.exe app. I'll look for a workaround for this, but it isn't promising that I will find it...
+This application needs .Net Framework 3.5 to run (SP1 recommended) and as of **4/24/2015** this software will only work under
+* Windows Vista
+* Windows 7
+* Windows 8 and 8.1
+
+Windows XP doesn't have the mklink command available from the cmd.exe app. 
 
 If you encounter a bug, please let me know in the issues section, I will look into it when I have the time!
 

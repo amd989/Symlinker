@@ -7,7 +7,7 @@ Back from the dead. Switched to GitHub instead of Google Code since they are goi
 
 I will be updating this little app over the course of the next days and hopefully release it in better shape. A lot of people has filed issues with it and I plan to sort them out.
 
-Better later than never some might say. I hope that is not too late for this app to get new light.
+Better late than never some might say. I hope that is not too late for this app to get new light.
 
 **Featured On**:
 

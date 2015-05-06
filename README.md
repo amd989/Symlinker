@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/4ao9vquaxjxsscy8?svg=true)](https://ci.appveyor.com/project/amd989/symlinker)
+
 Symlinker
 =========
 

@@ -14,7 +14,7 @@ environment:
 before_build:
   - ps: $psw = ConvertTo-SecureString -String $env:pfx_password -AsPlainText -Force
   - ps: $root = $env:APPVEYOR_BUILD_FOLDER
-  - ps: Import-PfxCertificate -FilePath '$root\Symlink Creator\key.pfx' -CertStoreLocation cert:\CurrentUser\My -Password $psw  
+  - ps: Import-PfxCertificate -FilePath $root'\Symlink Creator\key.pfx' -CertStoreLocation cert:\CurrentUser\My -Password $psw  
 build_script:
 - msbuild /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /t:Publish /p:ApplicationVersion=%APPVEYOR_BUILD_VERSION%
 after_build:

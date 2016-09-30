@@ -10,6 +10,7 @@ assembly_info:
   assembly_informational_version: '{version}'
 environment: 
   pfx_password: 
+    secure: ZF2o5gfSmfC4xEZYBlU7/8UFDkZm39KkE6gVYU/ICq41eTO+7YxNYp5lhSqFMOmv  
 before_build:
   - ps: $psw = ConvertTo-SecureString -String $env:pfx_password -AsPlainText -Force
   - ps: $root = $env:APPVEYOR_BUILD_FOLDER

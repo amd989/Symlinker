@@ -112,12 +112,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="info" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\info.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -197,8 +197,18 @@ Thanks to Microsoft for the use of their shortcut arrow :)</value>
   <data name="MessageBoxExceptionOcurred" xml:space="preserve">
     <value>An error has ocurred:</value>
   </data>
+  <data name="TooltipLinkTypeDescription" xml:space="preserve">
+    <value>This option allows you to select the style of your symbolic link, either
+you choose to use symbolic links, hard links or directory junctions.
+Use symbolic links as a default.</value>
+  </data>
+  <data name="TooltipLinkTypeTitle" xml:space="preserve">
+    <value>Symbolic Link types</value>
+  </data>
   <data name="TooltipTypeSelectorDescription" xml:space="preserve">
-    <value>With this option you can choose between creating file symbolic links; \nthis is using a file to point to another file, or folder symbolic links; this \nis using folders that point to other folders</value>
+    <value>With this option you can choose between creating file symbolic links;
+this is using a file to point to another file, or folder symbolic links;
+this is using folders that point to other folders.</value>
   </data>
   <data name="TooltipTypeSelectorTitle" xml:space="preserve">
     <value>Symbolic Link type selector</value>

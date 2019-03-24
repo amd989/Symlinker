@@ -19,7 +19,7 @@ namespace Symlink_Creator.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -292,7 +292,40 @@ namespace Symlink_Creator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to With this option you can choose between creating file symbolic links; \nthis is using a file to point to another file, or folder symbolic links; this \nis using folders that point to other folders.
+        ///   Looks up a localized string similar to This option allows you to select the style of your symbolic link, either
+        ///you choose to use symbolic links or hard links.
+        ///Use symbolic links as a default..
+        /// </summary>
+        internal static string TooltipLinkTypeFileDescription {
+            get {
+                return ResourceManager.GetString("TooltipLinkTypeFileDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This option allows you to select the style of your symbolic link, either
+        ///you choose to use symbolic links, hard links or directory junctions.
+        ///Use symbolic links as a default..
+        /// </summary>
+        internal static string TooltipLinkTypeFolderDescription {
+            get {
+                return ResourceManager.GetString("TooltipLinkTypeFolderDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Symbolic Link types.
+        /// </summary>
+        internal static string TooltipLinkTypeTitle {
+            get {
+                return ResourceManager.GetString("TooltipLinkTypeTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to With this option you can choose between creating file symbolic links;
+        ///this is using a file to point to another file, or folder symbolic links;
+        ///this is using folders that point to other folders..
         /// </summary>
         internal static string TooltipTypeSelectorDescription {
             get {

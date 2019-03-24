@@ -9,6 +9,7 @@
 
 namespace Symlink_Creator
 {
+    using Microsoft.WindowsAPICodePack.Dialogs;
     using System;
     using System.Deployment.Application;
     using System.Diagnostics;
@@ -27,11 +28,8 @@ namespace Symlink_Creator
     {
         #region Fields
 
-        /// <summary>The tool tip.</summary>
-        private readonly ToolTip toolTip = new ToolTip();
-
         /// <summary>The folder.</summary>
-        private bool folder;
+        private bool isFolder;
 
         #endregion
 
@@ -43,28 +41,23 @@ namespace Symlink_Creator
         public MainWindow()
         {
             this.InitializeComponent();
-            this.toolTip.IsBalloon = true;
+
             this.linkTypeComboBox.SelectedIndex = 0;
-            this.TypeSelector.SelectedIndex = 0;
+            this.typeSelectorComboBox.SelectedIndex = 0;
+            this.folderBrowser = new CommonOpenFileDialog();
         }
 
         #endregion
 
         #region Methods
 
-        /// <summary>The combo box 1 mouse hover.</summary>
+        /// <summary>The link type combo box mouse hover.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The e.</param>
-        private void ComboBox1MouseHover(object sender, EventArgs e)
+        private void LinkTypeComboBoxMouseHover(object sender, EventArgs e)
         {
-            this.toolTip.ToolTipIcon = ToolTipIcon.Info;
-            this.toolTip.UseAnimation = true;
-            this.toolTip.UseFading = true;
-            this.toolTip.AutoPopDelay = 5000;
-            this.toolTip.ToolTipTitle = "Symbolic Link types";
-            this.toolTip.SetToolTip(
-                this.linkTypeComboBox,
-                "This option allows you to select the style of your symbolic link, either\nyou choose to use symbolic links, hard links or directory junctions.\n use symbolic links as a default");
+            this.toolTip.ToolTipTitle = Resources.TooltipLinkTypeTitle;
+            this.toolTip.SetToolTip(this.linkTypeComboBox, this.isFolder ? Resources.TooltipLinkTypeFolderDescription : Resources.TooltipLinkTypeFileDescription);
         }
 
         /// <summary>
@@ -91,20 +84,20 @@ namespace Symlink_Creator
         {
             try
             {
-                if (this.linkLocationTextBox.Text != string.Empty && this.linkNameComboBox.Text != string.Empty && this.destinationLocationTextBox.Text != string.Empty)
+                if (this.linkLocationTextBox.Text != string.Empty && this.linkNameTextBox.Text != string.Empty && this.destinationLocationTextBox.Text != string.Empty)
                 {
                     // Everything needs to be filled...
-                    if (this.folder && Directory.Exists(this.linkLocationTextBox.Text) && Directory.Exists(this.destinationLocationTextBox.Text))
+                    if (this.isFolder && Directory.Exists(this.linkLocationTextBox.Text) && Directory.Exists(this.destinationLocationTextBox.Text))
                     {
                         // Ask if the folders exist
                         var link = string.Format(
-                            "\"{0}\\{1}\" ", this.linkLocationTextBox.Text, this.linkNameComboBox.Text);
+                            "\"{0}\\{1}\" ", this.linkLocationTextBox.Text, this.linkNameTextBox.Text);
                         
                         // concatenates the link name with the folder name and then it adds a pair of ", to allow using directories with spaces..
                         var directories = Directory.GetDirectories(this.linkLocationTextBox.Text);
 
                         // gets the folders in the selected directory
-                        if (directories.Any(e => e.Split('\\').Last().Equals(this.linkNameComboBox.Text)))
+                        if (directories.Any(e => e.Split('\\').Last().Equals(this.linkNameTextBox.Text)))
                         {
                             // looks for folders with the same name of the link name
                             // if found the program ask the user if he wants to delete the folder that is already there
@@ -116,7 +109,7 @@ namespace Symlink_Creator
                             if (answer == DialogResult.Yes)
                             {
                                 // if the answer is yes, the folder is deleted in order to create a new one
-                                var dir2Delete = directories.First(e => e.Split('\\').Last().Equals(this.linkNameComboBox.Text));
+                                var dir2Delete = directories.First(e => e.Split('\\').Last().Equals(this.linkNameTextBox.Text));
                                 Directory.Delete(dir2Delete);
                                 this.SendCommand(link);
                                 return;
@@ -137,10 +130,10 @@ namespace Symlink_Creator
                     {
                         // same thing as above... it just deletes files instead of folders
                         var link = string.Format(
-                            "\"{0}\\{1}\" ", this.linkLocationTextBox.Text, this.linkNameComboBox.Text);
+                            "\"{0}\\{1}\" ", this.linkLocationTextBox.Text, this.linkNameTextBox.Text);
                         
                         var files = Directory.GetFiles(this.linkLocationTextBox.Text);
-                        if (files.Any(e => e.Split('\\').Last().Equals(this.linkNameComboBox.Text)))
+                        if (files.Any(e => e.Split('\\').Last().Equals(this.linkNameTextBox.Text)))
                         {
                             var answer = MessageBox.Show(
                                 Resources.DialogDeleteFile,
@@ -149,7 +142,7 @@ namespace Symlink_Creator
                                 MessageBoxIcon.Warning);
                             if (answer == DialogResult.Yes)
                             {
-                                var file2Delete = files.First(e => e.Split('\\').Last().Equals(this.linkNameComboBox.Text));
+                                var file2Delete = files.First(e => e.Split('\\').Last().Equals(this.linkNameTextBox.Text));
                                 File.Delete(file2Delete);
                                 this.SendCommand(link);
                                 return;
@@ -191,7 +184,7 @@ namespace Symlink_Creator
                 var target = string.Format(CultureInfo.InvariantCulture,"\"{0}\"", this.destinationLocationTextBox.Text);
                 // concatenates a pair of "", this is to make folders with spaces to work
                 var typeLink = this.ComboBoxSelection();
-                var directory = this.folder ? "/D " : string.Empty;
+                var directory = this.isFolder ? "/D " : string.Empty;
                 var stringCommand = string.Format(CultureInfo.InvariantCulture, "/c mklink {0}{1}{2}{3}", directory, typeLink, link, target);
                 var processStartInfo = new ProcessStartInfo
                                            {
@@ -204,8 +197,8 @@ namespace Symlink_Creator
                                            };
 
                 var process = new Process { StartInfo = processStartInfo, EnableRaisingEvents = true };
-                process.ErrorDataReceived += this.process_ErrorDataReceived;
-                process.OutputDataReceived += this.process_OutputDataReceived;
+                process.ErrorDataReceived += this.Process_ErrorDataReceived;
+                process.OutputDataReceived += this.Process_OutputDataReceived;
                 process.Start();
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
@@ -219,7 +212,7 @@ namespace Symlink_Creator
             }
         }
 
-        void process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (!string.IsNullOrEmpty(e.Data))
             {
@@ -227,7 +220,7 @@ namespace Symlink_Creator
             }
         }
 
-        void process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (!string.IsNullOrEmpty(e.Data))
             {
@@ -240,13 +233,16 @@ namespace Symlink_Creator
         /// </summary>
         private void Switcher()
         {
-            if (this.TypeSelector.SelectedIndex == 0)
+            if (this.typeSelectorComboBox.SelectedIndex == 0)
             {
                 this.groupBox1.Text = Resources.MainWindow_Switcher_Link_Folder;
                 this.groupBox2.Text = Resources.MainWindow_Switcher_Destination_Folder;
                 this.label2.Text = Resources.MainWindow_Switcher_Now_give_a_name_to_the_link_;
                 this.label3.Text = Resources.MainWindow_Switcher_Please_select_the_path_to_the_real_folder_you_want_to_link_;
-                this.folder = true;
+                this.isFolder = true;
+
+                if (!this.linkTypeComboBox.Items.Contains("Directory Junction"))
+                    this.linkTypeComboBox.Items.Add("Directory Junction");
             }
             else
             {
@@ -254,21 +250,24 @@ namespace Symlink_Creator
                 this.groupBox2.Text = Resources.MainWindow_Switcher_Destination_File;
                 this.label2.Text = Resources.MainWindow_Switcher_Now_give_a_name_to_your_file_;
                 this.label3.Text = Resources.MainWindow_Switcher_Please_select_the_path_to_the_real_file_you_want_to_link_;
-                this.folder = false;
+                this.isFolder = false;
+
+                // doesn't make sense to show "Directory Junction" for files
+                if (this.linkTypeComboBox.Items.Contains("Directory Junction"))
+                {
+                    this.linkTypeComboBox.SelectedIndex = this.linkTypeComboBox.SelectedIndex == 2 ? 0 : this.linkTypeComboBox.SelectedIndex;
+                    this.linkTypeComboBox.Items.Remove("Directory Junction");
+                }
             }
         }
 
-        /// <summary>The type selector_ mouse hover.</summary>
+        /// <summary>The link type selector combo box mouse hover.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The e.</param>
-        private void TypeSelectorMouseHover(object sender, EventArgs e)
+        private void TypeSelectorComboBoxMouseHover(object sender, EventArgs e)
         {
-            this.toolTip.ToolTipIcon = ToolTipIcon.Info;
-            this.toolTip.UseAnimation = true;
-            this.toolTip.UseFading = true;
-            this.toolTip.AutoPopDelay = 10000;
             this.toolTip.ToolTipTitle = Resources.TooltipTypeSelectorTitle;
-            this.toolTip.SetToolTip(this.TypeSelector, Resources.TooltipTypeSelectorDescription);
+            this.toolTip.SetToolTip(this.typeSelectorComboBox, Resources.TooltipTypeSelectorDescription);
         }
 
         /// <summary>The type selector_ selected index changed.</summary>
@@ -281,23 +280,19 @@ namespace Symlink_Creator
 
         private void ExploreButton1Click(object sender, EventArgs e)
         {
-            this.folderBrowser.ShowDialog();
-            this.linkLocationTextBox.Text = this.folderBrowser.SelectedPath;
+            this.folderBrowser.IsFolderPicker = true;
+
+            if (this.folderBrowser.ShowDialog() == CommonFileDialogResult.Ok)
+                this.linkLocationTextBox.Text = this.folderBrowser.FileName;
         }
 
-        private void Explorebutton2Click(object sender, EventArgs e)
+        private void ExploreButton2Click(object sender, EventArgs e)
         {
-            // if folder is true the folder browser will be shown
-            if (this.folder)
-            {
-                this.folderBrowser.ShowDialog();
-                this.destinationLocationTextBox.Text = this.folderBrowser.SelectedPath;
-            }
-            else
-            {
-                this.filesBrowser.ShowDialog();
-                this.destinationLocationTextBox.Text = this.filesBrowser.FileName;
-            }
+            // if isFolder is true, the folder browser will be shown
+            this.folderBrowser.IsFolderPicker = this.isFolder;
+
+            if (this.folderBrowser.ShowDialog() == CommonFileDialogResult.Ok)
+                this.destinationLocationTextBox.Text = this.folderBrowser.FileName;
         }
 
         private void CreateLinkClick(object sender, EventArgs e)

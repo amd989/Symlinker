@@ -44,7 +44,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.createLinkButton = new System.Windows.Forms.Button();
             this.aboutButton = new System.Windows.Forms.PictureBox();
-            this.filesBrowser = new System.Windows.Forms.OpenFileDialog();
             this.typeSelectorComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
@@ -282,7 +281,6 @@
         private System.Windows.Forms.PictureBox aboutButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox linkTypeComboBox;
-        private System.Windows.Forms.OpenFileDialog filesBrowser;
         private System.Windows.Forms.ComboBox typeSelectorComboBox;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ErrorProvider errorProvider;

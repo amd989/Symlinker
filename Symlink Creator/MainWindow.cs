@@ -44,9 +44,7 @@ namespace Symlink_Creator
 
             this.linkTypeComboBox.SelectedIndex = 0;
             this.typeSelectorComboBox.SelectedIndex = 0;
-
             this.folderBrowser = new CommonOpenFileDialog();
-            this.folderBrowser.IsFolderPicker = true;
         }
 
         #endregion
@@ -272,6 +270,8 @@ namespace Symlink_Creator
 
         private void ExploreButton1Click(object sender, EventArgs e)
         {
+            this.folderBrowser.IsFolderPicker = true;
+
             if (this.folderBrowser.ShowDialog() == CommonFileDialogResult.Ok)
                 this.linkLocationTextBox.Text = this.folderBrowser.FileName;
         }
@@ -279,16 +279,10 @@ namespace Symlink_Creator
         private void ExploreButton2Click(object sender, EventArgs e)
         {
             // if isFolder is true, the folder browser will be shown
-            if (this.isFolder)
-            {
-                if (this.folderBrowser.ShowDialog() == CommonFileDialogResult.Ok)
-                    this.destinationLocationTextBox.Text = this.folderBrowser.FileName;
-            }
-            else
-            {
-                if (this.filesBrowser.ShowDialog() == DialogResult.OK)
-                    this.destinationLocationTextBox.Text = this.filesBrowser.FileName;
-            }
+            this.folderBrowser.IsFolderPicker = this.isFolder;
+
+            if (this.folderBrowser.ShowDialog() == CommonFileDialogResult.Ok)
+                this.destinationLocationTextBox.Text = this.folderBrowser.FileName;
         }
 
         private void CreateLinkClick(object sender, EventArgs e)

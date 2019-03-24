@@ -286,7 +286,7 @@ namespace Symlink_Creator
                 this.linkLocationTextBox.Text = this.folderBrowser.FileName;
         }
 
-        private void Explorebutton2Click(object sender, EventArgs e)
+        private void ExploreButton2Click(object sender, EventArgs e)
         {
             // if folder is true the folder browser will be shown
             if (this.folder)
@@ -296,7 +296,7 @@ namespace Symlink_Creator
             }
             else
             {
-                if (this.folderBrowser.ShowDialog() == CommonFileDialogResult.Ok)
+                if (this.filesBrowser.ShowDialog() == DialogResult.OK)
                     this.destinationLocationTextBox.Text = this.filesBrowser.FileName;
             }
         }

@@ -166,7 +166,7 @@
             this.exploreButton2.TabIndex = 2;
             this.exploreButton2.Text = "Explore...";
             this.exploreButton2.UseVisualStyleBackColor = true;
-            this.exploreButton2.Click += new System.EventHandler(this.Explorebutton2Click);
+            this.exploreButton2.Click += new System.EventHandler(this.ExploreButton2Click);
             // 
             // destinationLocationTextBox
             // 

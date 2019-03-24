@@ -51,13 +51,13 @@ namespace Symlink_Creator
 
         #region Methods
 
-        /// <summary>The combo box 1 mouse hover.</summary>
+        /// <summary>The link type combo box mouse hover.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The e.</param>
         private void LinkTypeComboBoxMouseHover(object sender, EventArgs e)
         {
             this.toolTip.ToolTipTitle = Resources.TooltipLinkTypeTitle;
-            this.toolTip.SetToolTip(this.linkTypeComboBox, Resources.TooltipLinkTypeDescription);
+            this.toolTip.SetToolTip(this.linkTypeComboBox, this.isFolder ? Resources.TooltipLinkTypeFolderDescription : Resources.TooltipLinkTypeFileDescription);
         }
 
         /// <summary>
@@ -240,6 +240,9 @@ namespace Symlink_Creator
                 this.label2.Text = Resources.MainWindow_Switcher_Now_give_a_name_to_the_link_;
                 this.label3.Text = Resources.MainWindow_Switcher_Please_select_the_path_to_the_real_folder_you_want_to_link_;
                 this.isFolder = true;
+
+                if (!this.linkTypeComboBox.Items.Contains("Directory Junction"))
+                    this.linkTypeComboBox.Items.Add("Directory Junction");
             }
             else
             {
@@ -248,10 +251,17 @@ namespace Symlink_Creator
                 this.label2.Text = Resources.MainWindow_Switcher_Now_give_a_name_to_your_file_;
                 this.label3.Text = Resources.MainWindow_Switcher_Please_select_the_path_to_the_real_file_you_want_to_link_;
                 this.isFolder = false;
+
+                // doesn't make sense to show "Directory Junction" for files
+                if (this.linkTypeComboBox.Items.Contains("Directory Junction"))
+                {
+                    this.linkTypeComboBox.SelectedIndex = this.linkTypeComboBox.SelectedIndex == 2 ? 0 : this.linkTypeComboBox.SelectedIndex;
+                    this.linkTypeComboBox.Items.Remove("Directory Junction");
+                }
             }
         }
 
-        /// <summary>The type selector_ mouse hover.</summary>
+        /// <summary>The link type selector combo box mouse hover.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The e.</param>
         private void TypeSelectorComboBoxMouseHover(object sender, EventArgs e)

@@ -293,12 +293,23 @@ namespace Symlink_Creator.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to This option allows you to select the style of your symbolic link, either
+        ///you choose to use symbolic links or hard links.
+        ///Use symbolic links as a default..
+        /// </summary>
+        internal static string TooltipLinkTypeFileDescription {
+            get {
+                return ResourceManager.GetString("TooltipLinkTypeFileDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This option allows you to select the style of your symbolic link, either
         ///you choose to use symbolic links, hard links or directory junctions.
         ///Use symbolic links as a default..
         /// </summary>
-        internal static string TooltipLinkTypeDescription {
+        internal static string TooltipLinkTypeFolderDescription {
             get {
-                return ResourceManager.GetString("TooltipLinkTypeDescription", resourceCulture);
+                return ResourceManager.GetString("TooltipLinkTypeFolderDescription", resourceCulture);
             }
         }
         

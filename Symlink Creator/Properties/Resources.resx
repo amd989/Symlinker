@@ -197,7 +197,12 @@ Thanks to Microsoft for the use of their shortcut arrow :)</value>
   <data name="MessageBoxExceptionOcurred" xml:space="preserve">
     <value>An error has ocurred:</value>
   </data>
-  <data name="TooltipLinkTypeDescription" xml:space="preserve">
+  <data name="TooltipLinkTypeFileDescription" xml:space="preserve">
+    <value>This option allows you to select the style of your symbolic link, either
+you choose to use symbolic links or hard links.
+Use symbolic links as a default.</value>
+  </data>
+  <data name="TooltipLinkTypeFolderDescription" xml:space="preserve">
     <value>This option allows you to select the style of your symbolic link, either
 you choose to use symbolic links, hard links or directory junctions.
 Use symbolic links as a default.</value>

@@ -32,7 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.label1 = new System.Windows.Forms.Label();
             this.linkLocationTextBox = new System.Windows.Forms.TextBox();
-            this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+            this.folderBrowser = new Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog();
             this.exploreButton1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -79,8 +79,7 @@
             // 
             // folderBrowser
             // 
-            this.folderBrowser.Description = "Please select a folder";
-            this.folderBrowser.ShowNewFolderButton = false;
+            this.folderBrowser.IsFolderPicker = true;
             // 
             // exploreButton1
             // 
@@ -269,7 +268,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox linkLocationTextBox;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowser;
+        private Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog folderBrowser;
         private System.Windows.Forms.Button exploreButton1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;

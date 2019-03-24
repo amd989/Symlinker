@@ -9,6 +9,7 @@
 
 namespace Symlink_Creator
 {
+    using Microsoft.WindowsAPICodePack.Dialogs;
     using System;
     using System.Deployment.Application;
     using System.Diagnostics;
@@ -281,8 +282,8 @@ namespace Symlink_Creator
 
         private void ExploreButton1Click(object sender, EventArgs e)
         {
-            this.folderBrowser.ShowDialog();
-            this.linkLocationTextBox.Text = this.folderBrowser.SelectedPath;
+            if (this.folderBrowser.ShowDialog() == CommonFileDialogResult.Ok)
+                this.linkLocationTextBox.Text = this.folderBrowser.FileName;
         }
 
         private void Explorebutton2Click(object sender, EventArgs e)
@@ -290,13 +291,13 @@ namespace Symlink_Creator
             // if folder is true the folder browser will be shown
             if (this.folder)
             {
-                this.folderBrowser.ShowDialog();
-                this.destinationLocationTextBox.Text = this.folderBrowser.SelectedPath;
+                if (this.folderBrowser.ShowDialog() == CommonFileDialogResult.Ok)
+                    this.destinationLocationTextBox.Text = this.folderBrowser.FileName;
             }
             else
             {
-                this.filesBrowser.ShowDialog();
-                this.destinationLocationTextBox.Text = this.filesBrowser.FileName;
+                if (this.folderBrowser.ShowDialog() == CommonFileDialogResult.Ok)
+                    this.destinationLocationTextBox.Text = this.filesBrowser.FileName;
             }
         }
 

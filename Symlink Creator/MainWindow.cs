@@ -11,7 +11,6 @@ namespace Symlink_Creator
 {
     using Microsoft.WindowsAPICodePack.Dialogs;
     using System;
-    using System.Deployment.Application;
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
@@ -20,6 +19,7 @@ namespace Symlink_Creator
     using System.Windows.Forms;
 
     using Symlink_Creator.Properties;
+    using System.Deployment.Application;
 
     /// <summary>
     ///     This class manages the window

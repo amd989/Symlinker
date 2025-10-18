@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Symlink_Creator</RootNamespace>
     <ManifestCertificateThumbprint>1545011842E7D72688AF686E0A94663E3A278CFA</ManifestCertificateThumbprint>
@@ -25,9 +25,9 @@
     <SupportUrl>https://github.com/amd989/Symlinker/</SupportUrl>
     <ErrorReportUrl>https://github.com/amd989/Symlinker/issues</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
-    <ProductName>Symlink Creator</ProductName>
-    <PublisherName>Symlink Creator</PublisherName>
-    <SuiteName>Symlink Creator</SuiteName>
+    <ProductName>Symlinker</ProductName>
+    <PublisherName>Symlinker</PublisherName>
+    <SuiteName>Symlinker</SuiteName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <ApplicationRevision>16</ApplicationRevision>
@@ -39,6 +39,20 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Configurations>CD_ROM;Debug;DVD-5;Release;SingleImage</Configurations>
+    <TargetZone>LocalIntranet</TargetZone>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <StartupObject>Symlink_Creator.Program</StartupObject>
+    <Version>1.1.2.15</Version>
+    <Description>Symbolic link creator app</Description>
+    <Copyright>Copyright © Alejandro Mora 2025</Copyright>
+    <PackageProjectUrl>https://github.com/amd989/Symlinker</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/amd989/Symlinker/</RepositoryUrl>
+    <PackageIconUrl />
+    <RepositoryType>git</RepositoryType>
+    <SignAssembly>False</SignAssembly>
+    <PackageId>Symlinker</PackageId>
+    <Authors>Symlinker</Authors>
+    <Product>Symlinker</Product>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -47,23 +61,6 @@
     <DocumentationFile>bin\Release\Symlink Creator.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup>
-    <TargetZone>LocalIntranet</TargetZone>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>Symlink_Creator.Program</StartupObject>
-    <Version>1.1.2.15</Version>
-    <Description>Symbolic link creator app</Description>
-    <Copyright>Copyright © Alejandro Mora 2025</Copyright>
-    <PackageProjectUrl>https://github.com/amd989/Symlinker</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/amd989/Symlinker/</RepositoryUrl>
-    <PackageIcon>icon.ico</PackageIcon>
-    <PackageIconUrl />
-    <RepositoryType>git</RepositoryType>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Update="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -71,10 +68,8 @@
     <Reference Update="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Deployment" />
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Core" />
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="info.png">
@@ -117,13 +112,24 @@
     <Content Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft-WindowsAPICodePack-Core" />
-    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="icon.ico">
       <Pack>True</Pack>
-      <PackagePath></PackagePath>
+      <PackagePath>
+      </PackagePath>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Target Name="OldProjectFormat_PublishTarget" DependsOnTargets="$(PublishDependsOn)" />
 </Project>

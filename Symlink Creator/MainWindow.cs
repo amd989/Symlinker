@@ -19,7 +19,6 @@ namespace Symlink_Creator
     using System.Windows.Forms;
 
     using Symlink_Creator.Properties;
-    using System.Deployment.Application;
 
     /// <summary>
     ///     This class manages the window
@@ -305,7 +304,7 @@ namespace Symlink_Creator
             string version;
             try
             {
-                version = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+                version = Environment.GetEnvironmentVariable("ClickOnce_CurrentVersion");
             }
             catch
             {

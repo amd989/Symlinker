@@ -1,6 +1,4 @@
-﻿// Copyright 2015, All Rights Reserved.
-
-namespace Symlink_Creator
+﻿namespace Symlink_Creator
 {
     using System;
     using System.ComponentModel;

@@ -11,7 +11,6 @@ namespace Symlink_Creator
 {
     using Microsoft.WindowsAPICodePack.Dialogs;
     using System;
-    using System.Deployment.Application;
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
@@ -305,7 +304,7 @@ namespace Symlink_Creator
             string version;
             try
             {
-                version = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+                version = Environment.GetEnvironmentVariable("ClickOnce_CurrentVersion");
             }
             catch
             {

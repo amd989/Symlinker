@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  push:
+    tags: [v*]
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Git
+        run: |
+          git config --global url."https://user:${{ secrets.GITHUB_TOKEN }}@github".insteadOf https://github
+          git config --global user.name github-actions
+          git config --global user.email github-actions@github.com          
+
+      - name: Run release script
+        shell: pwsh
+        run: ./release.ps1

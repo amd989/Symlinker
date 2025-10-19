@@ -1,11 +1,21 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/4ao9vquaxjxsscy8?svg=true)](https://ci.appveyor.com/project/amd989/symlinker)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/amd989/Symlinker/release.yml?branch=master)](https://github.com/amd989/Symlinker/actions)
 
 <a href="https://www.buymeacoffee.com/amd989" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
 
 Symlinker
 =========
 
-![Screenshot](http://alejandro.md/publish/Symlinker/screenshot.jpg)
+![Screenshot](docs/window.png)
+
+## Update from 2025
+
+10 years later and here I come back to revive this app once again... I don't even know if people still use it or they moved on, but hey, it costs nothing to keep it alive...
+
+Upgraded to .net 8 so that means it will only work under windows 10 and above. 
+
+We'll see what time will tell...
+
+## Update from 2015 
 
 Back from the dead. Switched to GitHub instead of Google Code since they are going to close soon.
 
@@ -13,7 +23,7 @@ I will be updating this little app over the course of the next days and hopefull
 
 Better late than never some might say. I hope that is not too late for this app to get new light.
 
-**Featured On**:
+## Featured On
 
 * [addictivetips](http://www.addictivetips.com/windows-tips/symlinker-create-symlink-hardlink-and-directory-junction-in-windows/)
 * [TecFlap](http://www.tecflap.com/2012/05/29/software-day-winautohide-symlinker-hyperdesktop/)
@@ -24,12 +34,9 @@ https://code.google.com/p/symlinker/
 
 Downloads
 ---------
-[Download ClickOnce Installer (Supports auto updates)](http://bit.ly/symlinker_clickonce)
+[Download ClickOnce Installer (Supports auto updates)](https://l.alejandro.md/symlinker_clickonce)
 
-[Download Standalone Executable](http://bit.ly/symlinker_executable)
-
-[Download ClickOnce Full Package](http://bit.ly/symlinker_package)
-
+[Download Standalone Executable](https://l.alejandro.md/symlinker_executable)
 
 Overview
 --------
@@ -38,12 +45,9 @@ With this utility you can use the symlink application Microsoft Windows has well
 
 The goal is just make it easier to create symbolic links, hard links, or directory junctions, using a pretty simple interface, so no more bogus command line to do it...
 
-This application needs .Net Framework 3.5 to run (SP1 recommended) and as of **4/24/2015** this software will only work under
-* Windows Vista
-* Windows 7
-* Windows 8 and 8.1
-
-Windows XP doesn't have the mklink command available from the cmd.exe app. 
+This application needs .NET 8 to run and as of **10/18/2025** this software will only work under
+* Windows 10
+* Windows 11
 
 If you encounter a bug, please let me know in the issues section, I will look into it when I have the time!
 

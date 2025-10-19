@@ -49,6 +49,7 @@ x64/
 build/
 [Bb]in/
 [Oo]bj/
+[Pp]ackages/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -121,12 +122,9 @@ DocProject/Help/*.hhp
 DocProject/Help/Html2
 DocProject/Help/html
 
-# Click-Once directory
-publish/
 
 # Publish Web Output
 *.Publish.xml
-*.pubxml
 
 # NuGet Packages Directory
 ## TODO: If you have NuGet Package Restore enabled, uncomment the next line
@@ -213,3 +211,4 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+.vs

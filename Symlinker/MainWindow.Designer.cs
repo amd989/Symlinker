@@ -1,4 +1,4 @@
-﻿namespace Symlink_Creator
+﻿namespace Symlinker
 {
     partial class MainWindow
     {
@@ -28,29 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+            this.linkLocationTextBox = new System.Windows.Forms.TextBox();
             this.exploreButton1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.linkNameTextBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.linkTypeComboBox = new System.Windows.Forms.ComboBox();
             this.exploreButton2 = new System.Windows.Forms.Button();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.destinationLocationTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.createLinkButton = new System.Windows.Forms.Button();
             this.aboutButton = new System.Windows.Forms.PictureBox();
-            this.filesBrowser = new System.Windows.Forms.OpenFileDialog();
-            this.TypeSelector = new System.Windows.Forms.ComboBox();
+            this.typeSelectorComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.aboutButton)).BeginInit();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -62,19 +64,17 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Please select the place where you want your link:";
             // 
-            // textBox1
+            // linkLocationTextBox
             // 
-            this.textBox1.AllowDrop = true;
-            this.textBox1.Location = new System.Drawing.Point(12, 39);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(312, 20);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.WordWrap = false;
-            // 
-            // folderBrowser
-            // 
-            this.folderBrowser.Description = "Please select a folder";
-            this.folderBrowser.ShowNewFolderButton = false;
+            this.linkLocationTextBox.AllowDrop = true;
+            this.linkLocationTextBox.Location = new System.Drawing.Point(12, 39);
+            this.linkLocationTextBox.Name = "linkLocationTextBox";
+            this.linkLocationTextBox.Size = new System.Drawing.Size(312, 20);
+            this.linkLocationTextBox.TabIndex = 1;
+            this.linkLocationTextBox.WordWrap = false;
+            this.linkLocationTextBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.TextBox_DragDrop);
+            this.linkLocationTextBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.TextBox_DragEnter);
+            this.linkLocationTextBox.DragOver += new System.Windows.Forms.DragEventHandler(this.TextBox_DragOver);
             // 
             // exploreButton1
             // 
@@ -84,7 +84,7 @@
             this.exploreButton1.TabIndex = 2;
             this.exploreButton1.Text = "Explore...";
             this.exploreButton1.UseVisualStyleBackColor = true;
-            this.exploreButton1.Click += new System.EventHandler(this.button1_Click);
+            this.exploreButton1.Click += new System.EventHandler(this.ExploreButton1Click);
             // 
             // label2
             // 
@@ -97,11 +97,11 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.linkNameTextBox);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.exploreButton1);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.linkLocationTextBox);
             this.groupBox1.Location = new System.Drawing.Point(12, 71);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(421, 92);
@@ -109,19 +109,19 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Link Folder";
             // 
-            // textBox2
+            // linkNameTextBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(176, 63);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(148, 20);
-            this.textBox2.TabIndex = 3;
+            this.linkNameTextBox.Location = new System.Drawing.Point(176, 63);
+            this.linkNameTextBox.Name = "linkNameTextBox";
+            this.linkNameTextBox.Size = new System.Drawing.Size(148, 20);
+            this.linkNameTextBox.TabIndex = 3;
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.comboBox1);
+            this.groupBox2.Controls.Add(this.linkTypeComboBox);
             this.groupBox2.Controls.Add(this.exploreButton2);
-            this.groupBox2.Controls.Add(this.textBox3);
+            this.groupBox2.Controls.Add(this.destinationLocationTextBox);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Location = new System.Drawing.Point(13, 170);
             this.groupBox2.Name = "groupBox2";
@@ -139,19 +139,19 @@
             this.label5.TabIndex = 4;
             this.label5.Text = "Select the type of link:";
             // 
-            // comboBox1
+            // linkTypeComboBox
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.linkTypeComboBox.FormattingEnabled = true;
+            this.linkTypeComboBox.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.linkTypeComboBox.Items.AddRange(new object[] {
             "Symbolic Link",
             "Hard Link",
             "Directory Junction"});
-            this.comboBox1.Location = new System.Drawing.Point(175, 64);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(148, 21);
-            this.comboBox1.TabIndex = 3;
-            this.comboBox1.MouseHover += new System.EventHandler(this.ComboBox1MouseHover);
+            this.linkTypeComboBox.Location = new System.Drawing.Point(175, 64);
+            this.linkTypeComboBox.Name = "linkTypeComboBox";
+            this.linkTypeComboBox.Size = new System.Drawing.Size(148, 21);
+            this.linkTypeComboBox.TabIndex = 3;
+            this.linkTypeComboBox.MouseHover += new System.EventHandler(this.LinkTypeComboBoxMouseHover);
             // 
             // exploreButton2
             // 
@@ -161,14 +161,18 @@
             this.exploreButton2.TabIndex = 2;
             this.exploreButton2.Text = "Explore...";
             this.exploreButton2.UseVisualStyleBackColor = true;
-            this.exploreButton2.Click += new System.EventHandler(this.button2_Click);
+            this.exploreButton2.Click += new System.EventHandler(this.ExploreButton2Click);
             // 
-            // textBox3
+            // destinationLocationTextBox
             // 
-            this.textBox3.Location = new System.Drawing.Point(11, 37);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(312, 20);
-            this.textBox3.TabIndex = 1;
+            this.destinationLocationTextBox.AllowDrop = true;
+            this.destinationLocationTextBox.Location = new System.Drawing.Point(11, 37);
+            this.destinationLocationTextBox.Name = "destinationLocationTextBox";
+            this.destinationLocationTextBox.Size = new System.Drawing.Size(312, 20);
+            this.destinationLocationTextBox.TabIndex = 1;
+            this.destinationLocationTextBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.TextBox_DragDrop);
+            this.destinationLocationTextBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.TextBox_DragEnter);
+            this.destinationLocationTextBox.DragOver += new System.Windows.Forms.DragEventHandler(this.TextBox_DragOver);
             // 
             // label3
             // 
@@ -187,35 +191,35 @@
             this.createLinkButton.TabIndex = 6;
             this.createLinkButton.Text = "Create Link";
             this.createLinkButton.UseVisualStyleBackColor = true;
-            this.createLinkButton.Click += new System.EventHandler(this.button3_Click);
+            this.createLinkButton.Click += new System.EventHandler(this.CreateLinkClick);
             // 
             // aboutButton
             // 
-            this.aboutButton.Image = global::Symlink_Creator.Properties.Resources.info;
+            this.aboutButton.Image = global::Symlinker.Properties.Resources.info;
             this.aboutButton.Location = new System.Drawing.Point(13, 285);
             this.aboutButton.Name = "aboutButton";
             this.aboutButton.Size = new System.Drawing.Size(16, 16);
             this.aboutButton.TabIndex = 7;
             this.aboutButton.TabStop = false;
-            this.aboutButton.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.aboutButton.Click += new System.EventHandler(this.HelpImageClick);
             // 
-            // TypeSelector
+            // typeSelectorComboBox
             // 
-            this.TypeSelector.FormattingEnabled = true;
-            this.TypeSelector.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.TypeSelector.Items.AddRange(new object[] {
+            this.typeSelectorComboBox.FormattingEnabled = true;
+            this.typeSelectorComboBox.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.typeSelectorComboBox.Items.AddRange(new object[] {
             "Folder symbolic link",
             "File symbolic link"});
-            this.TypeSelector.Location = new System.Drawing.Point(14, 19);
-            this.TypeSelector.Name = "TypeSelector";
-            this.TypeSelector.Size = new System.Drawing.Size(239, 21);
-            this.TypeSelector.TabIndex = 1;
-            this.TypeSelector.SelectedIndexChanged += new System.EventHandler(this.TypeSelector_SelectedIndexChanged);
-            this.TypeSelector.MouseHover += new System.EventHandler(this.TypeSelector_MouseHover);
+            this.typeSelectorComboBox.Location = new System.Drawing.Point(14, 19);
+            this.typeSelectorComboBox.Name = "typeSelectorComboBox";
+            this.typeSelectorComboBox.Size = new System.Drawing.Size(239, 21);
+            this.typeSelectorComboBox.TabIndex = 1;
+            this.typeSelectorComboBox.SelectedIndexChanged += new System.EventHandler(this.TypeSelectorSelectedIndexChanged);
+            this.typeSelectorComboBox.MouseHover += new System.EventHandler(this.TypeSelectorComboBoxMouseHover);
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.TypeSelector);
+            this.groupBox3.Controls.Add(this.typeSelectorComboBox);
             this.groupBox3.Location = new System.Drawing.Point(12, 12);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(421, 53);
@@ -223,8 +227,18 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Select the type of symlink that you want to create:";
             // 
+            // errorProvider
+            // 
+            this.errorProvider.ContainerControl = this;
+            // 
+            // toolTip
+            // 
+            this.toolTip.IsBalloon = true;
+            this.toolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            // 
             // MainWindow
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(456, 317);
@@ -245,6 +259,7 @@
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.aboutButton)).EndInit();
             this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -252,23 +267,24 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowser;
+        private System.Windows.Forms.TextBox linkLocationTextBox;
+        private Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog folderBrowser;
         private System.Windows.Forms.Button exploreButton1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox linkNameTextBox;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button exploreButton2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox destinationLocationTextBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button createLinkButton;
         private System.Windows.Forms.PictureBox aboutButton;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.OpenFileDialog filesBrowser;
-        private System.Windows.Forms.ComboBox TypeSelector;
+        private System.Windows.Forms.ComboBox linkTypeComboBox;
+        private System.Windows.Forms.ComboBox typeSelectorComboBox;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.ErrorProvider errorProvider;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
 

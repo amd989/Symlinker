@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Symlink_Creator
+namespace Symlinker
 {
     using Microsoft.WindowsAPICodePack.Dialogs;
     using System;
@@ -18,7 +18,7 @@ namespace Symlink_Creator
     using System.Reflection;
     using System.Windows.Forms;
 
-    using Symlink_Creator.Properties;
+    using Symlinker.Properties;
 
     /// <summary>
     ///     This class manages the window

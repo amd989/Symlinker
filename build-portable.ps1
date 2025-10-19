@@ -23,7 +23,7 @@ if ([string]::IsNullOrEmpty($Version)) {
     Write-Output "Using specified version: $Version"
 }
 
-$projDir = "Symlink Creator"
+$projDir = "Symlinker"
 $outputDir = "bin/portable"
 $publishDir = "$projDir/$outputDir"
 

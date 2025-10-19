@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Symlink_Creator</RootNamespace>
+    <RootNamespace>Symlinker</RootNamespace>
     <ManifestCertificateThumbprint>1545011842E7D72688AF686E0A94663E3A278CFA</ManifestCertificateThumbprint>
     <ManifestKeyFile>cert.pfx</ManifestKeyFile>
     <GenerateManifests>false</GenerateManifests>
@@ -41,7 +41,7 @@
     <Configurations>CD_ROM;Debug;DVD-5;Release;SingleImage</Configurations>
     <TargetZone>LocalIntranet</TargetZone>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-    <StartupObject>Symlink_Creator.Program</StartupObject>
+    <StartupObject>Symlinker.Program</StartupObject>
     <Version>2.0.0.0</Version>
     <Description>Symbolic link creator app</Description>
     <Copyright>Copyright © Alejandro Mora 2025</Copyright>
@@ -58,7 +58,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DocumentationFile>bin\Release\Symlink Creator.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Symlinker.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>

@@ -5,8 +5,8 @@ param (
     [switch]$OnlyBuild=$false
 )
 
-$appName = "Symlink Creator" 
-$projDir = "Symlink Creator"
+$appName = "Symlinker" 
+$projDir = "Symlinker"
 
 Set-StrictMode -version 2.0
 $ErrorActionPreference = "Stop"

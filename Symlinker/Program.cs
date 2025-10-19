@@ -1,4 +1,6 @@
-﻿namespace Symlink_Creator
+﻿using Symlinker;
+
+namespace Symlinker
 {
     using System;
     using System.ComponentModel;
@@ -28,7 +30,7 @@
             {
                 var btnElevate = new Button { FlatStyle = FlatStyle.System };
 
-                SendMessage(btnElevate.Handle, BCM_SETSHIELD, 0, (IntPtr)1);
+                SendMessage(btnElevate.Handle, BCM_SETSHIELD, 0, 1);
 
                 var processInfo = new ProcessStartInfo();
                 processInfo.Verb = "runas";
@@ -55,7 +57,7 @@
         }
 
         [DllImport("user32", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern int SendMessage(IntPtr hWnd, uint Msg, int wParam, IntPtr lParam);
+        private static extern int SendMessage(nint hWnd, uint Msg, int wParam, nint lParam);
 
         #endregion
     }

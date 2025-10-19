@@ -1,0 +1,60 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Symlink Creator/2.0.0.0": {
+        "dependencies": {
+          "Microsoft-WindowsAPICodePack-Core": "1.1.5",
+          "Microsoft-WindowsAPICodePack-Shell": "1.1.5"
+        },
+        "runtime": {
+          "Symlink Creator.dll": {}
+        }
+      },
+      "Microsoft-WindowsAPICodePack-Core/1.1.5": {
+        "runtime": {
+          "lib/net7.0-windows7.0/Microsoft.WindowsAPICodePack.dll": {
+            "assemblyVersion": "1.1.5.0",
+            "fileVersion": "1.1.5.0"
+          }
+        }
+      },
+      "Microsoft-WindowsAPICodePack-Shell/1.1.5": {
+        "dependencies": {
+          "Microsoft-WindowsAPICodePack-Core": "1.1.5"
+        },
+        "runtime": {
+          "lib/net7.0-windows7.0/Microsoft.WindowsAPICodePack.Shell.dll": {
+            "assemblyVersion": "1.1.5.0",
+            "fileVersion": "1.1.5.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Symlink Creator/2.0.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft-WindowsAPICodePack-Core/1.1.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3feeT5wxrH/T4YmoZwCglVrUw6aS4+WJLA3FRADLVT2J85/zjptrCikvGNcLI1+gDeoI1AZ4w45gF2FvBv6eQw==",
+      "path": "microsoft-windowsapicodepack-core/1.1.5",
+      "hashPath": "microsoft-windowsapicodepack-core.1.1.5.nupkg.sha512"
+    },
+    "Microsoft-WindowsAPICodePack-Shell/1.1.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lZ+oIxvTp1Ph0YrzFl3AKcrry7OCfi0awf43nrGwodWqDlFASktZ+pN532rbU/5o09irYjxVu1m3UxO5L1H8fw==",
+      "path": "microsoft-windowsapicodepack-shell/1.1.5",
+      "hashPath": "microsoft-windowsapicodepack-shell.1.1.5.nupkg.sha512"
+    }
+  }
+}

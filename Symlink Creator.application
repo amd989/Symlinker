@@ -8,7 +8,7 @@
         <beforeApplicationStartup />
       </update>
     </subscription>
-    <deploymentProvider codebase="http://alejandro.md/publish/Symlinker/Symlink%20Creator.application" />
+    <deploymentProvider codebase="https://amd989.github.io/Symlinker/Symlink%20Creator.application" />
   </deployment>
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
@@ -21,7 +21,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>mIEuI32E4LLBz1CeBQzFTa+0wJDiWqSZD++tpRy6T70=</dsig:DigestValue>
+        <dsig:DigestValue>yJs3uso39Iss5D8RMX47lbgIv6VTRi4Yjdef9Wpr+/s=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

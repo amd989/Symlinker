@@ -96,7 +96,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>cIKskqPW1kN76ptnlW4v0SRBdmp7dvGdHIh9YBz39Mo=</dsig:DigestValue>
+      <dsig:DigestValue>Dx3PLvt11H0RXWbKwZMT6HMjiJJ48coaTX7nwlSDw94=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Symlink Creator.dll.config" size="160">
@@ -114,7 +114,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>sb03ojTw0njQxr7iZbsHzwZYNpg5LfaO7lJJr5gIeec=</dsig:DigestValue>
+      <dsig:DigestValue>T7iVnUoOss430miKi0hRqidGpLLK9VvVRWg80kUoC/c=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Symlink Creator.runtimeconfig.json" size="515">

@@ -212,3 +212,9 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 .vs
+
+# Scoop portable builds
+*-portable.zip
+
+# gh-pages checkout directory
+gh-pages/

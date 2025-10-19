@@ -6,13 +6,13 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "Symlink Creator/2.0.0.0": {
+      "Symlinker/2.0.0.0": {
         "dependencies": {
           "Microsoft-WindowsAPICodePack-Core": "1.1.5",
           "Microsoft-WindowsAPICodePack-Shell": "1.1.5"
         },
         "runtime": {
-          "Symlink Creator.dll": {}
+          "Symlinker.dll": {}
         }
       },
       "Microsoft-WindowsAPICodePack-Core/1.1.5": {
@@ -37,7 +37,7 @@
     }
   },
   "libraries": {
-    "Symlink Creator/2.0.0.0": {
+    "Symlinker/2.0.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

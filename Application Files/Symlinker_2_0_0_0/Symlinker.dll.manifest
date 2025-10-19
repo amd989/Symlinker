@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="Symlink Creator.exe" version="2.0.0.0" publicKeyToken="0000000000000000" language="en" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="Symlinker.exe" version="2.0.0.0" publicKeyToken="0000000000000000" language="en" processorArchitecture="msil" type="win32" />
   <description asmv2:iconFile="icon.ico" xmlns="urn:schemas-microsoft-com:asm.v1">Symbolic link creator app</description>
   <application />
   <entryPoint>
@@ -50,7 +50,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>0uO7vXnl65Wb6tbhWUhRraOf0lJyvZTjQgf80Qrb9xU=</dsig:DigestValue>
+        <dsig:DigestValue>60aneTTwOGbh5I75BRTGYeIZTCuQE8AWy1lfF7URGpw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -81,25 +81,25 @@
       <dsig:DigestValue>VTVjKHwRDUz4rGoy8r3j4IP94wHDQky2NImHsqFhbHk=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Symlink Creator.deps.json" size="1939">
+  <file name="Symlinker.deps.json" size="1921">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>zSrwJmAA1u50Gdj7tAANPqaA2M6v7aVmDl0p/mjhOi8=</dsig:DigestValue>
+      <dsig:DigestValue>Q74q91Nic9VnsaVsJkXhSVn24wH57YbdF6d0cKsxU8E=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Symlink Creator.dll" size="94720">
+  <file name="Symlinker.dll" size="94208">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>EPNZPoyxyF3hBwB1xiIdMMimwLBWmCxG36ZEiEie+PU=</dsig:DigestValue>
+      <dsig:DigestValue>F8Uq4HyDpRrkrFR7S+Qwt38J8vk+Efak9ZWfVlyfnxc=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Symlink Creator.dll.config" size="160">
+  <file name="Symlinker.dll.config" size="160">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
@@ -108,16 +108,16 @@
       <dsig:DigestValue>U0PtDXEVdOkp0C0m1Jafucj2N1GF2Olqu1FM/ufudQE=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Symlink Creator.exe" size="183808">
+  <file name="Symlinker.exe" size="183808">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>1tuW2FGA3cVLTHXOjtaqvGnALQjPOT+PDG8UvM9TO9E=</dsig:DigestValue>
+      <dsig:DigestValue>WpZa/A3GxfWO5xbbTT1dcTh59RsSsjpzilomz3BjHAw=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Symlink Creator.runtimeconfig.json" size="515">
+  <file name="Symlinker.runtimeconfig.json" size="515">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />

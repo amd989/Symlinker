@@ -1,9 +1,5 @@
-[![Build Status](https://img.shields.io/github/actions/workflow/status/amd989/Symlinker/release.yml?branch=master)](https://github.com/amd989/Symlinker/actions)
 
-<a href="https://www.buymeacoffee.com/amd989" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
-
-Symlinker
-=========
+# Symlinker [![Release](https://github.com/amd989/Symlinker/actions/workflows/release.yml/badge.svg)](https://github.com/amd989/Symlinker/actions/workflows/release.yml)
 
 ![Screenshot](docs/window.png)
 
@@ -26,8 +22,8 @@ Better late than never some might say. I hope that is not too late for this app 
 ## Featured On
 
 * [addictivetips](http://www.addictivetips.com/windows-tips/symlinker-create-symlink-hardlink-and-directory-junction-in-windows/)
-* [TecFlap](http://www.tecflap.com/2012/05/29/software-day-winautohide-symlinker-hyperdesktop/)
-* [Zhacks](http://www.zhacks.com/easily-create-symbolic-link-with-mklink-gui-symlinker/)
+* [TecFlap](https://web.archive.org/web/20150511235232/http://www.tecflap.com/2012/05/29/software-day-winautohide-symlinker-hyperdesktop/) (Old)
+* [Zhacks](https://web.archive.org/web/20170512070430/http://www.zhacks.com/easily-create-symbolic-link-with-mklink-gui-symlinker) (Old)
 
 Previous Project link
 https://code.google.com/p/symlinker/
@@ -53,6 +49,9 @@ If you encounter a bug, please let me know in the issues section, I will look in
 
 Thanks for your downloads and support, hope you like it!
 
+Changelog
+---------
+See [CHANGELOG.md](CHANGELOG.md)
 
 TODO
 ----

@@ -36,11 +36,55 @@ jobs:
           echo "version=$version" >> $env:GITHUB_OUTPUT
           echo "Version: $version"
 
-      - name: Build portable distribution for Scoop
+      - name: Build portable distribution for Scoop (unsigned)
         shell: pwsh
         run: ./build-portable.ps1 -Version ${{ steps.version.outputs.version }}
 
-      - name: Create GitHub Release with portable ZIP
+      - name: Upload unsigned portable artifacts
+        id: upload-portable
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-portable-${{ steps.version.outputs.version }}
+          path: Symlinker/bin/portable/
+
+      - name: Sign portable executable
+        id: signpath-portable
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: '${{ secrets.SIGNPATH_ORGANIZATION_ID }}'
+          project-slug: '${{ secrets.SIGNPATH_PROJECT_SLUG }}'
+          signing-policy-slug: '${{ secrets.SIGNPATH_SIGNING_POLICY_SLUG }}'
+          artifact-configuration-slug: 'Portable'
+          github-artifact-id: '${{ steps.upload-portable.outputs.artifact-id }}'
+          wait-for-completion: true
+          output-artifact-directory: 'Symlinker/bin/portable-signed'
+          parameters: |
+            version: ${{ toJSON(steps.version.outputs.version) }}
+
+      - name: Create signed portable ZIP
+        shell: pwsh
+        run: |
+          $version = "${{ steps.version.outputs.version }}"
+          $zipName = "symlinker-$version-portable.zip"
+
+          # Remove unsigned ZIP if exists
+          if (Test-Path $zipName) {
+            Remove-Item $zipName -Force
+          }
+
+          # Create ZIP from signed artifacts
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          [System.IO.Compression.ZipFile]::CreateFromDirectory(
+            (Resolve-Path "Symlinker/bin/portable-signed").Path,
+            (Join-Path (Get-Location) $zipName),
+            [System.IO.Compression.CompressionLevel]::Optimal,
+            $false
+          )
+
+          Write-Output "Created signed portable ZIP: $zipName"
+
+      - name: Create GitHub Release with signed portable ZIP
         uses: softprops/action-gh-release@v1
         with:
           files: symlinker-${{ steps.version.outputs.version }}-portable.zip
@@ -50,6 +94,32 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run ClickOnce release script
+      - name: Build ClickOnce package (unsigned)
         shell: pwsh
-        run: ./release.ps1
+        run: ./release.ps1 -OnlyBuild
+
+      - name: Upload unsigned ClickOnce artifacts
+        id: upload-clickonce
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-clickonce-${{ steps.version.outputs.version }}
+          path: Symlinker/bin/publish/
+
+      - name: Submit signing request to SignPath
+        id: signpath
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: '${{ secrets.SIGNPATH_ORGANIZATION_ID }}'
+          project-slug: '${{ secrets.SIGNPATH_PROJECT_SLUG }}'
+          signing-policy-slug: '${{ secrets.SIGNPATH_SIGNING_POLICY_SLUG }}'
+          artifact-configuration-slug: 'ClickOnce'
+          github-artifact-id: '${{ steps.upload-clickonce.outputs.artifact-id }}'
+          wait-for-completion: true
+          output-artifact-directory: 'signed-clickonce'
+          parameters: |
+            version: ${{ toJSON(steps.version.outputs.version) }}
+
+      - name: Deploy signed ClickOnce to gh-pages
+        shell: pwsh
+        run: ./release.ps1 -SignedArtifactDir "signed-clickonce"

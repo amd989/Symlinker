@@ -1,4 +1,12 @@
+## What's Changed
+* feat: add support for signed releases by @amd989
+* docs: :memo: update readme by @amd989
+* chore: add funding usernames by @amd989
+
 ## What's Changed in 2.0.0
+* chore: ♻️ rename project by @amd989
+* ci: :construction_worker: add support for scoop.sh by @amd989 in [#27](https://github.com/amd989/Symlinker/pull/27)
+* docs: :memo: add changelog with gitcliff by @amd989
 * ci: 💚 fix click once publish by @amd989
 * docs: :page_facing_up: add mit license by @amd989 in [#26](https://github.com/amd989/Symlinker/pull/26)
 * feat: modernize application by @amd989 in [#25](https://github.com/amd989/Symlinker/pull/25)

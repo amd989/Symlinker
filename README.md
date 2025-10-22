@@ -55,5 +55,13 @@ See [CHANGELOG.md](CHANGELOG.md)
 
 TODO
 ----
-* Get a real code signing certificate
 * Rework the code to be better
+
+Acknowledgments
+---------------
+Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/)
+Committers and reviewers: [Contributors](https://github.com/amd989/Symlinker/graphs/contributors)
+
+Privacy Policy
+--------------
+See [PRIVACY.md](PRIVACY.md)

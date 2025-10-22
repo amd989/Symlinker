@@ -2,7 +2,8 @@
 
 [CmdletBinding(PositionalBinding=$false)]
 param (
-    [switch]$OnlyBuild=$false
+    [switch]$OnlyBuild=$false,
+    [string]$SignedArtifactDir=""
 )
 
 $appName = "Symlinker" 
@@ -64,6 +65,18 @@ if ($OnlyBuild) {
     exit
 }
 
+# Determine which directory to deploy (signed or unsigned).
+$deployDir = $outDir
+if ($SignedArtifactDir) {
+    if (-Not (Test-Path $SignedArtifactDir)) {
+        throw "Signed artifact directory not found: $SignedArtifactDir"
+    }
+    $deployDir = $SignedArtifactDir
+    Write-Output "Using signed artifacts from: $SignedArtifactDir"
+} else {
+    Write-Output "Using unsigned artifacts from: $outDir"
+}
+
 # Clone `gh-pages` branch.
 $ghPagesDir = "gh-pages"
 if (-Not (Test-Path $ghPagesDir)) {
@@ -84,7 +97,7 @@ try {
 
     # Copy new application files.
     Write-Output "Copying new files..."
-    Copy-Item -Path "../$outDir/Application Files","../$outDir/$appName.application" `
+    Copy-Item -Path "../$deployDir/Application Files","../$deployDir/$appName.application" `
         -Destination . -Recurse
 
     # Stage and commit.

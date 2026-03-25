@@ -58,9 +58,6 @@
     <PackageReference Include="MahApps.Metro.IconPacks.Material" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="info.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>

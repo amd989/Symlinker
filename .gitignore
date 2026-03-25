@@ -218,3 +218,4 @@ pip-log.txt
 
 # gh-pages checkout directory
 gh-pages/
+.vscode

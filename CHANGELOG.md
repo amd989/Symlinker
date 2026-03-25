@@ -1,7 +1,12 @@
 ## What's Changed
+* feat: :lipstick: modernize the UI
+
+## What's Changed in 2.1.0
 * feat: add support for signed releases by @amd989
 * docs: :memo: update readme by @amd989
 * chore: add funding usernames by @amd989
+
+**Full Changelog**: https://github.com/amd989/Symlinker/compare/v2.0.0...v2.1.0
 
 ## What's Changed in 2.0.0
 * chore: ♻️ rename project by @amd989

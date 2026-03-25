@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
@@ -31,14 +31,13 @@
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <Configurations>CD_ROM;Debug;DVD-5;Release;SingleImage</Configurations>
+    <UseWPF>true</UseWPF>
+    <Configurations>Debug;Release</Configurations>
     <TargetZone>LocalIntranet</TargetZone>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
     <StartupObject>Symlinker.Program</StartupObject>
-    <Version>2.1.0.0</Version>
-    <Description>Symbolic link creator app</Description>
+    <Version>3.0.0.0</Version>
+    <Description>Symlinker: The Symbolic link creator</Description>
     <Copyright>Copyright © Alejandro Mora 2025</Copyright>
     <PackageProjectUrl>https://github.com/amd989/Symlinker</PackageProjectUrl>
     <RepositoryUrl>https://github.com/amd989/Symlinker/</RepositoryUrl>
@@ -50,29 +49,16 @@
     <Product>Symlinker</Product>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DocumentationFile>bin\Release\Symlinker.XML</DocumentationFile>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Update="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Update="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <PackageReference Include="Microsoft-WindowsAPICodePack-Core" />
-    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" />
+    <PackageReference Include="MahApps.Metro" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="info.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="icon.ico" />
+    <Resource Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="icon.ico">

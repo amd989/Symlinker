@@ -3,65 +3,57 @@
 
 ![Screenshot](docs/window.png)
 
-## Update from 2025
+A simple Windows GUI for creating symbolic links, hard links, and directory junctions — no command line needed.
 
-10 years later and here I come back to revive this app once again... I don't even know if people still use it or they moved on, but hey, it costs nothing to keep it alive...
+## Downloads
 
-Upgraded to .net 8 so that means it will only work under windows 10 and above. 
-
-We'll see what time will tell...
-
-## Update from 2015 
-
-Back from the dead. Switched to GitHub instead of Google Code since they are going to close soon.
-
-I will be updating this little app over the course of the next days and hopefully release it in better shape. A lot of people has filed issues with it and I plan to sort them out.
-
-Better late than never some might say. I hope that is not too late for this app to get new light.
-
-## Featured On
-
-* [addictivetips](http://www.addictivetips.com/windows-tips/symlinker-create-symlink-hardlink-and-directory-junction-in-windows/)
-* [TecFlap](https://web.archive.org/web/20150511235232/http://www.tecflap.com/2012/05/29/software-day-winautohide-symlinker-hyperdesktop/) (Old)
-* [Zhacks](https://web.archive.org/web/20170512070430/http://www.zhacks.com/easily-create-symbolic-link-with-mklink-gui-symlinker) (Old)
-
-Previous Project link
-https://code.google.com/p/symlinker/
-
-Downloads
----------
 [Download ClickOnce Installer (Supports auto updates)](https://l.alejandro.md/symlinker_clickonce)
 
 [Download Standalone Executable](https://l.alejandro.md/symlinker_executable)
 
-Overview
---------
+## Features
 
-With this utility you can use the symlink application Microsoft Windows has well hidden inside the cmd.exe app.
+- Create **symbolic links**, **hard links**, and **directory junctions** with a few clicks
+- Supports both file and folder link types
+- Drag and drop paths directly into the application
+- Automatic UAC elevation (administrator privileges required for symlink creation)
+- ClickOnce deployment with automatic updates
+- Light and dark mode support — syncs with your Windows theme and accent color
+- Signed releases for verified authenticity
 
-The goal is just make it easier to create symbolic links, hard links, or directory junctions, using a pretty simple interface, so no more bogus command line to do it...
+## Requirements
 
-This application needs .NET 8 to run and as of **10/18/2025** this software will only work under
-* Windows 10
-* Windows 11
+- Windows 10 or Windows 11
+- .NET 8 Runtime
 
-If you encounter a bug, please let me know in the issues section, I will look into it when I have the time!
+## History
 
-Thanks for your downloads and support, hope you like it!
+This project has been around since 2009, originally hosted on Google Code and built with Windows Forms. Over the years it has been revived multiple times:
 
-Changelog
----------
+- **2009** — First release, basic folder symlink GUI
+- **2010** — Added file symlinks, tooltips, UAC support
+- **2015** — Migrated from Google Code to GitHub
+- **2025** — Upgraded to .NET 8, dropped support for pre-Windows 10
+- **2026** — Migrated from Windows Forms to WPF with a modern UI inspired by WinUI 3, featuring OS theme sync, accent colors, rounded corners, and dark/light mode support
+
+## Featured On
+
+- [addictivetips](http://www.addictivetips.com/windows-tips/symlinker-create-symlink-hardlink-and-directory-junction-in-windows/)
+- [TecFlap](https://web.archive.org/web/20150511235232/http://www.tecflap.com/2012/05/29/software-day-winautohide-symlinker-hyperdesktop/) (Archived)
+- [Zhacks](https://web.archive.org/web/20170512070430/http://www.zhacks.com/easily-create-symbolic-link-with-mklink-gui-symlinker) (Archived)
+
+Previous project link: https://code.google.com/p/symlinker/
+
+## Changelog
+
 See [CHANGELOG.md](CHANGELOG.md)
 
-TODO
-----
-* Rework the code to be better
+## Acknowledgments
 
-Acknowledgments
----------------
 Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/)
+
 Committers and reviewers: [Contributors](https://github.com/amd989/Symlinker/graphs/contributors)
 
-Privacy Policy
---------------
+## Privacy Policy
+
 See [PRIVACY.md](PRIVACY.md)

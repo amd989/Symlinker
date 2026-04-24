@@ -5,11 +5,18 @@
 
 A simple Windows GUI for creating symbolic links, hard links, and directory junctions — no command line needed.
 
-## Downloads
+## Installation
 
 [Download ClickOnce Installer (Supports auto updates)](https://l.alejandro.md/symlinker_clickonce)
 
 [Download Standalone Executable](https://l.alejandro.md/symlinker_executable)
+
+### Scoop
+
+```powershell
+scoop bucket add extras
+scoop install extras/symlinker
+```
 
 ## Features
 
@@ -25,6 +32,19 @@ A simple Windows GUI for creating symbolic links, hard links, and directory junc
 
 - Windows 10 or Windows 11
 - .NET 8 Runtime
+
+## Building from Source
+
+Prerequisites: [.NET 8 SDK](https://dotnet.microsoft.com/download)
+
+```powershell
+dotnet build Symlinker/Symlinker.csproj
+dotnet run --project Symlinker/Symlinker.csproj
+```
+
+## Contributing
+
+Issues and pull requests are welcome. See [Contributors](https://github.com/amd989/Symlinker/graphs/contributors).
 
 ## History
 
@@ -53,6 +73,10 @@ See [CHANGELOG.md](CHANGELOG.md)
 Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/)
 
 Committers and reviewers: [Contributors](https://github.com/amd989/Symlinker/graphs/contributors)
+
+## License
+
+MIT — see [LICENSE](LICENSE)
 
 ## Privacy Policy
 

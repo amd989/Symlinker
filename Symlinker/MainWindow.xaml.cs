@@ -3,6 +3,7 @@ namespace Symlinker
     using System;
     using System.Diagnostics;
     using System.Globalization;
+
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -11,9 +12,9 @@ namespace Symlinker
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Interop;
-    using System.Windows.Media;
 
     using MahApps.Metro.Controls;
+    using MahApps.Metro.Controls.Dialogs;
     using MahApps.Metro.IconPacks;
 
     using Res = Symlinker.Properties.Resources;
@@ -27,10 +28,16 @@ namespace Symlinker
         [DllImport("dwmapi.dll")]
         private static extern int DwmSetWindowAttribute(nint hwnd, int attr, ref int attrValue, int attrSize);
 
-        private Brush PlaceholderBrush => (Brush)FindResource("MahApps.Brushes.Gray5");
-        private Brush PrimaryTextBrush => (Brush)FindResource("MahApps.Brushes.ThemeForeground");
+        private const string PlaceholderBrushKey = "MahApps.Brushes.Gray3";
+        private const string PrimaryTextBrushKey = "MahApps.Brushes.ThemeForeground";
 
         private bool isFolder = true;
+
+        private static readonly MetroDialogSettings FastDialog = new()
+        {
+            AnimateShow = false,
+            AnimateHide = false, 
+        };
 
         public MainWindow()
         {
@@ -82,7 +89,7 @@ namespace Symlinker
             if (destinationFolderName != null)
             {
                 destinationFolderName.Text = isFolder ? Res.PlaceholderTargetFolder : Res.PlaceholderTargetFile;
-                destinationFolderName.Foreground = PlaceholderBrush;
+                destinationFolderName.SetResourceReference(ForegroundProperty, PlaceholderBrushKey);
             }
         }
 
@@ -99,14 +106,14 @@ namespace Symlinker
             if (string.IsNullOrEmpty(path))
             {
                 destinationFolderName.Text = isFolder ? Res.PlaceholderTargetFolder : Res.PlaceholderTargetFile;
-                destinationFolderName.Foreground = PlaceholderBrush;
+                destinationFolderName.SetResourceReference(ForegroundProperty, PlaceholderBrushKey);
                 return;
             }
 
             var trimmed = path.TrimEnd('\\', '/');
             var lastSep = trimmed.LastIndexOfAny(new[] { '\\', '/' });
             destinationFolderName.Text = lastSep >= 0 ? trimmed[(lastSep + 1)..] : trimmed;
-            destinationFolderName.Foreground = PrimaryTextBrush;
+            destinationFolderName.SetResourceReference(ForegroundProperty, PrimaryTextBrushKey);
         }
 
         private async Task CreateLink()
@@ -119,17 +126,17 @@ namespace Symlinker
 
                 if (string.IsNullOrWhiteSpace(linkLocation) || string.IsNullOrWhiteSpace(linkName) || string.IsNullOrWhiteSpace(destination))
                 {
-                    MessageBox.Show(Res.FillBlanks, Res.MessageBoxErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                    await this.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.FillBlanks, settings: FastDialog);
                     return;
                 }
 
                 if (linkName.Contains('"') || linkLocation.Contains('"') || destination.Contains('"'))
                 {
-                    MessageBox.Show(Res.FilesOrFolderNotExists, Res.MessageBoxErrorTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                    await this.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.InvalidQuoteInPath, settings: FastDialog);
                     return;
                 }
 
-                var link = string.Format("\"{0}\\{1}\" ", linkLocation, linkName);
+                var link = $"\"{linkLocation}\\{linkName}\"";
 
                 if (isFolder && Directory.Exists(linkLocation) && Directory.Exists(destination))
                 {
@@ -137,12 +144,12 @@ namespace Symlinker
 
                     if (directories.Any(e => Path.GetFileName(e).Equals(linkName, StringComparison.OrdinalIgnoreCase)))
                     {
-                        var answer = MessageBox.Show(
-                            Res.DialogFolderExists,
+                        var answer = await this.ShowMessageAsync(
                             Res.DialogFolderExistsDialog,
-                            MessageBoxButton.YesNo,
-                            MessageBoxImage.Warning);
-                        if (answer == MessageBoxResult.Yes)
+                            Res.DialogFolderExists,
+                            MessageDialogStyle.AffirmativeAndNegative,
+                            FastDialog);
+                        if (answer == MessageDialogResult.Affirmative)
                         {
                             var dir2Delete = directories.First(e => Path.GetFileName(e).Equals(linkName, StringComparison.OrdinalIgnoreCase));
                             Directory.Delete(dir2Delete, true);
@@ -150,11 +157,7 @@ namespace Symlinker
                             return;
                         }
 
-                        MessageBox.Show(
-                            Res.LinkCreationAborted,
-                            Res.LinkCreationAbortedWarning,
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Stop);
+                        await this.ShowMessageAsync(Res.LinkCreationAbortedWarning, Res.LinkCreationAborted, settings: FastDialog);
                     }
                     else
                     {
@@ -166,23 +169,19 @@ namespace Symlinker
                     var files = Directory.GetFiles(linkLocation);
                     if (files.Any(e => Path.GetFileName(e).Equals(linkName, StringComparison.OrdinalIgnoreCase)))
                     {
-                        var answer = MessageBox.Show(
-                            Res.DialogDeleteFile,
+                        var answer = await this.ShowMessageAsync(
                             Res.DialogDeleteFileWarning,
-                            MessageBoxButton.YesNo,
-                            MessageBoxImage.Warning);
-                        if (answer == MessageBoxResult.Yes)
+                            Res.DialogDeleteFile,
+                            MessageDialogStyle.AffirmativeAndNegative,
+                            FastDialog);
+                        if (answer == MessageDialogResult.Affirmative)
                         {
                             var file2Delete = files.First(e => Path.GetFileName(e).Equals(linkName, StringComparison.OrdinalIgnoreCase));
                             File.Delete(file2Delete);
                             await SendCommand(link, destination);
                             return;
                         }
-                        MessageBox.Show(
-                            Res.LinkCreationAborted,
-                            Res.LinkCreationAbortedWarning,
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Stop);
+                        await this.ShowMessageAsync(Res.LinkCreationAbortedWarning, Res.LinkCreationAborted, settings: FastDialog);
                     }
                     else
                     {
@@ -191,12 +190,12 @@ namespace Symlinker
                 }
                 else
                 {
-                    MessageBox.Show(Res.FilesOrFolderNotExists, Res.MessageBoxErrorTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                    await this.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.FilesOrFolderNotExists, settings: FastDialog);
                 }
             }
             catch (Exception exception)
             {
-                MessageBox.Show(Res.MessageBoxExceptionOcurred + exception.Message, Res.MessageBoxErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                await this.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.MessageBoxExceptionOcurred + "\n" + exception.Message, settings: FastDialog);
             }
         }
 
@@ -204,10 +203,9 @@ namespace Symlinker
         {
             try
             {
-                var target = string.Format(CultureInfo.InvariantCulture, "\"{0}\"", destination);
                 var typeLink = GetLinkTypeFlag();
                 var directory = isFolder ? "/D " : string.Empty;
-                var stringCommand = string.Format(CultureInfo.InvariantCulture, "/c mklink {0}{1}{2}{3}", directory, typeLink, link, target);
+                var stringCommand = $"/c mklink {directory}{typeLink}{link} \"{destination}\"";
                 var processStartInfo = new ProcessStartInfo
                 {
                     FileName = "cmd",
@@ -218,31 +216,37 @@ namespace Symlinker
                     RedirectStandardOutput = true
                 };
 
+                var gotOutput = false;
                 var process = new Process { StartInfo = processStartInfo, EnableRaisingEvents = true };
                 process.ErrorDataReceived += Process_ErrorDataReceived;
-                process.OutputDataReceived += Process_OutputDataReceived;
+                process.OutputDataReceived += (s, ev) =>
+                {
+                    if (!string.IsNullOrEmpty(ev.Data))
+                    {
+                        gotOutput = true;
+                        Dispatcher.InvokeAsync(() => this.ShowMessageAsync(Res.MessageBoxSuccessTitle, ev.Data, settings: FastDialog));
+                    }
+                };
                 process.Start();
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
                 await process.WaitForExitAsync();
+
+                if (process.ExitCode == 0 && !gotOutput)
+                    await this.ShowMessageAsync(Res.MessageBoxSuccessTitle, Res.LinkSuccessfullyCreated, settings: FastDialog);
+
                 process.Dispose();
             }
             catch (Exception)
             {
-                MessageBox.Show(Res.CmdNotFound, Res.MessageBoxErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                await this.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.CmdNotFound, settings: FastDialog);
             }
-        }
-
-        private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(e.Data))
-                Dispatcher.Invoke(() => MessageBox.Show(e.Data, Res.MessageBoxSuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information));
         }
 
         private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (!string.IsNullOrEmpty(e.Data))
-                Dispatcher.Invoke(() => MessageBox.Show(e.Data, Res.MessageBoxErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error));
+                Dispatcher.InvokeAsync(() => this.ShowMessageAsync(Res.MessageBoxErrorTitle, e.Data, settings: FastDialog));
         }
 
         private void ExploreButton1_Click(object sender, RoutedEventArgs e)
@@ -270,10 +274,18 @@ namespace Symlinker
 
         private async void CreateLink_Click(object sender, RoutedEventArgs e)
         {
-            await CreateLink();
+            createLinkButton.IsEnabled = false;
+            try
+            {
+                await CreateLink();
+            }
+            finally
+            {
+                createLinkButton.IsEnabled = true;
+            }
         }
 
-        private void AboutButton_Click(object sender, RoutedEventArgs e)
+        private async void AboutButton_Click(object sender, RoutedEventArgs e)
         {
             var version = Environment.GetEnvironmentVariable("ClickOnce_CurrentVersion");
             if (string.IsNullOrEmpty(version))
@@ -283,11 +295,10 @@ namespace Symlinker
                 version = fvi.FileVersion;
             }
 
-            MessageBox.Show(
-                string.Format(CultureInfo.CurrentCulture, Res.AboutDescription, version),
+            await this.ShowMessageAsync(
                 Res.MessageBoxAboutTitle,
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
+                string.Format(CultureInfo.CurrentUICulture, Res.AboutDescription, version, DateTime.Now.Year),
+                settings: FastDialog);
         }
 
         private void TextBox_DragOver(object sender, DragEventArgs e)

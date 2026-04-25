@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git tag v1.1.1.15 fd3dc4312b4e1d6e6dc6998f9dcf15a35f006157)",
+      "Bash(git cliff --config cliff.toml --output CHANGELOG_NEW.md)",
+      "Bash(env)",
+      "Bash(if not exist .signpath mkdir .signpath)",
+      "Bash(powershell -Command:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

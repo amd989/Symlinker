@@ -132,6 +132,9 @@
   <data name="FilesOrFolderNotExists" xml:space="preserve">
     <value>One of the specified directories or files does not exist. Please provide valid paths.</value>
   </data>
+  <data name="InvalidQuoteInPath" xml:space="preserve">
+    <value>Paths cannot contain quote characters. Please remove any quotes and try again.</value>
+  </data>
   <data name="FillBlanks" xml:space="preserve">
     <value>Please fill in all the required fields.</value>
   </data>
@@ -199,7 +202,7 @@
     <value>About</value>
   </data>
   <data name="AboutDescription" xml:space="preserve">
-    <value>© 2010-2026 Alejandro Mora
+    <value>© 2010-{1} Alejandro Mora
 Version: {0}
 e-mail: mail@alejandro.md
 
@@ -233,5 +236,11 @@ or folder mode (link a folder to another folder).</value>
   </data>
   <data name="TooltipTypeSelectorTitle" xml:space="preserve">
     <value>Symbolic link type selector</value>
+  </data>
+  <data name="ButtonAbout" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="TooltipAbout" xml:space="preserve">
+    <value>About Symlinker</value>
   </data>
 </root>

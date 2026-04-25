@@ -36,7 +36,7 @@
     <TargetZone>LocalIntranet</TargetZone>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
     <StartupObject>Symlinker.Program</StartupObject>
-    <Version>3.0.0.0</Version>
+    <Version>4.0.0.0</Version>
     <Description>Symlinker: The Symbolic link creator</Description>
     <Copyright>Copyright © Alejandro Mora 2025</Copyright>
     <PackageProjectUrl>https://github.com/amd989/Symlinker</PackageProjectUrl>

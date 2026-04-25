@@ -23,6 +23,8 @@
     Background="{DynamicResource MahApps.Brushes.Control.Background}">
 
     <Window.Resources>
+        <!-- WinUI 3 corner radius -->
+        <CornerRadius x:Key="ControlRadius">10</CornerRadius>
 
         <!-- Pill RadioButton -->
         <Style x:Key="PillRadio" TargetType="RadioButton">
@@ -44,15 +46,19 @@
                                               RecognizesAccessKey="True"/>
                         </Border>
                         <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsChecked" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="pill" Property="Background"
+                                        Value="{DynamicResource MahApps.Brushes.Gray9}"/>
+                            </MultiTrigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="pill" Property="Background"
                                         Value="{DynamicResource MahApps.Brushes.Accent4}"/>
                                 <Setter TargetName="pill" Property="BorderBrush"
                                         Value="{DynamicResource MahApps.Brushes.Accent3}"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="pill" Property="Background"
-                                        Value="{DynamicResource MahApps.Brushes.Gray9}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -100,6 +106,12 @@
                                 <Setter TargetName="bg" Property="Background"
                                         Value="{DynamicResource MahApps.Brushes.Highlight}"/>
                             </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bg" Property="Background"
+                                        Value="{DynamicResource MahApps.Brushes.Gray8}"/>
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource MahApps.Brushes.Gray6}"/>
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -117,12 +129,26 @@
             <Setter Property="CaretBrush" Value="{DynamicResource MahApps.Brushes.Accent}"/>
             <Setter Property="SelectionBrush" Value="{DynamicResource MahApps.Brushes.Accent3}"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Cursor" Value="IBeam"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <ScrollViewer x:Name="PART_ContentHost"
-                                      Background="Transparent"
-                                      VerticalAlignment="Center"/>
+                        <Border x:Name="underline" BorderThickness="0,0,0,1"
+                                BorderBrush="Transparent" Padding="0,0,0,2">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Background="Transparent"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="underline" Property="BorderBrush"
+                                        Value="{DynamicResource MahApps.Brushes.Gray5}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="underline" Property="BorderBrush"
+                                        Value="{DynamicResource MahApps.Brushes.Accent}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -138,13 +164,28 @@
             <Setter Property="CaretBrush" Value="{DynamicResource MahApps.Brushes.Accent}"/>
             <Setter Property="SelectionBrush" Value="{DynamicResource MahApps.Brushes.Accent3}"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Cursor" Value="IBeam"/>
             <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <ScrollViewer x:Name="PART_ContentHost"
-                                      Background="Transparent"
-                                      VerticalAlignment="Center"/>
+                        <Border x:Name="underline" BorderThickness="0,0,0,1"
+                                BorderBrush="Transparent" Padding="0,0,0,2">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Background="Transparent"
+                                          VerticalAlignment="Center"
+                                          HorizontalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="underline" Property="BorderBrush"
+                                        Value="{DynamicResource MahApps.Brushes.Gray5}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="underline" Property="BorderBrush"
+                                        Value="{DynamicResource MahApps.Brushes.Accent}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -153,6 +194,13 @@
                     <Setter Property="ToolTip" Value="{x:Null}"/>
                 </Trigger>
             </Style.Triggers>
+        </Style>
+
+        <Style x:Key="RoundedFlatButton" TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button}">
+            <Setter Property="mah:ControlsHelper.CornerRadius" Value="{StaticResource ControlRadius}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray9}"/>
+            <Setter Property="Padding" Value="8"/>
         </Style>
 
     </Window.Resources>
@@ -194,11 +242,15 @@
                                           ShadowDepth="1" Opacity="0.08" Direction="270"/>
                     </Border.Effect>
                     <StackPanel>
-                        <TextBlock Text="{x:Static p:Resources.CardHeaderLinkLocation}" FontSize="9" FontWeight="Bold"
-                                   Foreground="{DynamicResource MahApps.Brushes.Gray3}"
+                        <TextBlock Text="{x:Static p:Resources.CardHeaderLinkLocation}" FontSize="12" FontWeight="Bold"
+                                   Foreground="{DynamicResource MahApps.Brushes.Gray2}"
                                    Margin="0,0,0,10" FontFamily="Segoe UI"/>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Style="{StaticResource GhostBtn}"
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Style="{StaticResource GhostBtn}"
                                     Click="ExploreButton1_Click"
                                     VerticalAlignment="Top" Margin="0,0,10,0">
                                 <Border Width="36" Height="36" CornerRadius="8"
@@ -209,10 +261,10 @@
                                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                             </Button>
-                            <StackPanel VerticalAlignment="Center" MinWidth="0">
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" MinWidth="0">
                                 <Grid>
                                     <TextBlock Text="{x:Static p:Resources.PlaceholderLinkName}"
-                                               Foreground="{DynamicResource MahApps.Brushes.Gray5}"
+                                               Foreground="{DynamicResource MahApps.Brushes.Gray3}"
                                                FontSize="14" FontWeight="SemiBold"
                                                FontFamily="Segoe UI"
                                                IsHitTestVisible="False" VerticalAlignment="Center">
@@ -231,7 +283,7 @@
                                 </Grid>
                                 <Grid>
                                     <TextBlock Text="{x:Static p:Resources.PlaceholderLinkPath}"
-                                               Foreground="{DynamicResource MahApps.Brushes.Gray5}"
+                                               Foreground="{DynamicResource MahApps.Brushes.Gray3}"
                                                FontSize="11" FontFamily="Segoe UI"
                                                IsHitTestVisible="False" VerticalAlignment="Center">
                                         <TextBlock.Style>
@@ -245,11 +297,10 @@
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
-                                    <TextBox x:Name="linkLocationTextBox"
-                                             Style="{StaticResource PathBox}"/>
+                                    <TextBox x:Name="linkLocationTextBox" Style="{StaticResource PathBox}"/>
                                 </Grid>
                             </StackPanel>
-                        </StackPanel>
+                        </Grid>
                     </StackPanel>
                 </Border>
                     <!-- Dashed border overlay (link = virtual) -->
@@ -261,7 +312,7 @@
 
                 <!-- Arrow -->
                 <TextBlock Grid.Column="1" Text="&#x2192;" FontSize="20"
-                           Foreground="{DynamicResource MahApps.Brushes.Gray5}"
+                           Foreground="{DynamicResource MahApps.Brushes.Gray3}"
                            HorizontalAlignment="Center" VerticalAlignment="Center"
                            FontFamily="Segoe UI"/>
 
@@ -282,11 +333,15 @@
                                           ShadowDepth="2" Opacity="0.10" Direction="270"/>
                     </Border.Effect>
                         <StackPanel>
-                            <TextBlock Text="{x:Static p:Resources.CardHeaderTarget}" FontSize="9" FontWeight="Bold"
-                                       Foreground="{DynamicResource MahApps.Brushes.Gray3}"
+                            <TextBlock Text="{x:Static p:Resources.CardHeaderTarget}" FontSize="12" FontWeight="Bold"
+                                       Foreground="{DynamicResource MahApps.Brushes.Gray2}"
                                        Margin="0,0,0,10" FontFamily="Segoe UI"/>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Style="{StaticResource GhostBtn}"
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Style="{StaticResource GhostBtn}"
                                         Click="ExploreButton2_Click"
                                         VerticalAlignment="Top" Margin="0,0,10,0">
                                     <Border Width="36" Height="36" CornerRadius="8"
@@ -297,16 +352,16 @@
                                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                 </Button>
-                                <StackPanel VerticalAlignment="Center" MinWidth="0">
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" MinWidth="0">
                                     <TextBlock x:Name="destinationFolderName"
                                                FontSize="14" FontWeight="SemiBold"
-                                               Foreground="{DynamicResource MahApps.Brushes.Gray5}"
+                                               Foreground="{DynamicResource MahApps.Brushes.Gray3}"
                                                FontFamily="Segoe UI"
                                                Text="{x:Static p:Resources.PlaceholderTargetFolder}"
                                                TextTrimming="CharacterEllipsis"/>
                                     <Grid>
                                         <TextBlock Text="{x:Static p:Resources.PlaceholderTargetPath}"
-                                                   Foreground="{DynamicResource MahApps.Brushes.Gray5}"
+                                                   Foreground="{DynamicResource MahApps.Brushes.Gray3}"
                                                    FontSize="11" FontFamily="Segoe UI"
                                                    IsHitTestVisible="False" VerticalAlignment="Center">
                                             <TextBlock.Style>
@@ -325,7 +380,7 @@
                                                  TextChanged="DestinationPath_TextChanged"/>
                                     </Grid>
                                 </StackPanel>
-                            </StackPanel>
+                            </Grid>
                         </StackPanel>
                 </Border>
             </Grid>
@@ -398,18 +453,15 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Style="{StaticResource GhostBtn}"
-                        Click="AboutButton_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="+" FontSize="14"
-                                   Foreground="{DynamicResource MahApps.Brushes.Gray3}"
-                                   FontFamily="Segoe UI" VerticalAlignment="Center"
-                                   Margin="0,0,5,0" FontWeight="Medium"/>
-                        <TextBlock Text="{x:Static p:Resources.ButtonAddAnother}" FontSize="12"
-                                   Foreground="{DynamicResource MahApps.Brushes.Gray3}"
-                                   FontFamily="Segoe UI" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
+            <Button Grid.Column="0" Click="AboutButton_Click"
+                    Style="{StaticResource RoundedFlatButton}"
+                    ToolTip="{x:Static p:Resources.TooltipAbout}"
+                    VerticalAlignment="Center">
+                    <iconPacks:PackIconMaterial Kind="InformationOutline" Width="18" Height="18"
+                                            Foreground="{DynamicResource MahApps.Brushes.Gray2}" />
+            </Button>
+
+
 
                 <Button Grid.Column="2" x:Name="createLinkButton"
                         Style="{StaticResource PrimaryBtn}"

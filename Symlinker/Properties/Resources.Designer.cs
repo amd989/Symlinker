@@ -61,7 +61,7 @@ namespace Symlinker.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to © 2010-2026 Alejandro Mora
+        ///   Looks up a localized string similar to © 2010-{1} Alejandro Mora
         ///Version: {0}
         ///e-mail: mail@alejandro.md
         ///
@@ -70,6 +70,15 @@ namespace Symlinker.Properties {
         public static string AboutDescription {
             get {
                 return ResourceManager.GetString("AboutDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string ButtonAbout {
+            get {
+                return ResourceManager.GetString("ButtonAbout", resourceCulture);
             }
         }
         
@@ -160,6 +169,15 @@ namespace Symlinker.Properties {
         public static string FilesOrFolderNotExists {
             get {
                 return ResourceManager.GetString("FilesOrFolderNotExists", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Paths cannot contain quote characters. Please remove any quotes and try again..
+        /// </summary>
+        public static string InvalidQuoteInPath {
+            get {
+                return ResourceManager.GetString("InvalidQuoteInPath", resourceCulture);
             }
         }
         
@@ -322,6 +340,15 @@ namespace Symlinker.Properties {
         public static string PlaceholderTargetPath {
             get {
                 return ResourceManager.GetString("PlaceholderTargetPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About Symlinker.
+        /// </summary>
+        public static string TooltipAbout {
+            get {
+                return ResourceManager.GetString("TooltipAbout", resourceCulture);
             }
         }
         

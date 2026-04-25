@@ -58,6 +58,7 @@ This project has been around since 2009, originally hosted on Google Code and bu
 
 ## Featured On
 
+- [Softpedia](https://www.softpedia.com/get/PORTABLE-SOFTWARE/System/System-Enhancements/Portable-Symbolic-Link-Creator.shtml)
 - [addictivetips](http://www.addictivetips.com/windows-tips/symlinker-create-symlink-hardlink-and-directory-junction-in-windows/)
 - [TecFlap](https://web.archive.org/web/20150511235232/http://www.tecflap.com/2012/05/29/software-day-winautohide-symlinker-hyperdesktop/) (Archived)
 - [Zhacks](https://web.archive.org/web/20170512070430/http://www.zhacks.com/easily-create-symbolic-link-with-mklink-gui-symlinker) (Archived)

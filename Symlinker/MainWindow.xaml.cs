@@ -10,8 +10,10 @@ namespace Symlinker
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Interop;
+    using System.Windows.Media;
 
     using MahApps.Metro.Controls;
+    using MahApps.Metro.IconPacks;
 
     using Res = Symlinker.Properties.Resources;
 
@@ -24,101 +26,68 @@ namespace Symlinker
         [DllImport("dwmapi.dll")]
         private static extern int DwmSetWindowAttribute(nint hwnd, int attr, ref int attrValue, int attrSize);
 
-        private bool isFolder;
+        private Brush PlaceholderBrush => (Brush)FindResource("MahApps.Brushes.Gray5");
+        private Brush PrimaryTextBrush => (Brush)FindResource("MahApps.Brushes.ThemeForeground");
+
+        private bool isFolder = true;
 
         public MainWindow()
         {
             InitializeComponent();
-
-            linkTypeComboBox.SelectedIndex = 0;
-            typeSelectorComboBox.SelectedIndex = 0;
-
             Loaded += OnLoaded;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            // Request Windows 11 rounded corners for this window
             var hwnd = new WindowInteropHelper(this).Handle;
             var preference = DWMWCP_ROUND;
             DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref preference, sizeof(int));
+
+            UpdateMode();
         }
 
-        private void TypeSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TypeRadio_Checked(object sender, RoutedEventArgs e)
         {
-            Switcher();
+            UpdateMode();
         }
 
-        private void Switcher()
+        private void UpdateMode()
         {
-            if (groupBox1Header == null || groupBox2Header == null)
+            if (folderTypeRadio == null || junctionRadio == null || symLinkRadio == null || sourceIcon == null) return;
+
+            isFolder = folderTypeRadio.IsChecked == true;
+
+            junctionRadio.Visibility = isFolder ? Visibility.Visible : Visibility.Collapsed;
+
+            if (!isFolder && junctionRadio.IsChecked == true)
+                symLinkRadio.IsChecked = true;
+
+            sourceIcon.Kind = isFolder
+                ? PackIconMaterialKind.FolderOutline
+                : PackIconMaterialKind.FileOutline;
+        }
+
+        private string GetLinkTypeFlag()
+        {
+            if (hardLinkRadio.IsChecked == true) return "/H ";
+            if (junctionRadio.IsChecked == true) return "/J ";
+            return string.Empty;
+        }
+
+        private void DestinationPath_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var path = destinationLocationTextBox.Text;
+            if (string.IsNullOrEmpty(path))
+            {
+                destinationFolderName.Text = "Target folder";
+                destinationFolderName.Foreground = PlaceholderBrush;
                 return;
-
-            if (typeSelectorComboBox.SelectedIndex == 0)
-            {
-                groupBox1Header.Text = Res.MainWindow_Switcher_Link_Folder;
-                groupBox2Header.Text = Res.MainWindow_Switcher_Destination_Folder;
-                label2.Text = Res.MainWindow_Switcher_Now_give_a_name_to_the_link_;
-                label3.Text = Res.MainWindow_Switcher_Please_select_the_path_to_the_real_folder_you_want_to_link_;
-                isFolder = true;
-
-                // Add Directory Junction if not present
-                bool hasJunction = false;
-                foreach (ComboBoxItem item in linkTypeComboBox.Items)
-                {
-                    if (item.Content as string == "Directory Junction")
-                    {
-                        hasJunction = true;
-                        break;
-                    }
-                }
-                if (!hasJunction)
-                    linkTypeComboBox.Items.Add(new ComboBoxItem { Content = "Directory Junction" });
-
-                linkTypeComboBox.ToolTip = Res.TooltipLinkTypeFolderDescription;
-            }
-            else
-            {
-                groupBox1Header.Text = Res.MainWindow_Switcher_Link_File;
-                groupBox2Header.Text = Res.MainWindow_Switcher_Destination_File;
-                label2.Text = Res.MainWindow_Switcher_Now_give_a_name_to_your_file_;
-                label3.Text = Res.MainWindow_Switcher_Please_select_the_path_to_the_real_file_you_want_to_link_;
-                isFolder = false;
-
-                // Remove Directory Junction for file mode
-                ComboBoxItem junctionItem = null;
-                foreach (ComboBoxItem item in linkTypeComboBox.Items)
-                {
-                    if (item.Content as string == "Directory Junction")
-                    {
-                        junctionItem = item;
-                        break;
-                    }
-                }
-                if (junctionItem != null)
-                {
-                    if (linkTypeComboBox.SelectedIndex == 2)
-                        linkTypeComboBox.SelectedIndex = 0;
-                    linkTypeComboBox.Items.Remove(junctionItem);
-                }
-
-                linkTypeComboBox.ToolTip = Res.TooltipLinkTypeFileDescription;
             }
 
-            typeSelectorComboBox.ToolTip = Res.TooltipTypeSelectorDescription;
-        }
-
-        private string ComboBoxSelection()
-        {
-            switch (linkTypeComboBox.SelectedIndex)
-            {
-                case 1:
-                    return "/H ";
-                case 2:
-                    return "/J ";
-                default:
-                    return string.Empty;
-            }
+            var trimmed = path.TrimEnd('\\', '/');
+            var lastSep = trimmed.LastIndexOfAny(new[] { '\\', '/' });
+            destinationFolderName.Text = lastSep >= 0 ? trimmed[(lastSep + 1)..] : trimmed;
+            destinationFolderName.Foreground = PrimaryTextBrush;
         }
 
         private void CreateLink()
@@ -212,7 +181,7 @@ namespace Symlinker
             try
             {
                 var target = string.Format(CultureInfo.InvariantCulture, "\"{0}\"", destinationLocationTextBox.Text);
-                var typeLink = ComboBoxSelection();
+                var typeLink = GetLinkTypeFlag();
                 var directory = isFolder ? "/D " : string.Empty;
                 var stringCommand = string.Format(CultureInfo.InvariantCulture, "/c mklink {0}{1}{2}{3}", directory, typeLink, link, target);
                 var processStartInfo = new ProcessStartInfo
@@ -244,17 +213,13 @@ namespace Symlinker
         private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (!string.IsNullOrEmpty(e.Data))
-            {
                 MessageBox.Show(e.Data, Res.MessageBoxSuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
-            }
         }
 
         private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (!string.IsNullOrEmpty(e.Data))
-            {
                 MessageBox.Show(e.Data, Res.MessageBoxErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
 
         private void ExploreButton1_Click(object sender, RoutedEventArgs e)
@@ -318,16 +283,23 @@ namespace Symlinker
             e.Handled = true;
         }
 
-        private void TextBox_Drop(object sender, DragEventArgs e)
+        private void SourceCard_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 var files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 if (files != null && files.Length != 0)
-                {
-                    var textBox = (TextBox)sender;
-                    textBox.Text = files[0];
-                }
+                    destinationLocationTextBox.Text = files[0];
+            }
+        }
+
+        private void LinkCard_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files != null && files.Length != 0)
+                    linkLocationTextBox.Text = files[0];
             }
         }
     }

@@ -118,34 +118,34 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DialogDeleteFile" xml:space="preserve">
-    <value>The link name you are using already exists in the selected directory, would you like to DELETE the file and then create a new link?</value>
+    <value>A file with this link name already exists in the selected directory. Would you like to delete it and create a new link?</value>
   </data>
   <data name="DialogDeleteFileWarning" xml:space="preserve">
-    <value>File already there...</value>
+    <value>File already exists</value>
   </data>
   <data name="LinkCreationAborted" xml:space="preserve">
-    <value>Link creation aborted</value>
+    <value>Link creation was aborted.</value>
   </data>
   <data name="LinkCreationAbortedWarning" xml:space="preserve">
-    <value>Aborted Operation</value>
+    <value>Operation aborted</value>
   </data>
   <data name="FilesOrFolderNotExists" xml:space="preserve">
-    <value>One of the directories/files does not exists, please provide valid directories/files</value>
+    <value>One of the specified directories or files does not exist. Please provide valid paths.</value>
   </data>
   <data name="FillBlanks" xml:space="preserve">
-    <value>Please fill all the blanks spaces with the indicated info</value>
+    <value>Please fill in all the required fields.</value>
   </data>
   <data name="CmdNotFound" xml:space="preserve">
-    <value>Cannot find the file needed to create links, the creation stopped</value>
+    <value>Cannot find the command-line tool needed to create links.</value>
   </data>
   <data name="LinkSuccessfullyCreated" xml:space="preserve">
-    <value>Link successfully created</value>
+    <value>Link successfully created.</value>
   </data>
   <data name="DialogFolderExists" xml:space="preserve">
-    <value>The link name you are using already exists in the selected directory, would you like to DELETE the folder and then create a new link?</value>
+    <value>A folder with this link name already exists in the selected directory. Would you like to delete it and create a new link?</value>
   </data>
   <data name="DialogFolderExistsDialog" xml:space="preserve">
-    <value>Folder already there...</value>
+    <value>Folder already exists</value>
   </data>
   <data name="MessageBoxSuccessTitle" xml:space="preserve">
     <value>Success</value>
@@ -153,62 +153,85 @@
   <data name="MessageBoxErrorTitle" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="MainWindow_Switcher_Link_Folder" xml:space="preserve">
-    <value>Link Folder</value>
+  <data name="CardHeaderLinkLocation" xml:space="preserve">
+    <value>LINK LOCATION</value>
   </data>
-  <data name="MainWindow_Switcher_Destination_Folder" xml:space="preserve">
-    <value>Destination Folder</value>
+  <data name="CardHeaderTarget" xml:space="preserve">
+    <value>TARGET</value>
   </data>
-  <data name="MainWindow_Switcher_Now_give_a_name_to_the_link_" xml:space="preserve">
-    <value>Now give a name to the link:</value>
+  <data name="PlaceholderLinkName" xml:space="preserve">
+    <value>Link name</value>
   </data>
-  <data name="MainWindow_Switcher_Please_select_the_path_to_the_real_folder_you_want_to_link_" xml:space="preserve">
-    <value>Please select the path to the real folder you want to link:</value>
+  <data name="PlaceholderLinkPath" xml:space="preserve">
+    <value>C:\path\to\location</value>
   </data>
-  <data name="MainWindow_Switcher_Link_File" xml:space="preserve">
-    <value>Link File</value>
+  <data name="PlaceholderTargetPath" xml:space="preserve">
+    <value>D:\path\to\target</value>
   </data>
-  <data name="MainWindow_Switcher_Destination_File" xml:space="preserve">
-    <value>Destination File</value>
+  <data name="PlaceholderTargetFolder" xml:space="preserve">
+    <value>Target folder</value>
   </data>
-  <data name="MainWindow_Switcher_Now_give_a_name_to_your_file_" xml:space="preserve">
-    <value>Now give a name to your file:</value>
+  <data name="PlaceholderTargetFile" xml:space="preserve">
+    <value>Target file</value>
   </data>
-  <data name="MainWindow_Switcher_Please_select_the_path_to_the_real_file_you_want_to_link_" xml:space="preserve">
-    <value>Please select the path to the real file you want to link:</value>
+  <data name="PillFolder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="PillFile" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="PillSymbolicLink" xml:space="preserve">
+    <value>Symbolic link</value>
+  </data>
+  <data name="PillHardLink" xml:space="preserve">
+    <value>Hard link</value>
+  </data>
+  <data name="PillJunction" xml:space="preserve">
+    <value>Junction</value>
+  </data>
+  <data name="ButtonCreateLink" xml:space="preserve">
+    <value>Create link</value>
+  </data>
+  <data name="ButtonAddAnother" xml:space="preserve">
+    <value>Add another</value>
   </data>
   <data name="MessageBoxAboutTitle" xml:space="preserve">
     <value>About</value>
   </data>
   <data name="AboutDescription" xml:space="preserve">
-    <value>© 2010-2025 Alejandro Mora
+    <value>© 2010-2026 Alejandro Mora
 Version: {0}
 e-mail: mail@alejandro.md
 
 Thanks to Microsoft for the use of their shortcut arrow :)</value>
   </data>
   <data name="MessageBoxExceptionOcurred" xml:space="preserve">
-    <value>An error has ocurred:</value>
+    <value>An error has occurred:</value>
+  </data>
+  <data name="TooltipLinkLocationCard" xml:space="preserve">
+    <value>Choose where the link will be created and give it a name.
+Click the icon or drag and drop a folder here.</value>
+  </data>
+  <data name="TooltipTargetCard" xml:space="preserve">
+    <value>Select the real file or folder the link will point to.
+Click the icon or drag and drop a file/folder here.</value>
   </data>
   <data name="TooltipLinkTypeFileDescription" xml:space="preserve">
-    <value>This option allows you to select the style of your symbolic link, either
-you choose to use symbolic links or hard links.
-Use symbolic links as a default.</value>
+    <value>Choose the link type: symbolic link or hard link.
+Use symbolic links as the default.</value>
   </data>
   <data name="TooltipLinkTypeFolderDescription" xml:space="preserve">
-    <value>This option allows you to select the style of your symbolic link, either
-you choose to use symbolic links, hard links or directory junctions.
-Use symbolic links as a default.</value>
+    <value>Choose the link type: symbolic link, hard link, or directory junction.
+Use symbolic links as the default.</value>
   </data>
   <data name="TooltipLinkTypeTitle" xml:space="preserve">
-    <value>Symbolic Link types</value>
+    <value>Symbolic link types</value>
   </data>
   <data name="TooltipTypeSelectorDescription" xml:space="preserve">
-    <value>With this option you can choose between creating file symbolic links;
-this is using a file to point to another file, or folder symbolic links;
-this is using folders that point to other folders.</value>
+    <value>Choose between file mode (link a file to another file)
+or folder mode (link a folder to another folder).</value>
   </data>
   <data name="TooltipTypeSelectorTitle" xml:space="preserve">
-    <value>Symbolic Link type selector</value>
+    <value>Symbolic link type selector</value>
   </data>
 </root>

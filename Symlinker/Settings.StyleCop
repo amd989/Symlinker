@@ -3,7 +3,7 @@
     <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
       <AnalyzerSettings>
         <StringProperty Name="CompanyName">alejandro.md</StringProperty>
-        <StringProperty Name="Copyright">2010-2025</StringProperty>
+        <StringProperty Name="Copyright">2010-2026</StringProperty>
       </AnalyzerSettings>
     </Analyzer>
   </Analyzers>

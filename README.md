@@ -69,12 +69,6 @@ Previous project link: https://code.google.com/p/symlinker/
 
 See [CHANGELOG.md](CHANGELOG.md)
 
-## Acknowledgments
-
-Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/)
-
-Committers and reviewers: [Contributors](https://github.com/amd989/Symlinker/graphs/contributors)
-
 ## License
 
 MIT — see [LICENSE](LICENSE)
@@ -82,3 +76,9 @@ MIT — see [LICENSE](LICENSE)
 ## Privacy Policy
 
 See [PRIVACY.md](PRIVACY.md)
+
+## Acknowledgments
+
+Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/)
+
+Committers and reviewers: [Contributors](https://github.com/amd989/Symlinker/graphs/contributors)

@@ -33,7 +33,7 @@
         <!-- Pill RadioButton -->
         <Style x:Key="PillRadio" TargetType="RadioButton">
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
             <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
@@ -63,6 +63,10 @@
                                         Value="{DynamicResource MahApps.Brushes.Accent4}"/>
                                 <Setter TargetName="pill" Property="BorderBrush"
                                         Value="{DynamicResource MahApps.Brushes.Accent3}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="pill" Property="BorderBrush"
+                                        Value="{DynamicResource MahApps.Brushes.Accent}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

@@ -20,7 +20,11 @@
     NonActiveWindowTitleBrush="{DynamicResource MahApps.Brushes.Gray10}"
     TitleForeground="{DynamicResource MahApps.Brushes.ThemeForeground}"
     OverrideDefaultWindowCommandsBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-    Background="{DynamicResource MahApps.Brushes.Control.Background}">
+    Background="{DynamicResource MahApps.Brushes.Control.Background}"
+    UseLayoutRounding="True"
+    SnapsToDevicePixels="True"
+    TextOptions.TextFormattingMode="Display"
+    TextOptions.TextRenderingMode="ClearType">
 
     <Window.Resources>
         <!-- WinUI 3 corner radius -->

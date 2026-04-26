@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DialogDeleteFile" xml:space="preserve">
+    <value>選択したディレクトリに同じリンク名のファイルが既に存在します。削除して新しいリンクを作成しますか？</value>
+  </data>
+  <data name="DialogDeleteFileWarning" xml:space="preserve">
+    <value>ファイルが既に存在します</value>
+  </data>
+  <data name="LinkCreationAborted" xml:space="preserve">
+    <value>リンクの作成が中止されました。</value>
+  </data>
+  <data name="LinkCreationAbortedWarning" xml:space="preserve">
+    <value>操作が中止されました</value>
+  </data>
+  <data name="FilesOrFolderNotExists" xml:space="preserve">
+    <value>指定されたディレクトリまたはファイルの1つが存在しません。有効なパスを入力してください。</value>
+  </data>
+  <data name="InvalidQuoteInPath" xml:space="preserve">
+    <value>パスに引用符を含めることはできません。引用符を削除してもう一度お試しください。</value>
+  </data>
+  <data name="FillBlanks" xml:space="preserve">
+    <value>すべての必須フィールドに入力してください。</value>
+  </data>
+  <data name="CmdNotFound" xml:space="preserve">
+    <value>リンクの作成に必要なコマンドラインツールが見つかりません。</value>
+  </data>
+  <data name="LinkSuccessfullyCreated" xml:space="preserve">
+    <value>リンクが正常に作成されました。</value>
+  </data>
+  <data name="DialogFolderExists" xml:space="preserve">
+    <value>選択したディレクトリに同じリンク名のフォルダーが既に存在します。削除して新しいリンクを作成しますか？</value>
+  </data>
+  <data name="DialogFolderExistsDialog" xml:space="preserve">
+    <value>フォルダーが既に存在します</value>
+  </data>
+  <data name="MessageBoxSuccessTitle" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="MessageBoxErrorTitle" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="CardHeaderLinkLocation" xml:space="preserve">
+    <value>リンクの場所</value>
+  </data>
+  <data name="CardHeaderTarget" xml:space="preserve">
+    <value>ターゲット</value>
+  </data>
+  <data name="PlaceholderLinkName" xml:space="preserve">
+    <value>リンク名</value>
+  </data>
+  <data name="PlaceholderLinkPath" xml:space="preserve">
+    <value>C:\パス\場所</value>
+  </data>
+  <data name="PlaceholderTargetPath" xml:space="preserve">
+    <value>D:\パス\ターゲット</value>
+  </data>
+  <data name="PlaceholderTargetFolder" xml:space="preserve">
+    <value>ターゲットフォルダー</value>
+  </data>
+  <data name="PlaceholderTargetFile" xml:space="preserve">
+    <value>ターゲットファイル</value>
+  </data>
+  <data name="PillFolder" xml:space="preserve">
+    <value>フォルダー</value>
+  </data>
+  <data name="PillFile" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="PillSymbolicLink" xml:space="preserve">
+    <value>シンボリックリンク</value>
+  </data>
+  <data name="PillHardLink" xml:space="preserve">
+    <value>ハードリンク</value>
+  </data>
+  <data name="PillJunction" xml:space="preserve">
+    <value>ジャンクション</value>
+  </data>
+  <data name="ButtonCreateLink" xml:space="preserve">
+    <value>リンクを作成</value>
+  </data>
+  <data name="ButtonAddAnother" xml:space="preserve">
+    <value>別のリンクを追加</value>
+  </data>
+  <data name="MessageBoxAboutTitle" xml:space="preserve">
+    <value>バージョン情報</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>© 2010-{1} Alejandro Mora
+バージョン: {0}
+メール: mail@alejandro.md
+
+ショートカット矢印の使用について Microsoft に感謝します :)</value>
+  </data>
+  <data name="MessageBoxExceptionOcurred" xml:space="preserve">
+    <value>エラーが発生しました:</value>
+  </data>
+  <data name="TooltipLinkLocationCard" xml:space="preserve">
+    <value>リンクの作成場所を選択し、名前を付けてください。
+アイコンをクリックするか、フォルダーをここにドラッグ＆ドロップしてください。</value>
+  </data>
+  <data name="TooltipTargetCard" xml:space="preserve">
+    <value>リンク先の実際のファイルまたはフォルダーを選択してください。
+アイコンをクリックするか、ファイルやフォルダーをここにドラッグ＆ドロップしてください。</value>
+  </data>
+  <data name="TooltipLinkTypeFileDescription" xml:space="preserve">
+    <value>リンクの種類を選択してください: シンボリックリンクまたはハードリンク。
+既定ではシンボリックリンクを使用してください。</value>
+  </data>
+  <data name="TooltipLinkTypeFolderDescription" xml:space="preserve">
+    <value>リンクの種類を選択してください: シンボリックリンク、ハードリンク、またはディレクトリジャンクション。
+既定ではシンボリックリンクを使用してください。</value>
+  </data>
+  <data name="TooltipLinkTypeTitle" xml:space="preserve">
+    <value>シンボリックリンクの種類</value>
+  </data>
+  <data name="TooltipTypeSelectorDescription" xml:space="preserve">
+    <value>ファイルモード（ファイルを別のファイルにリンク）
+またはフォルダーモード（フォルダーを別のフォルダーにリンク）を選択してください。</value>
+  </data>
+  <data name="TooltipTypeSelectorTitle" xml:space="preserve">
+    <value>シンボリックリンク種類セレクター</value>
+  </data>
+  <data name="ButtonAbout" xml:space="preserve">
+    <value>バージョン情報</value>
+  </data>
+  <data name="TooltipAbout" xml:space="preserve">
+    <value>Symlinker について</value>
+  </data>
+</root>

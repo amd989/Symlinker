@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DialogDeleteFile" xml:space="preserve">
+    <value>所选目录中已存在同名链接文件。是否删除并创建新链接？</value>
+  </data>
+  <data name="DialogDeleteFileWarning" xml:space="preserve">
+    <value>文件已存在</value>
+  </data>
+  <data name="LinkCreationAborted" xml:space="preserve">
+    <value>链接创建已中止。</value>
+  </data>
+  <data name="LinkCreationAbortedWarning" xml:space="preserve">
+    <value>操作已中止</value>
+  </data>
+  <data name="FilesOrFolderNotExists" xml:space="preserve">
+    <value>指定的目录或文件之一不存在。请提供有效路径。</value>
+  </data>
+  <data name="InvalidQuoteInPath" xml:space="preserve">
+    <value>路径不能包含引号字符。请删除引号后重试。</value>
+  </data>
+  <data name="FillBlanks" xml:space="preserve">
+    <value>请填写所有必填字段。</value>
+  </data>
+  <data name="CmdNotFound" xml:space="preserve">
+    <value>找不到创建链接所需的命令行工具。</value>
+  </data>
+  <data name="LinkSuccessfullyCreated" xml:space="preserve">
+    <value>链接创建成功。</value>
+  </data>
+  <data name="DialogFolderExists" xml:space="preserve">
+    <value>所选目录中已存在同名链接文件夹。是否删除并创建新链接？</value>
+  </data>
+  <data name="DialogFolderExistsDialog" xml:space="preserve">
+    <value>文件夹已存在</value>
+  </data>
+  <data name="MessageBoxSuccessTitle" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="MessageBoxErrorTitle" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="CardHeaderLinkLocation" xml:space="preserve">
+    <value>链接位置</value>
+  </data>
+  <data name="CardHeaderTarget" xml:space="preserve">
+    <value>目标</value>
+  </data>
+  <data name="PlaceholderLinkName" xml:space="preserve">
+    <value>链接名称</value>
+  </data>
+  <data name="PlaceholderLinkPath" xml:space="preserve">
+    <value>C:\路径\位置</value>
+  </data>
+  <data name="PlaceholderTargetPath" xml:space="preserve">
+    <value>D:\路径\目标</value>
+  </data>
+  <data name="PlaceholderTargetFolder" xml:space="preserve">
+    <value>目标文件夹</value>
+  </data>
+  <data name="PlaceholderTargetFile" xml:space="preserve">
+    <value>目标文件</value>
+  </data>
+  <data name="PillFolder" xml:space="preserve">
+    <value>文件夹</value>
+  </data>
+  <data name="PillFile" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="PillSymbolicLink" xml:space="preserve">
+    <value>符号链接</value>
+  </data>
+  <data name="PillHardLink" xml:space="preserve">
+    <value>硬链接</value>
+  </data>
+  <data name="PillJunction" xml:space="preserve">
+    <value>目录联接</value>
+  </data>
+  <data name="ButtonCreateLink" xml:space="preserve">
+    <value>创建链接</value>
+  </data>
+  <data name="ButtonAddAnother" xml:space="preserve">
+    <value>添加另一个</value>
+  </data>
+  <data name="MessageBoxAboutTitle" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>© 2010-{1} Alejandro Mora
+版本: {0}
+电子邮件: mail@alejandro.md
+
+感谢 Microsoft 提供的快捷方式箭头 :)</value>
+  </data>
+  <data name="MessageBoxExceptionOcurred" xml:space="preserve">
+    <value>发生错误:</value>
+  </data>
+  <data name="TooltipLinkLocationCard" xml:space="preserve">
+    <value>选择链接的创建位置并为其命名。
+单击图标或将文件夹拖放到此处。</value>
+  </data>
+  <data name="TooltipTargetCard" xml:space="preserve">
+    <value>选择链接将指向的实际文件或文件夹。
+单击图标或将文件/文件夹拖放到此处。</value>
+  </data>
+  <data name="TooltipLinkTypeFileDescription" xml:space="preserve">
+    <value>选择链接类型: 符号链接或硬链接。
+默认使用符号链接。</value>
+  </data>
+  <data name="TooltipLinkTypeFolderDescription" xml:space="preserve">
+    <value>选择链接类型: 符号链接、硬链接或目录联接。
+默认使用符号链接。</value>
+  </data>
+  <data name="TooltipLinkTypeTitle" xml:space="preserve">
+    <value>符号链接类型</value>
+  </data>
+  <data name="TooltipTypeSelectorDescription" xml:space="preserve">
+    <value>选择文件模式（将文件链接到另一个文件）
+或文件夹模式（将文件夹链接到另一个文件夹）。</value>
+  </data>
+  <data name="TooltipTypeSelectorTitle" xml:space="preserve">
+    <value>符号链接类型选择器</value>
+  </data>
+  <data name="ButtonAbout" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="TooltipAbout" xml:space="preserve">
+    <value>关于 Symlinker</value>
+  </data>
+</root>

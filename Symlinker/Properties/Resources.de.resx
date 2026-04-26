@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DialogDeleteFile" xml:space="preserve">
+    <value>Eine Datei mit diesem Linknamen existiert bereits im ausgewählten Verzeichnis. Möchten Sie sie löschen und einen neuen Link erstellen?</value>
+  </data>
+  <data name="DialogDeleteFileWarning" xml:space="preserve">
+    <value>Datei existiert bereits</value>
+  </data>
+  <data name="LinkCreationAborted" xml:space="preserve">
+    <value>Die Linkerstellung wurde abgebrochen.</value>
+  </data>
+  <data name="LinkCreationAbortedWarning" xml:space="preserve">
+    <value>Vorgang abgebrochen</value>
+  </data>
+  <data name="FilesOrFolderNotExists" xml:space="preserve">
+    <value>Eines der angegebenen Verzeichnisse oder Dateien existiert nicht. Bitte geben Sie gültige Pfade an.</value>
+  </data>
+  <data name="InvalidQuoteInPath" xml:space="preserve">
+    <value>Pfade dürfen keine Anführungszeichen enthalten. Bitte entfernen Sie die Anführungszeichen und versuchen Sie es erneut.</value>
+  </data>
+  <data name="FillBlanks" xml:space="preserve">
+    <value>Bitte füllen Sie alle Pflichtfelder aus.</value>
+  </data>
+  <data name="CmdNotFound" xml:space="preserve">
+    <value>Das zum Erstellen von Links benötigte Befehlszeilentool wurde nicht gefunden.</value>
+  </data>
+  <data name="LinkSuccessfullyCreated" xml:space="preserve">
+    <value>Link erfolgreich erstellt.</value>
+  </data>
+  <data name="DialogFolderExists" xml:space="preserve">
+    <value>Ein Ordner mit diesem Linknamen existiert bereits im ausgewählten Verzeichnis. Möchten Sie ihn löschen und einen neuen Link erstellen?</value>
+  </data>
+  <data name="DialogFolderExistsDialog" xml:space="preserve">
+    <value>Ordner existiert bereits</value>
+  </data>
+  <data name="MessageBoxSuccessTitle" xml:space="preserve">
+    <value>Erfolg</value>
+  </data>
+  <data name="MessageBoxErrorTitle" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="CardHeaderLinkLocation" xml:space="preserve">
+    <value>SPEICHERORT DES LINKS</value>
+  </data>
+  <data name="CardHeaderTarget" xml:space="preserve">
+    <value>ZIEL</value>
+  </data>
+  <data name="PlaceholderLinkName" xml:space="preserve">
+    <value>Linkname</value>
+  </data>
+  <data name="PlaceholderLinkPath" xml:space="preserve">
+    <value>C:\Pfad\zum\Speicherort</value>
+  </data>
+  <data name="PlaceholderTargetPath" xml:space="preserve">
+    <value>D:\Pfad\zum\Ziel</value>
+  </data>
+  <data name="PlaceholderTargetFolder" xml:space="preserve">
+    <value>Zielordner</value>
+  </data>
+  <data name="PlaceholderTargetFile" xml:space="preserve">
+    <value>Zieldatei</value>
+  </data>
+  <data name="PillFolder" xml:space="preserve">
+    <value>Ordner</value>
+  </data>
+  <data name="PillFile" xml:space="preserve">
+    <value>Datei</value>
+  </data>
+  <data name="PillSymbolicLink" xml:space="preserve">
+    <value>Symbolischer Link</value>
+  </data>
+  <data name="PillHardLink" xml:space="preserve">
+    <value>Hardlink</value>
+  </data>
+  <data name="PillJunction" xml:space="preserve">
+    <value>Verzeichnisverknüpfung</value>
+  </data>
+  <data name="ButtonCreateLink" xml:space="preserve">
+    <value>Link erstellen</value>
+  </data>
+  <data name="ButtonAddAnother" xml:space="preserve">
+    <value>Weiteren hinzufügen</value>
+  </data>
+  <data name="MessageBoxAboutTitle" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>© 2010-{1} Alejandro Mora
+Version: {0}
+E-Mail: mail@alejandro.md
+
+Vielen Dank an Microsoft für die Verwendung ihres Verknüpfungspfeils :)</value>
+  </data>
+  <data name="MessageBoxExceptionOcurred" xml:space="preserve">
+    <value>Ein Fehler ist aufgetreten:</value>
+  </data>
+  <data name="TooltipLinkLocationCard" xml:space="preserve">
+    <value>Wählen Sie aus, wo der Link erstellt wird, und geben Sie ihm einen Namen.
+Klicken Sie auf das Symbol oder ziehen Sie einen Ordner hierher.</value>
+  </data>
+  <data name="TooltipTargetCard" xml:space="preserve">
+    <value>Wählen Sie die echte Datei oder den echten Ordner aus, auf den der Link verweisen soll.
+Klicken Sie auf das Symbol oder ziehen Sie eine Datei/einen Ordner hierher.</value>
+  </data>
+  <data name="TooltipLinkTypeFileDescription" xml:space="preserve">
+    <value>Wählen Sie den Linktyp: symbolischer Link oder Hardlink.
+Verwenden Sie symbolische Links als Standard.</value>
+  </data>
+  <data name="TooltipLinkTypeFolderDescription" xml:space="preserve">
+    <value>Wählen Sie den Linktyp: symbolischer Link, Hardlink oder Verzeichnisverknüpfung.
+Verwenden Sie symbolische Links als Standard.</value>
+  </data>
+  <data name="TooltipLinkTypeTitle" xml:space="preserve">
+    <value>Symbolische Linktypen</value>
+  </data>
+  <data name="TooltipTypeSelectorDescription" xml:space="preserve">
+    <value>Wählen Sie zwischen Dateimodus (eine Datei mit einer anderen Datei verknüpfen)
+oder Ordnermodus (einen Ordner mit einem anderen Ordner verknüpfen).</value>
+  </data>
+  <data name="TooltipTypeSelectorTitle" xml:space="preserve">
+    <value>Auswahl des symbolischen Linktyps</value>
+  </data>
+  <data name="ButtonAbout" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="TooltipAbout" xml:space="preserve">
+    <value>Über Symlinker</value>
+  </data>
+</root>

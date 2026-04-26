@@ -1,5 +1,14 @@
-## What's Changed
-* feat: :lipstick: modernize the UI
+## What's Changed in 4.0.0
+* feat: 🌐 add support for new languages by @amd989
+* feat: 💄 modernize the ux by @amd989 in [#30](https://github.com/amd989/Symlinker/pull/30)
+* docs: 📝 update readme.md by @amd989
+
+**Full Changelog**: https://github.com/amd989/Symlinker/compare/v3.0.0...v4.0.0
+
+## What's Changed in 3.0.0
+* feat: 💄modernize the UI by @amd989 in [#29](https://github.com/amd989/Symlinker/pull/29)
+
+**Full Changelog**: https://github.com/amd989/Symlinker/compare/v2.1.0...v3.0.0
 
 ## What's Changed in 2.1.0
 * feat: add support for signed releases by @amd989

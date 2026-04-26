@@ -6,13 +6,39 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "Symlinker/3.0.0.0": {
+      "Symlinker/4.0.0.0": {
         "dependencies": {
           "MahApps.Metro": "2.4.10",
           "MahApps.Metro.IconPacks.Material": "6.0.0"
         },
         "runtime": {
           "Symlinker.dll": {}
+        },
+        "resources": {
+          "de/Symlinker.resources.dll": {
+            "locale": "de"
+          },
+          "es/Symlinker.resources.dll": {
+            "locale": "es"
+          },
+          "fr/Symlinker.resources.dll": {
+            "locale": "fr"
+          },
+          "hi/Symlinker.resources.dll": {
+            "locale": "hi"
+          },
+          "it/Symlinker.resources.dll": {
+            "locale": "it"
+          },
+          "ja/Symlinker.resources.dll": {
+            "locale": "ja"
+          },
+          "pt/Symlinker.resources.dll": {
+            "locale": "pt"
+          },
+          "zh/Symlinker.resources.dll": {
+            "locale": "zh"
+          }
         }
       },
       "ControlzEx/4.4.0": {
@@ -72,7 +98,7 @@
     }
   },
   "libraries": {
-    "Symlinker/3.0.0.0": {
+    "Symlinker/4.0.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

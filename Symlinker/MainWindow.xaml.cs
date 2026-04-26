@@ -3,15 +3,19 @@ namespace Symlinker
     using System;
     using System.Diagnostics;
     using System.Globalization;
+
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Interop;
 
     using MahApps.Metro.Controls;
+    using MahApps.Metro.Controls.Dialogs;
+    using MahApps.Metro.IconPacks;
 
     using Res = Symlinker.Properties.Resources;
 
@@ -24,197 +28,184 @@ namespace Symlinker
         [DllImport("dwmapi.dll")]
         private static extern int DwmSetWindowAttribute(nint hwnd, int attr, ref int attrValue, int attrSize);
 
-        private bool isFolder;
+        private const string PlaceholderBrushKey = "MahApps.Brushes.Gray3";
+        private const string PrimaryTextBrushKey = "MahApps.Brushes.ThemeForeground";
+
+        private bool isFolder = true;
+
+        private static readonly MetroDialogSettings FastDialog = new()
+        {
+            AnimateShow = false,
+            AnimateHide = false, 
+        };
 
         public MainWindow()
         {
             InitializeComponent();
-
-            linkTypeComboBox.SelectedIndex = 0;
-            typeSelectorComboBox.SelectedIndex = 0;
-
             Loaded += OnLoaded;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            // Request Windows 11 rounded corners for this window
             var hwnd = new WindowInteropHelper(this).Handle;
             var preference = DWMWCP_ROUND;
             DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref preference, sizeof(int));
+
+            UpdateMode();
         }
 
-        private void TypeSelectorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TypeRadio_Checked(object sender, RoutedEventArgs e)
         {
-            Switcher();
+            UpdateMode();
         }
 
-        private void Switcher()
+        private void UpdateMode()
         {
-            if (groupBox1Header == null || groupBox2Header == null)
+            if (folderTypeRadio == null || junctionRadio == null || symLinkRadio == null || hardLinkRadio == null || sourceIcon == null) return;
+
+            isFolder = folderTypeRadio.IsChecked == true;
+
+            junctionRadio.Visibility = isFolder ? Visibility.Visible : Visibility.Collapsed;
+            hardLinkRadio.Visibility = isFolder ? Visibility.Collapsed : Visibility.Visible;
+
+            if (!isFolder && junctionRadio.IsChecked == true)
+                symLinkRadio.IsChecked = true;
+
+            if (isFolder && hardLinkRadio.IsChecked == true)
+                symLinkRadio.IsChecked = true;
+
+            sourceIcon.Kind = isFolder
+                ? PackIconMaterialKind.FolderOutline
+                : PackIconMaterialKind.FileOutline;
+
+            var linkTypeTooltip = isFolder ? Res.TooltipLinkTypeFolderDescription : Res.TooltipLinkTypeFileDescription;
+            symLinkRadio.ToolTip = linkTypeTooltip;
+            hardLinkRadio.ToolTip = linkTypeTooltip;
+            junctionRadio.ToolTip = linkTypeTooltip;
+
+            if (destinationLocationTextBox != null)
+                destinationLocationTextBox.Text = string.Empty;
+
+            if (destinationFolderName != null)
+            {
+                destinationFolderName.Text = isFolder ? Res.PlaceholderTargetFolder : Res.PlaceholderTargetFile;
+                destinationFolderName.SetResourceReference(ForegroundProperty, PlaceholderBrushKey);
+            }
+        }
+
+        private string GetLinkTypeFlag()
+        {
+            if (hardLinkRadio.IsChecked == true) return "/H ";
+            if (junctionRadio.IsChecked == true) return "/J ";
+            return string.Empty;
+        }
+
+        private void DestinationPath_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var path = destinationLocationTextBox.Text;
+            if (string.IsNullOrEmpty(path))
+            {
+                destinationFolderName.Text = isFolder ? Res.PlaceholderTargetFolder : Res.PlaceholderTargetFile;
+                destinationFolderName.SetResourceReference(ForegroundProperty, PlaceholderBrushKey);
                 return;
-
-            if (typeSelectorComboBox.SelectedIndex == 0)
-            {
-                groupBox1Header.Text = Res.MainWindow_Switcher_Link_Folder;
-                groupBox2Header.Text = Res.MainWindow_Switcher_Destination_Folder;
-                label2.Text = Res.MainWindow_Switcher_Now_give_a_name_to_the_link_;
-                label3.Text = Res.MainWindow_Switcher_Please_select_the_path_to_the_real_folder_you_want_to_link_;
-                isFolder = true;
-
-                // Add Directory Junction if not present
-                bool hasJunction = false;
-                foreach (ComboBoxItem item in linkTypeComboBox.Items)
-                {
-                    if (item.Content as string == "Directory Junction")
-                    {
-                        hasJunction = true;
-                        break;
-                    }
-                }
-                if (!hasJunction)
-                    linkTypeComboBox.Items.Add(new ComboBoxItem { Content = "Directory Junction" });
-
-                linkTypeComboBox.ToolTip = Res.TooltipLinkTypeFolderDescription;
-            }
-            else
-            {
-                groupBox1Header.Text = Res.MainWindow_Switcher_Link_File;
-                groupBox2Header.Text = Res.MainWindow_Switcher_Destination_File;
-                label2.Text = Res.MainWindow_Switcher_Now_give_a_name_to_your_file_;
-                label3.Text = Res.MainWindow_Switcher_Please_select_the_path_to_the_real_file_you_want_to_link_;
-                isFolder = false;
-
-                // Remove Directory Junction for file mode
-                ComboBoxItem junctionItem = null;
-                foreach (ComboBoxItem item in linkTypeComboBox.Items)
-                {
-                    if (item.Content as string == "Directory Junction")
-                    {
-                        junctionItem = item;
-                        break;
-                    }
-                }
-                if (junctionItem != null)
-                {
-                    if (linkTypeComboBox.SelectedIndex == 2)
-                        linkTypeComboBox.SelectedIndex = 0;
-                    linkTypeComboBox.Items.Remove(junctionItem);
-                }
-
-                linkTypeComboBox.ToolTip = Res.TooltipLinkTypeFileDescription;
             }
 
-            typeSelectorComboBox.ToolTip = Res.TooltipTypeSelectorDescription;
+            var trimmed = path.TrimEnd('\\', '/');
+            var lastSep = trimmed.LastIndexOfAny(new[] { '\\', '/' });
+            destinationFolderName.Text = lastSep >= 0 ? trimmed[(lastSep + 1)..] : trimmed;
+            destinationFolderName.SetResourceReference(ForegroundProperty, PrimaryTextBrushKey);
         }
 
-        private string ComboBoxSelection()
-        {
-            switch (linkTypeComboBox.SelectedIndex)
-            {
-                case 1:
-                    return "/H ";
-                case 2:
-                    return "/J ";
-                default:
-                    return string.Empty;
-            }
-        }
-
-        private void CreateLink()
+        private async Task CreateLink()
         {
             try
             {
-                if (linkLocationTextBox.Text != string.Empty && linkNameTextBox.Text != string.Empty && destinationLocationTextBox.Text != string.Empty)
+                var linkLocation = linkLocationTextBox.Text.Trim();
+                var linkName = linkNameTextBox.Text.Trim();
+                var destination = destinationLocationTextBox.Text.Trim();
+
+                if (string.IsNullOrWhiteSpace(linkLocation) || string.IsNullOrWhiteSpace(linkName) || string.IsNullOrWhiteSpace(destination))
                 {
-                    if (isFolder && Directory.Exists(linkLocationTextBox.Text) && Directory.Exists(destinationLocationTextBox.Text))
+                    await this.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.FillBlanks, settings: FastDialog);
+                    return;
+                }
+
+                if (linkName.Contains('"') || linkLocation.Contains('"') || destination.Contains('"'))
+                {
+                    await this.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.InvalidQuoteInPath, settings: FastDialog);
+                    return;
+                }
+
+                var link = $"\"{linkLocation}\\{linkName}\"";
+
+                if (isFolder && Directory.Exists(linkLocation) && Directory.Exists(destination))
+                {
+                    var directories = Directory.GetDirectories(linkLocation);
+
+                    if (directories.Any(e => Path.GetFileName(e).Equals(linkName, StringComparison.OrdinalIgnoreCase)))
                     {
-                        var link = string.Format(
-                            "\"{0}\\{1}\" ", linkLocationTextBox.Text, linkNameTextBox.Text);
-
-                        var directories = Directory.GetDirectories(linkLocationTextBox.Text);
-
-                        if (directories.Any(e => e.Split('\\').Last().Equals(linkNameTextBox.Text)))
+                        var answer = await this.ShowMessageAsync(
+                            Res.DialogFolderExistsDialog,
+                            Res.DialogFolderExists,
+                            MessageDialogStyle.AffirmativeAndNegative,
+                            FastDialog);
+                        if (answer == MessageDialogResult.Affirmative)
                         {
-                            var answer = MessageBox.Show(
-                                Res.DialogFolderExists,
-                                Res.DialogFolderExistsDialog,
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Warning);
-                            if (answer == MessageBoxResult.Yes)
-                            {
-                                var dir2Delete = directories.First(e => e.Split('\\').Last().Equals(linkNameTextBox.Text));
-                                Directory.Delete(dir2Delete);
-                                SendCommand(link);
-                                return;
-                            }
+                            var dir2Delete = directories.First(e => Path.GetFileName(e).Equals(linkName, StringComparison.OrdinalIgnoreCase));
+                            Directory.Delete(dir2Delete, true);
+                            await SendCommand(link, destination);
+                            return;
+                        }
 
-                            MessageBox.Show(
-                                Res.LinkCreationAborted,
-                                Res.LinkCreationAbortedWarning,
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Stop);
-                        }
-                        else
-                        {
-                            SendCommand(link);
-                        }
-                    }
-                    else if (Directory.Exists(linkLocationTextBox.Text) && File.Exists(destinationLocationTextBox.Text))
-                    {
-                        var link = string.Format(
-                            "\"{0}\\{1}\" ", linkLocationTextBox.Text, linkNameTextBox.Text);
-
-                        var files = Directory.GetFiles(linkLocationTextBox.Text);
-                        if (files.Any(e => e.Split('\\').Last().Equals(linkNameTextBox.Text)))
-                        {
-                            var answer = MessageBox.Show(
-                                Res.DialogDeleteFile,
-                                Res.DialogDeleteFileWarning,
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Warning);
-                            if (answer == MessageBoxResult.Yes)
-                            {
-                                var file2Delete = files.First(e => e.Split('\\').Last().Equals(linkNameTextBox.Text));
-                                File.Delete(file2Delete);
-                                SendCommand(link);
-                                return;
-                            }
-                            MessageBox.Show(
-                                Res.LinkCreationAborted,
-                                Res.LinkCreationAbortedWarning,
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Stop);
-                        }
-                        else
-                        {
-                            SendCommand(link);
-                        }
+                        await this.ShowMessageAsync(Res.LinkCreationAbortedWarning, Res.LinkCreationAborted, settings: FastDialog);
                     }
                     else
                     {
-                        MessageBox.Show(Res.FilesOrFolderNotExists, Res.MessageBoxErrorTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                        await SendCommand(link, destination);
+                    }
+                }
+                else if (!isFolder && Directory.Exists(linkLocation) && File.Exists(destination))
+                {
+                    var files = Directory.GetFiles(linkLocation);
+                    if (files.Any(e => Path.GetFileName(e).Equals(linkName, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        var answer = await this.ShowMessageAsync(
+                            Res.DialogDeleteFileWarning,
+                            Res.DialogDeleteFile,
+                            MessageDialogStyle.AffirmativeAndNegative,
+                            FastDialog);
+                        if (answer == MessageDialogResult.Affirmative)
+                        {
+                            var file2Delete = files.First(e => Path.GetFileName(e).Equals(linkName, StringComparison.OrdinalIgnoreCase));
+                            File.Delete(file2Delete);
+                            await SendCommand(link, destination);
+                            return;
+                        }
+                        await this.ShowMessageAsync(Res.LinkCreationAbortedWarning, Res.LinkCreationAborted, settings: FastDialog);
+                    }
+                    else
+                    {
+                        await SendCommand(link, destination);
                     }
                 }
                 else
                 {
-                    MessageBox.Show(Res.FillBlanks, Res.MessageBoxErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                    await this.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.FilesOrFolderNotExists, settings: FastDialog);
                 }
             }
             catch (Exception exception)
             {
-                MessageBox.Show(Res.MessageBoxExceptionOcurred + exception.Message, Res.MessageBoxErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                await this.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.MessageBoxExceptionOcurred + "\n" + exception.Message, settings: FastDialog);
             }
         }
 
-        private void SendCommand(string link)
+        private async Task SendCommand(string link, string destination)
         {
             try
             {
-                var target = string.Format(CultureInfo.InvariantCulture, "\"{0}\"", destinationLocationTextBox.Text);
-                var typeLink = ComboBoxSelection();
+                var typeLink = GetLinkTypeFlag();
                 var directory = isFolder ? "/D " : string.Empty;
-                var stringCommand = string.Format(CultureInfo.InvariantCulture, "/c mklink {0}{1}{2}{3}", directory, typeLink, link, target);
+                var stringCommand = $"/c mklink {directory}{typeLink}{link} \"{destination}\"";
                 var processStartInfo = new ProcessStartInfo
                 {
                     FileName = "cmd",
@@ -225,36 +216,37 @@ namespace Symlinker
                     RedirectStandardOutput = true
                 };
 
+                var gotOutput = false;
                 var process = new Process { StartInfo = processStartInfo, EnableRaisingEvents = true };
                 process.ErrorDataReceived += Process_ErrorDataReceived;
-                process.OutputDataReceived += Process_OutputDataReceived;
+                process.OutputDataReceived += (s, ev) =>
+                {
+                    if (!string.IsNullOrEmpty(ev.Data))
+                    {
+                        gotOutput = true;
+                        Dispatcher.InvokeAsync(() => this.ShowMessageAsync(Res.MessageBoxSuccessTitle, ev.Data, settings: FastDialog));
+                    }
+                };
                 process.Start();
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
-                process.WaitForExit();
-                process.Close();
+                await process.WaitForExitAsync();
+
+                if (process.ExitCode == 0 && !gotOutput)
+                    await this.ShowMessageAsync(Res.MessageBoxSuccessTitle, Res.LinkSuccessfullyCreated, settings: FastDialog);
+
                 process.Dispose();
             }
             catch (Exception)
             {
-                MessageBox.Show(Res.CmdNotFound, Res.MessageBoxErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(e.Data))
-            {
-                MessageBox.Show(e.Data, Res.MessageBoxSuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+                await this.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.CmdNotFound, settings: FastDialog);
             }
         }
 
         private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (!string.IsNullOrEmpty(e.Data))
-            {
-                MessageBox.Show(e.Data, Res.MessageBoxErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+                Dispatcher.InvokeAsync(() => this.ShowMessageAsync(Res.MessageBoxErrorTitle, e.Data, settings: FastDialog));
         }
 
         private void ExploreButton1_Click(object sender, RoutedEventArgs e)
@@ -280,30 +272,33 @@ namespace Symlinker
             }
         }
 
-        private void CreateLink_Click(object sender, RoutedEventArgs e)
+        private async void CreateLink_Click(object sender, RoutedEventArgs e)
         {
-            CreateLink();
-        }
-
-        private void AboutButton_Click(object sender, RoutedEventArgs e)
-        {
-            string version;
+            createLinkButton.IsEnabled = false;
             try
             {
-                version = Environment.GetEnvironmentVariable("ClickOnce_CurrentVersion");
+                await CreateLink();
             }
-            catch
+            finally
+            {
+                createLinkButton.IsEnabled = true;
+            }
+        }
+
+        private async void AboutButton_Click(object sender, RoutedEventArgs e)
+        {
+            var version = Environment.GetEnvironmentVariable("ClickOnce_CurrentVersion");
+            if (string.IsNullOrEmpty(version))
             {
                 var assembly = Assembly.GetExecutingAssembly();
                 var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
                 version = fvi.FileVersion;
             }
 
-            MessageBox.Show(
-                string.Format(CultureInfo.CurrentCulture, Res.AboutDescription, version),
+            await this.ShowMessageAsync(
                 Res.MessageBoxAboutTitle,
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
+                string.Format(CultureInfo.CurrentUICulture, Res.AboutDescription, version, DateTime.Now.Year),
+                settings: FastDialog);
         }
 
         private void TextBox_DragOver(object sender, DragEventArgs e)
@@ -318,16 +313,34 @@ namespace Symlinker
             e.Handled = true;
         }
 
-        private void TextBox_Drop(object sender, DragEventArgs e)
+        private void SourceCard_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 var files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 if (files != null && files.Length != 0)
                 {
-                    var textBox = (TextBox)sender;
-                    textBox.Text = files[0];
+                    var path = files[0];
+                    var droppedIsFolder = Directory.Exists(path);
+                    if (droppedIsFolder != isFolder)
+                    {
+                        if (droppedIsFolder)
+                            folderTypeRadio.IsChecked = true;
+                        else
+                            fileTypeRadio.IsChecked = true;
+                    }
+                    destinationLocationTextBox.Text = path;
                 }
+            }
+        }
+
+        private void LinkCard_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files != null && files.Length != 0 && Directory.Exists(files[0]))
+                    linkLocationTextBox.Text = files[0];
             }
         }
     }

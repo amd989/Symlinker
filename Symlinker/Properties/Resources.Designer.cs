@@ -19,10 +19,10 @@ namespace Symlinker.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Symlinker.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Symlinker.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace Symlinker.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,185 +61,166 @@ namespace Symlinker.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to © 2010-2025 Alejandro Mora
+        ///   Looks up a localized string similar to © 2010-{1} Alejandro Mora
         ///Version: {0}
         ///e-mail: mail@alejandro.md
         ///
         ///Thanks to Microsoft for the use of their shortcut arrow :).
         /// </summary>
-        internal static string AboutDescription {
+        public static string AboutDescription {
             get {
                 return ResourceManager.GetString("AboutDescription", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot find the file needed to create links, the creation stopped.
+        ///   Looks up a localized string similar to About.
         /// </summary>
-        internal static string CmdNotFound {
+        public static string ButtonAbout {
+            get {
+                return ResourceManager.GetString("ButtonAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add another.
+        /// </summary>
+        public static string ButtonAddAnother {
+            get {
+                return ResourceManager.GetString("ButtonAddAnother", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create link.
+        /// </summary>
+        public static string ButtonCreateLink {
+            get {
+                return ResourceManager.GetString("ButtonCreateLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LINK LOCATION.
+        /// </summary>
+        public static string CardHeaderLinkLocation {
+            get {
+                return ResourceManager.GetString("CardHeaderLinkLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TARGET.
+        /// </summary>
+        public static string CardHeaderTarget {
+            get {
+                return ResourceManager.GetString("CardHeaderTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find the command-line tool needed to create links..
+        /// </summary>
+        public static string CmdNotFound {
             get {
                 return ResourceManager.GetString("CmdNotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The link name you are using already exists in the selected directory, would you like to DELETE the file and then create a new link?.
+        ///   Looks up a localized string similar to A file with this link name already exists in the selected directory. Would you like to delete it and create a new link?.
         /// </summary>
-        internal static string DialogDeleteFile {
+        public static string DialogDeleteFile {
             get {
                 return ResourceManager.GetString("DialogDeleteFile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File already there....
+        ///   Looks up a localized string similar to File already exists.
         /// </summary>
-        internal static string DialogDeleteFileWarning {
+        public static string DialogDeleteFileWarning {
             get {
                 return ResourceManager.GetString("DialogDeleteFileWarning", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The link name you are using already exists in the selected directory, would you like to DELETE the folder and then create a new link?.
+        ///   Looks up a localized string similar to A folder with this link name already exists in the selected directory. Would you like to delete it and create a new link?.
         /// </summary>
-        internal static string DialogFolderExists {
+        public static string DialogFolderExists {
             get {
                 return ResourceManager.GetString("DialogFolderExists", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Folder already there....
+        ///   Looks up a localized string similar to Folder already exists.
         /// </summary>
-        internal static string DialogFolderExistsDialog {
+        public static string DialogFolderExistsDialog {
             get {
                 return ResourceManager.GetString("DialogFolderExistsDialog", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to One of the directories/files does not exists, please provide valid directories/files.
+        ///   Looks up a localized string similar to One of the specified directories or files does not exist. Please provide valid paths..
         /// </summary>
-        internal static string FilesOrFolderNotExists {
+        public static string FilesOrFolderNotExists {
             get {
                 return ResourceManager.GetString("FilesOrFolderNotExists", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Paths cannot contain quote characters. Please remove any quotes and try again..
+        /// </summary>
+        public static string InvalidQuoteInPath {
+            get {
+                return ResourceManager.GetString("InvalidQuoteInPath", resourceCulture);
+            }
+        }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please fill all the blanks spaces with the indicated info.
+        ///   Looks up a localized string similar to Please fill in all the required fields..
         /// </summary>
-        internal static string FillBlanks {
+        public static string FillBlanks {
             get {
                 return ResourceManager.GetString("FillBlanks", resourceCulture);
             }
         }
         
-        
         /// <summary>
-        ///   Looks up a localized string similar to Link creation aborted.
+        ///   Looks up a localized string similar to Link creation was aborted..
         /// </summary>
-        internal static string LinkCreationAborted {
+        public static string LinkCreationAborted {
             get {
                 return ResourceManager.GetString("LinkCreationAborted", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aborted Operation.
+        ///   Looks up a localized string similar to Operation aborted.
         /// </summary>
-        internal static string LinkCreationAbortedWarning {
+        public static string LinkCreationAbortedWarning {
             get {
                 return ResourceManager.GetString("LinkCreationAbortedWarning", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Link successfully created.
+        ///   Looks up a localized string similar to Link successfully created..
         /// </summary>
-        internal static string LinkSuccessfullyCreated {
+        public static string LinkSuccessfullyCreated {
             get {
                 return ResourceManager.GetString("LinkSuccessfullyCreated", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Destination File.
-        /// </summary>
-        internal static string MainWindow_Switcher_Destination_File {
-            get {
-                return ResourceManager.GetString("MainWindow_Switcher_Destination_File", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Destination Folder.
-        /// </summary>
-        internal static string MainWindow_Switcher_Destination_Folder {
-            get {
-                return ResourceManager.GetString("MainWindow_Switcher_Destination_Folder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Link File.
-        /// </summary>
-        internal static string MainWindow_Switcher_Link_File {
-            get {
-                return ResourceManager.GetString("MainWindow_Switcher_Link_File", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Link Folder.
-        /// </summary>
-        internal static string MainWindow_Switcher_Link_Folder {
-            get {
-                return ResourceManager.GetString("MainWindow_Switcher_Link_Folder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Now give a name to the link:.
-        /// </summary>
-        internal static string MainWindow_Switcher_Now_give_a_name_to_the_link_ {
-            get {
-                return ResourceManager.GetString("MainWindow_Switcher_Now_give_a_name_to_the_link_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Now give a name to your file:.
-        /// </summary>
-        internal static string MainWindow_Switcher_Now_give_a_name_to_your_file_ {
-            get {
-                return ResourceManager.GetString("MainWindow_Switcher_Now_give_a_name_to_your_file_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please select the path to the real file you want to link:.
-        /// </summary>
-        internal static string MainWindow_Switcher_Please_select_the_path_to_the_real_file_you_want_to_link_ {
-            get {
-                return ResourceManager.GetString("MainWindow_Switcher_Please_select_the_path_to_the_real_file_you_want_to_link_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please select the path to the real folder you want to link:.
-        /// </summary>
-        internal static string MainWindow_Switcher_Please_select_the_path_to_the_real_folder_you_want_to_link_ {
-            get {
-                return ResourceManager.GetString("MainWindow_Switcher_Please_select_the_path_to_the_real_folder_you_want_to_link_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
-        internal static string MessageBoxAboutTitle {
+        public static string MessageBoxAboutTitle {
             get {
                 return ResourceManager.GetString("MessageBoxAboutTitle", resourceCulture);
             }
@@ -248,16 +229,16 @@ namespace Symlinker.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
-        internal static string MessageBoxErrorTitle {
+        public static string MessageBoxErrorTitle {
             get {
                 return ResourceManager.GetString("MessageBoxErrorTitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error has ocurred:.
+        ///   Looks up a localized string similar to An error has occurred:.
         /// </summary>
-        internal static string MessageBoxExceptionOcurred {
+        public static string MessageBoxExceptionOcurred {
             get {
                 return ResourceManager.GetString("MessageBoxExceptionOcurred", resourceCulture);
             }
@@ -266,58 +247,174 @@ namespace Symlinker.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Success.
         /// </summary>
-        internal static string MessageBoxSuccessTitle {
+        public static string MessageBoxSuccessTitle {
             get {
                 return ResourceManager.GetString("MessageBoxSuccessTitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This option allows you to select the style of your symbolic link, either
-        ///you choose to use symbolic links or hard links.
-        ///Use symbolic links as a default..
+        ///   Looks up a localized string similar to File.
         /// </summary>
-        internal static string TooltipLinkTypeFileDescription {
+        public static string PillFile {
+            get {
+                return ResourceManager.GetString("PillFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folder.
+        /// </summary>
+        public static string PillFolder {
+            get {
+                return ResourceManager.GetString("PillFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hard link.
+        /// </summary>
+        public static string PillHardLink {
+            get {
+                return ResourceManager.GetString("PillHardLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Junction.
+        /// </summary>
+        public static string PillJunction {
+            get {
+                return ResourceManager.GetString("PillJunction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Symbolic link.
+        /// </summary>
+        public static string PillSymbolicLink {
+            get {
+                return ResourceManager.GetString("PillSymbolicLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link name.
+        /// </summary>
+        public static string PlaceholderLinkName {
+            get {
+                return ResourceManager.GetString("PlaceholderLinkName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to C:\path\to\location.
+        /// </summary>
+        public static string PlaceholderLinkPath {
+            get {
+                return ResourceManager.GetString("PlaceholderLinkPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target file.
+        /// </summary>
+        public static string PlaceholderTargetFile {
+            get {
+                return ResourceManager.GetString("PlaceholderTargetFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target folder.
+        /// </summary>
+        public static string PlaceholderTargetFolder {
+            get {
+                return ResourceManager.GetString("PlaceholderTargetFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to D:\path\to\target.
+        /// </summary>
+        public static string PlaceholderTargetPath {
+            get {
+                return ResourceManager.GetString("PlaceholderTargetPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About Symlinker.
+        /// </summary>
+        public static string TooltipAbout {
+            get {
+                return ResourceManager.GetString("TooltipAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose where the link will be created and give it a name.
+        ///Click the icon or drag and drop a folder here..
+        /// </summary>
+        public static string TooltipLinkLocationCard {
+            get {
+                return ResourceManager.GetString("TooltipLinkLocationCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the link type: symbolic link or hard link.
+        ///Use symbolic links as the default..
+        /// </summary>
+        public static string TooltipLinkTypeFileDescription {
             get {
                 return ResourceManager.GetString("TooltipLinkTypeFileDescription", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This option allows you to select the style of your symbolic link, either
-        ///you choose to use symbolic links, hard links or directory junctions.
-        ///Use symbolic links as a default..
+        ///   Looks up a localized string similar to Choose the link type: symbolic link, hard link, or directory junction.
+        ///Use symbolic links as the default..
         /// </summary>
-        internal static string TooltipLinkTypeFolderDescription {
+        public static string TooltipLinkTypeFolderDescription {
             get {
                 return ResourceManager.GetString("TooltipLinkTypeFolderDescription", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Symbolic Link types.
+        ///   Looks up a localized string similar to Symbolic link types.
         /// </summary>
-        internal static string TooltipLinkTypeTitle {
+        public static string TooltipLinkTypeTitle {
             get {
                 return ResourceManager.GetString("TooltipLinkTypeTitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to With this option you can choose between creating file symbolic links;
-        ///this is using a file to point to another file, or folder symbolic links;
-        ///this is using folders that point to other folders..
+        ///   Looks up a localized string similar to Select the real file or folder the link will point to.
+        ///Click the icon or drag and drop a file/folder here..
         /// </summary>
-        internal static string TooltipTypeSelectorDescription {
+        public static string TooltipTargetCard {
+            get {
+                return ResourceManager.GetString("TooltipTargetCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose between file mode (link a file to another file)
+        ///or folder mode (link a folder to another folder)..
+        /// </summary>
+        public static string TooltipTypeSelectorDescription {
             get {
                 return ResourceManager.GetString("TooltipTypeSelectorDescription", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Symbolic Link type selector.
+        ///   Looks up a localized string similar to Symbolic link type selector.
         /// </summary>
-        internal static string TooltipTypeSelectorTitle {
+        public static string TooltipTypeSelectorTitle {
             get {
                 return ResourceManager.GetString("TooltipTypeSelectorTitle", resourceCulture);
             }

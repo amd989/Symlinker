@@ -79,6 +79,60 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>Complete todos los campos obligatorios.</value>
   </data>
+  <data name="ButtonNotNow" xml:space="preserve">
+    <value>Ahora no</value>
+  </data>
+  <data name="ButtonRestartAsAdmin" xml:space="preserve">
+    <value>Reiniciar como administrador</value>
+  </data>
+  <data name="DialogElevationTitle" xml:space="preserve">
+    <value>Se necesitan permisos de administrador</value>
+  </data>
+  <data name="DialogElevation" xml:space="preserve">
+    <value>Los enlaces simbólicos requieren permisos de administrador, salvo que el Modo de desarrollador esté activado. ¿Reiniciar como administrador? Se conservarán los datos.</value>
+  </data>
+  <data name="ErrorLinkNameMissing" xml:space="preserve">
+    <value>Escriba un nombre para el enlace.</value>
+  </data>
+  <data name="ErrorLinkNameInvalid" xml:space="preserve">
+    <value>El nombre del enlace no puede contener ninguno de estos caracteres: \ / : * ? " &lt; &gt; |</value>
+  </data>
+  <data name="ErrorLinkLocationMissing" xml:space="preserve">
+    <value>Elija la carpeta donde se creará el enlace.</value>
+  </data>
+  <data name="ErrorLinkLocationNotFound" xml:space="preserve">
+    <value>La carpeta de ubicación del enlace no existe.</value>
+  </data>
+  <data name="ErrorTargetFolderMissing" xml:space="preserve">
+    <value>Elija la carpeta a la que apunta el enlace.</value>
+  </data>
+  <data name="ErrorTargetFileMissing" xml:space="preserve">
+    <value>Elija el archivo al que apunta el enlace.</value>
+  </data>
+  <data name="ErrorTargetFolderNotFound" xml:space="preserve">
+    <value>La carpeta de destino no existe.</value>
+  </data>
+  <data name="ErrorTargetFileNotFound" xml:space="preserve">
+    <value>El archivo de destino no existe.</value>
+  </data>
+  <data name="ErrorTargetIsFile" xml:space="preserve">
+    <value>El destino es un archivo. Cambie a Archivo para enlazarlo.</value>
+  </data>
+  <data name="ErrorTargetIsFolder" xml:space="preserve">
+    <value>El destino es una carpeta. Cambie a Carpeta para enlazarla.</value>
+  </data>
+  <data name="TooltipBrowseLinkLocation" xml:space="preserve">
+    <value>Buscar la carpeta de ubicación del enlace</value>
+  </data>
+  <data name="TooltipBrowseTargetFolder" xml:space="preserve">
+    <value>Buscar la carpeta de destino</value>
+  </data>
+  <data name="TooltipBrowseTargetFile" xml:space="preserve">
+    <value>Buscar el archivo de destino</value>
+  </data>
+  <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
+    <value>Los enlaces simbólicos requieren permisos de administrador o el Modo de desarrollador.</value>
+  </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>No se encuentra la herramienta de línea de comandos necesaria para crear enlaces.</value>
   </data>
@@ -107,10 +161,10 @@
     <value>Nombre del enlace</value>
   </data>
   <data name="PlaceholderLinkPath" xml:space="preserve">
-    <value>C:\ruta\a\ubicación</value>
+    <value>Carpeta donde se crea el enlace</value>
   </data>
   <data name="PlaceholderTargetPath" xml:space="preserve">
-    <value>D:\ruta\al\destino</value>
+    <value>Ruta a la que apunta el enlace</value>
   </data>
   <data name="PlaceholderTargetFolder" xml:space="preserve">
     <value>Carpeta destino</value>
@@ -135,9 +189,6 @@
   </data>
   <data name="ButtonCreateLink" xml:space="preserve">
     <value>Crear enlace</value>
-  </data>
-  <data name="ButtonAddAnother" xml:space="preserve">
-    <value>Agregar otro</value>
   </data>
   <data name="MessageBoxAboutTitle" xml:space="preserve">
     <value>Acerca de</value>
@@ -165,7 +216,7 @@ Haga clic en el icono o arrastre y suelte un archivo o carpeta aquí.</value>
 Use enlaces simbólicos como opción predeterminada.</value>
   </data>
   <data name="TooltipLinkTypeFolderDescription" xml:space="preserve">
-    <value>Elija el tipo de enlace: enlace simbólico, enlace duro o unión de directorio.
+    <value>Elija el tipo de enlace: enlace simbólico o unión de directorio.
 Use enlaces simbólicos como opción predeterminada.</value>
   </data>
   <data name="TooltipLinkTypeTitle" xml:space="preserve">

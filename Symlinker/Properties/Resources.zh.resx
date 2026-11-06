@@ -79,6 +79,60 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>请填写所有必填字段。</value>
   </data>
+  <data name="ButtonNotNow" xml:space="preserve">
+    <value>以后再说</value>
+  </data>
+  <data name="ButtonRestartAsAdmin" xml:space="preserve">
+    <value>以管理员身份重新启动</value>
+  </data>
+  <data name="DialogElevationTitle" xml:space="preserve">
+    <value>需要管理员权限</value>
+  </data>
+  <data name="DialogElevation" xml:space="preserve">
+    <value>创建符号链接需要管理员权限，除非已打开开发人员模式。以管理员身份重新启动吗？已输入的内容会保留。</value>
+  </data>
+  <data name="ErrorLinkNameMissing" xml:space="preserve">
+    <value>请输入链接名称。</value>
+  </data>
+  <data name="ErrorLinkNameInvalid" xml:space="preserve">
+    <value>链接名称不能包含以下任何字符: \ / : * ? " &lt; &gt; |</value>
+  </data>
+  <data name="ErrorLinkLocationMissing" xml:space="preserve">
+    <value>请选择要在其中创建链接的文件夹。</value>
+  </data>
+  <data name="ErrorLinkLocationNotFound" xml:space="preserve">
+    <value>链接位置文件夹不存在。</value>
+  </data>
+  <data name="ErrorTargetFolderMissing" xml:space="preserve">
+    <value>请选择链接指向的文件夹。</value>
+  </data>
+  <data name="ErrorTargetFileMissing" xml:space="preserve">
+    <value>请选择链接指向的文件。</value>
+  </data>
+  <data name="ErrorTargetFolderNotFound" xml:space="preserve">
+    <value>目标文件夹不存在。</value>
+  </data>
+  <data name="ErrorTargetFileNotFound" xml:space="preserve">
+    <value>目标文件不存在。</value>
+  </data>
+  <data name="ErrorTargetIsFile" xml:space="preserve">
+    <value>目标是文件。请切换到“文件”以链接它。</value>
+  </data>
+  <data name="ErrorTargetIsFolder" xml:space="preserve">
+    <value>目标是文件夹。请切换到“文件夹”以链接它。</value>
+  </data>
+  <data name="TooltipBrowseLinkLocation" xml:space="preserve">
+    <value>浏览链接位置文件夹</value>
+  </data>
+  <data name="TooltipBrowseTargetFolder" xml:space="preserve">
+    <value>浏览目标文件夹</value>
+  </data>
+  <data name="TooltipBrowseTargetFile" xml:space="preserve">
+    <value>浏览目标文件</value>
+  </data>
+  <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
+    <value>创建符号链接需要管理员权限或开发人员模式。</value>
+  </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>找不到创建链接所需的命令行工具。</value>
   </data>
@@ -107,10 +161,10 @@
     <value>链接名称</value>
   </data>
   <data name="PlaceholderLinkPath" xml:space="preserve">
-    <value>C:\路径\位置</value>
+    <value>要在其中创建链接的文件夹</value>
   </data>
   <data name="PlaceholderTargetPath" xml:space="preserve">
-    <value>D:\路径\目标</value>
+    <value>链接指向的路径</value>
   </data>
   <data name="PlaceholderTargetFolder" xml:space="preserve">
     <value>目标文件夹</value>
@@ -135,9 +189,6 @@
   </data>
   <data name="ButtonCreateLink" xml:space="preserve">
     <value>创建链接</value>
-  </data>
-  <data name="ButtonAddAnother" xml:space="preserve">
-    <value>添加另一个</value>
   </data>
   <data name="MessageBoxAboutTitle" xml:space="preserve">
     <value>关于</value>
@@ -165,7 +216,7 @@
 默认使用符号链接。</value>
   </data>
   <data name="TooltipLinkTypeFolderDescription" xml:space="preserve">
-    <value>选择链接类型: 符号链接、硬链接或目录联接。
+    <value>选择链接类型: 符号链接或目录联接。
 默认使用符号链接。</value>
   </data>
   <data name="TooltipLinkTypeTitle" xml:space="preserve">

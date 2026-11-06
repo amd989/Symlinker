@@ -1,39 +1,18 @@
 namespace Symlinker
 {
     using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Linq;
 
     internal static class Program
     {
         [STAThread]
         private static void Main(string[] args)
         {
-            if (string.IsNullOrEmpty((from o in args where o == "--engage" select o).FirstOrDefault()))
-            {
-                var processInfo = new ProcessStartInfo();
-                processInfo.Verb = "runas";
-                processInfo.FileName = Environment.ProcessPath;
-                processInfo.Arguments = string.Join(" ", args.Concat(new[] { "--engage" }).ToArray());
-                try
-                {
-                    var p = Process.Start(processInfo);
-                    p.WaitForExit();
-                }
-                catch (Win32Exception)
-                {
-                    //Do nothing. Probably the user cancelled the UAC window or provided invalid credentials.
-                }
-
-                return;
-            }
-            else
-            {
-                var app = new App();
-                app.InitializeComponent();
-                app.Run(new MainWindow());
-            }
+            // Start unelevated so drag and drop from Explorer works. Junctions, hard links and
+            // (with Developer Mode) symbolic links don't need administrator rights; the window
+            // offers to restart elevated only when a link actually needs it.
+            var app = new App();
+            app.InitializeComponent();
+            app.Run(new MainWindow(LaunchOptions.Parse(args)));
         }
     }
 }

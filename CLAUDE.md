@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Symlinker is a Windows Forms application (.NET 8) that provides a GUI for creating symbolic links, hard links, and directory junctions on Windows. It wraps the Windows `mklink` command with an easy-to-use interface.
+Symlinker is a WPF application (.NET 10, MahApps.Metro) that provides a GUI for creating symbolic links, hard links, and directory junctions on Windows. It wraps the Windows `mklink` command with an easy-to-use interface.
 
-**Target Platform:** Windows 10+ only (as of 2025 modernization)
+**Target Platform:** Windows 10+ only
 
 ## Build & Development Commands
 
@@ -20,90 +20,80 @@ dotnet build "Symlinker/Symlinker.csproj" --configuration Debug
 dotnet build "Symlinker/Symlinker.csproj" --configuration Release
 ```
 
-### Publishing (ClickOnce)
-
-The application uses ClickOnce deployment and is published to GitHub Pages:
-
-```powershell
-# Full build and publish to gh-pages branch
-./release.ps1
-
-# Build only (skip deployment)
-./release.ps1 -OnlyBuild
-```
-
-The `release.ps1` script:
-- Reads the Git tag to determine version (e.g., `v1.2.3` becomes `1.2.3.0`)
-- Uses MSBuild to publish with ClickOnce profile
-- Deploys to `gh-pages` branch for auto-update support
-
 ### Running the Application
 
 ```powershell
 dotnet run --project "Symlinker/Symlinker.csproj"
 ```
 
+The app starts unelevated. It only asks for administrator rights when a symbolic link needs them (see "Administrator rights" below).
+
+### Publishing
+
+- `./release.ps1` builds and publishes the ClickOnce installer to the `gh-pages` branch (`-OnlyBuild` skips deployment). It reads the Git tag for the version (`v1.2.3` becomes `1.2.3.0`).
+- `./build-portable.ps1` builds the portable ZIP used for Scoop.
+
 ## Architecture
 
 ### Key Components
 
-1. **Program.cs**: Entry point with UAC elevation logic
-   - Automatically re-launches itself with administrator privileges using the `--engage` flag
-   - Uses Windows API (`BCM_SETSHIELD`) to display UAC shield icon
-
-2. **MainWindow.cs**: Main form and business logic
-   - Handles UI state for file vs. folder symlink modes
-   - Manages three link types: Symbolic Link, Hard Link, Directory Junction
-   - Executes `cmd.exe /c mklink` with appropriate parameters
-   - Supports drag-and-drop for file/folder paths
-
-3. **MainWindow.Designer.cs**: Auto-generated Windows Forms designer code
-   - Contains all UI control initialization
+1. **Program.cs**: Entry point. Parses command-line options (`LaunchOptions`) and opens the main window. It does not elevate.
+2. **App.xaml / App.xaml.cs**: Loads MahApps.Metro styles and syncs the theme (light/dark and accent color) with Windows.
+3. **MainWindow.xaml**: The whole UI. Two cards (link location, target), pill toggles for folder/file mode and link type, and a footer with the About button, an inline error line and the Create link button. Styles live in `Window.Resources`.
+4. **MainWindow.xaml.cs**: Mode switching, link name auto-fill, file pickers, drag and drop, and link creation (`CreateLink()` and `SendCommand()`, which runs `cmd.exe /c mklink`).
+5. **MainWindow.Inputs.cs**: Field validation with inline errors (`InputError.HasError` attached property plus the footer message), theme-dependent brushes, restoring launch options, the up-front admin notice, and the administrator restart prompt.
+6. **Elevation.cs**: `LaunchOptions` (command-line parsing and correctly quoted argument building) and `Elevation` (admin check, symbolic link privilege probe, elevated restart with `runas`, the UAC shield icon).
 
 ### Link Creation Flow
 
-1. User selects link type (file/folder) via `typeSelectorComboBox`
-2. `Switcher()` method updates UI labels and available link types
-3. User inputs link location, link name, and destination
-4. `CreateLink()` validates paths and checks for conflicts
-5. `SendCommand()` builds and executes mklink command with proper escaping
-6. Process output/error handlers display results via MessageBox
+1. User picks folder or file mode (pills) and a link type. Junction is folder-only, hard link is file-only.
+2. User fills in the link location, link name and target (typing, browsing, or drag and drop).
+3. Create link (or Enter, it is the default button) runs `ValidateInputs()`, which marks bad fields inline.
+4. `EnsureCanCreateLinkAsync()` checks whether a symbolic link can be created. If not, it offers to restart as administrator.
+5. `CreateLink()` handles an existing item at the link path, then `SendCommand()` runs mklink and shows the result.
+
+### Administrator rights
+
+- Junctions and hard links never need admin. Symbolic links need admin unless Windows Developer Mode is on.
+- `Elevation.CanCreateSymbolicLinks()` probes by creating a throwaway symlink in the temp folder.
+- The probe runs when the window loads (and again on activation while admin is needed). If symbolic links need admin, Create link shows the UAC shield and the footer shows a notice with a "Restart as administrator" link, so the user knows before filling in the form. Field errors take the same footer spot and hide the notice.
+- When elevation is needed, the app restarts itself with `runas` and passes the form values as quoted arguments (`--mode`, `--type`, `--location`, `--name`, `--target`). The old `--engage` flag is still accepted and ignored.
 
 ### Important Patterns
 
-- **Command Building**: Uses `string.Format()` with `CultureInfo.InvariantCulture` for mklink command construction
-- **Path Handling**: Wraps paths in quotes to support spaces
-- **Link Type Mapping**:
-  - Symbolic Link: `/D` (directory) or empty (file)
-  - Hard Link: `/H`
-  - Directory Junction: `/J` (folders only)
+- **Command building**: mklink flags are `/D` (directory symlink), `/H` (hard link), `/J` (junction); paths are wrapped in quotes.
+- **Theme colors**: Use `DynamicResource` with MahApps brushes (`MahApps.Brushes.Gray1..10`, `Accent`, `ThemeForeground`). The gray scale is not monotonic in the dark theme, so check contrast in both themes. `Symlinker.Brushes.Error` and `Symlinker.Brushes.OnAccent` are set at runtime in `MainWindow.Inputs.cs`.
 
 ### Dependencies
 
 Managed via Central Package Management ([Directory.Packages.props](Directory.Packages.props)):
 
-- **Microsoft-WindowsAPICodePack-Core** (1.1.5): Common file dialogs
-- **Microsoft-WindowsAPICodePack-Shell** (1.1.5): Shell integration
+- **MahApps.Metro**: Window chrome, dialogs, theming
+- **MahApps.Metro.IconPacks.Material**: Icons
 
 ## Project Structure
 
 ```
 Symlinker/
-├── Symlinker/          # Main project directory
-│   ├── MainWindow.cs         # Core form logic
-│   ├── MainWindow.Designer.cs # UI designer code
-│   ├── MainWindow.resx       # Form resources
-│   ├── Program.cs            # Entry point with UAC elevation
+├── Symlinker/
+│   ├── App.xaml(.cs)            # Application, theme sync
+│   ├── MainWindow.xaml          # UI and styles
+│   ├── MainWindow.xaml.cs       # Core window logic and link creation
+│   ├── MainWindow.Inputs.cs     # Validation, inline errors, admin restart
+│   ├── Elevation.cs             # LaunchOptions and elevation helpers
+│   ├── Program.cs               # Entry point
 │   ├── Properties/
-│   │   ├── Resources.Designer.cs  # Localized strings
-│   │   └── Settings.Designer.cs   # App settings
-│   ├── icon.ico              # Application icon
+│   │   ├── Resources.resx           # English strings
+│   │   ├── Resources.<lang>.resx    # de, es, fr, hi, it, ja, pt, zh
+│   │   ├── Resources.Designer.cs    # Typed string accessors
+│   │   └── app.manifest             # asInvoker, PerMonitorV2 DPI
+│   ├── icon.ico
 │   └── Symlinker.csproj
-├── Symlinker.sln             # Solution file
-├── Directory.Packages.props  # Central package versions
-├── release.ps1               # ClickOnce build/publish script
-└── .github/workflows/
-    └── release.yml           # GitHub Actions for tagged releases
+├── Symlinker.sln
+├── Directory.Packages.props
+├── release.ps1                 # ClickOnce build/publish
+├── build-portable.ps1          # Portable ZIP for Scoop
+└── .github/workflows/          # ci.yml, release.yml
 ```
 
 ## Release Process
@@ -111,21 +101,16 @@ Symlinker/
 Releases are automated via GitHub Actions:
 
 1. Push a Git tag: `git tag v1.2.3 && git push origin v1.2.3`
-2. GitHub Actions workflow ([.github/workflows/release.yml](.github/workflows/release.yml)) triggers
-3. `release.ps1` executes on Windows runner
-4. Application published to `gh-pages` branch
-5. ClickOnce installer auto-updates existing installations
+2. [.github/workflows/release.yml](.github/workflows/release.yml) runs `release.ps1` on a Windows runner
+3. The app is published to `gh-pages` and ClickOnce auto-updates existing installs
 
 ## Known Limitations
 
-- **Drag & Drop**: Does not work when running as administrator (Windows security limitation)
-- **UAC Required**: Creating symlinks requires administrator privileges on Windows
-- **Platform**: Windows 10/11 only (uses .NET 8 Windows-specific APIs)
+- **Drag and drop**: Works in the normal (unelevated) app. It does not work after restarting as administrator, because Windows blocks drops from a lower-privilege Explorer.
+- **Platform**: Windows 10/11 only.
 
 ## Localization
 
-UI strings are managed through resource files:
-- [Symlinker/Properties/Resources.Designer.cs](Symlinker/Properties/Resources.Designer.cs)
-- [Symlinker/MainWindow.resx](Symlinker/MainWindow.resx)
-
-When modifying UI text, update the resource files rather than hardcoding strings.
+- Every UI string lives in `Properties/Resources.resx` and must also be added to all 8 translations (de, es, fr, hi, it, ja, pt, zh).
+- `Resources.Designer.cs` is not regenerated by `dotnet build`. When adding a string, add its typed property by hand in the same generated style.
+- The window is a fixed 560x280, so check long translations (German, Italian, French) for overflow in pills, buttons and dialogs.

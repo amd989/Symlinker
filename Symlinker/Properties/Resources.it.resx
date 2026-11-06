@@ -79,6 +79,60 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>Compilare tutti i campi obbligatori.</value>
   </data>
+  <data name="ButtonNotNow" xml:space="preserve">
+    <value>Non ora</value>
+  </data>
+  <data name="ButtonRestartAsAdmin" xml:space="preserve">
+    <value>Riavvia come amministratore</value>
+  </data>
+  <data name="DialogElevationTitle" xml:space="preserve">
+    <value>Servono i diritti di amministratore</value>
+  </data>
+  <data name="DialogElevation" xml:space="preserve">
+    <value>I collegamenti simbolici richiedono i diritti di amministratore, a meno che la Modalità sviluppatore non sia attiva. Riavviare come amministratore? I dati inseriti verranno mantenuti.</value>
+  </data>
+  <data name="ErrorLinkNameMissing" xml:space="preserve">
+    <value>Inserire un nome per il collegamento.</value>
+  </data>
+  <data name="ErrorLinkNameInvalid" xml:space="preserve">
+    <value>Il nome del collegamento non può contenere nessuno di questi caratteri: \ / : * ? " &lt; &gt; |</value>
+  </data>
+  <data name="ErrorLinkLocationMissing" xml:space="preserve">
+    <value>Scegliere la cartella in cui creare il collegamento.</value>
+  </data>
+  <data name="ErrorLinkLocationNotFound" xml:space="preserve">
+    <value>La cartella del collegamento non esiste.</value>
+  </data>
+  <data name="ErrorTargetFolderMissing" xml:space="preserve">
+    <value>Scegliere la cartella a cui punta il collegamento.</value>
+  </data>
+  <data name="ErrorTargetFileMissing" xml:space="preserve">
+    <value>Scegliere il file a cui punta il collegamento.</value>
+  </data>
+  <data name="ErrorTargetFolderNotFound" xml:space="preserve">
+    <value>La cartella di destinazione non esiste.</value>
+  </data>
+  <data name="ErrorTargetFileNotFound" xml:space="preserve">
+    <value>Il file di destinazione non esiste.</value>
+  </data>
+  <data name="ErrorTargetIsFile" xml:space="preserve">
+    <value>La destinazione è un file. Passare a File per collegarlo.</value>
+  </data>
+  <data name="ErrorTargetIsFolder" xml:space="preserve">
+    <value>La destinazione è una cartella. Passare a Cartella per collegarla.</value>
+  </data>
+  <data name="TooltipBrowseLinkLocation" xml:space="preserve">
+    <value>Sfoglia per la cartella del collegamento</value>
+  </data>
+  <data name="TooltipBrowseTargetFolder" xml:space="preserve">
+    <value>Sfoglia per la cartella di destinazione</value>
+  </data>
+  <data name="TooltipBrowseTargetFile" xml:space="preserve">
+    <value>Sfoglia per il file di destinazione</value>
+  </data>
+  <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
+    <value>I collegamenti simbolici richiedono i diritti di amministratore o la Modalità sviluppatore.</value>
+  </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>Impossibile trovare lo strumento da riga di comando necessario per creare i collegamenti.</value>
   </data>
@@ -107,10 +161,10 @@
     <value>Nome del collegamento</value>
   </data>
   <data name="PlaceholderLinkPath" xml:space="preserve">
-    <value>C:\percorso\alla\posizione</value>
+    <value>Cartella in cui creare il collegamento</value>
   </data>
   <data name="PlaceholderTargetPath" xml:space="preserve">
-    <value>D:\percorso\alla\destinazione</value>
+    <value>Percorso a cui punta il collegamento</value>
   </data>
   <data name="PlaceholderTargetFolder" xml:space="preserve">
     <value>Cartella di destinazione</value>
@@ -135,9 +189,6 @@
   </data>
   <data name="ButtonCreateLink" xml:space="preserve">
     <value>Crea collegamento</value>
-  </data>
-  <data name="ButtonAddAnother" xml:space="preserve">
-    <value>Aggiungi un altro</value>
   </data>
   <data name="MessageBoxAboutTitle" xml:space="preserve">
     <value>Informazioni</value>
@@ -165,7 +216,7 @@ Fai clic sull'icona o trascina e rilascia un file o una cartella qui.</value>
 Usa i collegamenti simbolici come impostazione predefinita.</value>
   </data>
   <data name="TooltipLinkTypeFolderDescription" xml:space="preserve">
-    <value>Scegli il tipo di collegamento: collegamento simbolico, collegamento fisico o giunzione di directory.
+    <value>Scegli il tipo di collegamento: collegamento simbolico o giunzione di directory.
 Usa i collegamenti simbolici come impostazione predefinita.</value>
   </data>
   <data name="TooltipLinkTypeTitle" xml:space="preserve">

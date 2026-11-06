@@ -6,9 +6,9 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v10.0": {
-      "Symlinker/4.1.0.0": {
+      "Symlinker/4.2.0.0": {
         "dependencies": {
-          "MahApps.Metro": "2.4.10",
+          "MahApps.Metro": "2.4.11",
           "MahApps.Metro.IconPacks.Material": "6.0.0"
         },
         "runtime": {
@@ -52,14 +52,14 @@
           }
         }
       },
-      "MahApps.Metro/2.4.10": {
+      "MahApps.Metro/2.4.11": {
         "dependencies": {
           "ControlzEx": "4.4.0"
         },
         "runtime": {
           "lib/netcoreapp3.1/MahApps.Metro.dll": {
             "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.4.10.1"
+            "fileVersion": "2.4.11.0"
           }
         },
         "resources": {
@@ -98,7 +98,7 @@
     }
   },
   "libraries": {
-    "Symlinker/4.1.0.0": {
+    "Symlinker/4.2.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -110,12 +110,12 @@
       "path": "controlzex/4.4.0",
       "hashPath": "controlzex.4.4.0.nupkg.sha512"
     },
-    "MahApps.Metro/2.4.10": {
+    "MahApps.Metro/2.4.11": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-45exHKJCVYaD1/rNr3ekZPECEBM4uHOt6aYp6yNaJbliFMUo+d3z8Gi1xG+qEkbiHKITX+dlz+BW1FOsjAbl/w==",
-      "path": "mahapps.metro/2.4.10",
-      "hashPath": "mahapps.metro.2.4.10.nupkg.sha512"
+      "sha512": "sha512-pvk757N/ViZy+zlbB56AakryuZkts328M6pX2mMn/Z7r5ifkScDrS300zSBjLd+eGOPeHgUjH4f7cZbRiMyvQg==",
+      "path": "mahapps.metro/2.4.11",
+      "hashPath": "mahapps.metro.2.4.11.nupkg.sha512"
     },
     "MahApps.Metro.IconPacks.Core/6.0.0": {
       "type": "package",

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Symlinker privacy policy</title>
+  <meta name="description" content="Symlinker does not collect, share or sell any personal data.">
+  <link rel="icon" href="favicon.ico">
+  <style>
+    :root {
+      --background: hsl(210 20% 98%);
+      --foreground: hsl(222 47% 11%);
+      --card: hsl(0 0% 100%);
+      --primary: hsl(217 91% 60%);
+      --muted-foreground: hsl(215 16% 47%);
+      --border: hsl(214 25% 90%);
+      --radius: .75rem;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at top, hsl(217 91% 60% / .1), transparent 60%),
+        var(--background);
+      color: var(--foreground);
+      font-family: ui-sans-serif, system-ui, sans-serif, "Segoe UI Emoji";
+      line-height: 1.6;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header { border-bottom: 1px solid var(--border); background: hsl(0 0% 100% / .7); backdrop-filter: blur(8px); }
+    nav, main, footer > div { max-width: 48rem; margin: 0 auto; padding: 0 1.5rem; }
+    nav { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
+    .brand { display: flex; align-items: center; gap: .6rem; color: var(--foreground); font-weight: 600; }
+    .brand img { width: 28px; height: 28px; }
+    .links { display: flex; gap: 1.25rem; font-size: .9rem; }
+    .links a { color: var(--muted-foreground); }
+    .links a:hover { color: var(--foreground); text-decoration: none; }
+    main { padding-top: 3rem; padding-bottom: 4rem; }
+    h1 { font-size: 2.25rem; line-height: 1.2; letter-spacing: -.02em; margin: 0 0 .5rem; }
+    .updated { color: var(--muted-foreground); font-size: .9rem; margin: 0 0 2rem; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      box-shadow: 0 1px 2px hsl(222 47% 11% / .04), 0 4px 12px hsl(222 47% 11% / .04);
+    }
+    .card > p:first-child { margin-top: 0; font-size: 1.1rem; font-weight: 500; }
+    ul { padding-left: 1.2rem; margin: 0; }
+    li { margin: .9rem 0; }
+    footer { border-top: 1px solid var(--border); background: var(--card); }
+    footer > div { padding-top: 1.5rem; padding-bottom: 1.5rem; color: var(--muted-foreground); font-size: .85rem; }
+    @media (max-width: 480px) {
+      h1 { font-size: 1.75rem; }
+      .card { padding: 1.25rem; }
+      .links { gap: .9rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a class="brand" href="./"><img src="favicon.ico" alt="">Symlinker</a>
+      <div class="links">
+        <a href="./">Home</a>
+        <a href="https://github.com/amd989/symlinker/issues">Support</a>
+        <a href="https://github.com/amd989/symlinker">GitHub</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Privacy policy</h1>
+    <p class="updated">Last updated: November 5, 2026</p>
+
+    <div class="card">
+      <p>Symlinker does not collect, store on a server, share or sell any personal data.</p>
+
+      <ul>
+        <li><strong>Links you create.</strong> Symlinker creates links by running the Windows
+          <code>mklink</code> command on your computer. The paths you type or drop into the app
+          stay on your computer.</li>
+        <li><strong>Administrator rights.</strong> The app asks for administrator rights because
+          Windows requires them to create symbolic links. It uses them only to run
+          <code>mklink</code>.</li>
+        <li><strong>Nothing saved.</strong> The app does not keep settings, history or logs.</li>
+        <li><strong>Updates.</strong> The Microsoft Store version is updated by the Microsoft Store,
+          under <a href="https://privacy.microsoft.com/privacystatement">Microsoft's privacy
+          statement</a>. The ClickOnce version checks this website for new versions, and GitHub
+          hosts it under the <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub
+          privacy statement</a>. The portable version never checks for updates.</li>
+        <li><strong>No accounts, analytics, ads or tracking.</strong> The app makes no network
+          connections of its own.</li>
+      </ul>
+    </div>
+
+    <p>Questions: <a href="https://github.com/amd989/symlinker/issues">open an issue on GitHub</a>.</p>
+  </main>
+
+  <footer>
+    <div>Symlinker is open source under the MIT License.</div>
+  </footer>
+</body>
+</html>

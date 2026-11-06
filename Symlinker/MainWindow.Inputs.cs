@@ -32,7 +32,7 @@ namespace Symlinker
         public static void SetHasError(DependencyObject element, bool value) => element.SetValue(HasErrorProperty, value);
     }
 
-    /// <summary>Inline errors, launch options and the administrator restart. The checks live in <see cref="InputValidator"/>.</summary>
+    /// <summary>Inline errors, launch options and the administrator rights notice. The checks live in <see cref="InputValidator"/>.</summary>
     public partial class MainWindow
     {
         private const string ErrorBrushKey = "Symlinker.Brushes.Error";
@@ -47,7 +47,7 @@ namespace Symlinker
 
         private LaunchOptions launchOptions;
 
-        // Whether creating a symbolic link would need a restart as administrator
+        // Whether creating a symbolic link needs administrator rights (no admin, no Developer Mode)
         private bool symlinksNeedAdmin;
         private bool checkingSymlinkAccess;
 
@@ -78,6 +78,9 @@ namespace Symlinker
                 if (symlinksNeedAdmin)
                     RefreshSymlinkAccess();
             };
+
+            // The administrator helper stays up for the whole session; closing the window ends it
+            Closed += (s, e) => linkRunner.Dispose();
         }
 
         private async void RefreshSymlinkAccess()
@@ -104,21 +107,22 @@ namespace Symlinker
             UpdateAdminNotice();
         }
 
-        /// <summary>Shows the UAC shield and the footer notice while a symbolic link would need administrator rights.</summary>
+        /// <summary>
+        /// Shows the UAC shield and the footer notice while creating the link would show a UAC
+        /// prompt. Once the user has approved it for this session, neither is needed.
+        /// </summary>
         private void UpdateAdminNotice()
         {
             if (adminPanel == null || createLinkShield == null || symLinkRadio == null)
                 return;
 
-            var needsAdmin = symlinksNeedAdmin && symLinkRadio.IsChecked == true;
-            createLinkShield.Visibility = needsAdmin && createLinkShield.Source != null ? Visibility.Visible : Visibility.Collapsed;
+            var wouldPrompt = symlinksNeedAdmin && symLinkRadio.IsChecked == true && !linkRunner.HelperRunning;
+            createLinkShield.Visibility = wouldPrompt && createLinkShield.Source != null ? Visibility.Visible : Visibility.Collapsed;
             adminNoticeShield.Visibility = adminNoticeShield.Source != null ? Visibility.Visible : Visibility.Collapsed;
 
             // Field errors take the same spot and matter more
-            adminPanel.Visibility = needsAdmin && inputErrors.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            adminPanel.Visibility = wouldPrompt && inputErrors.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
-
-        private async void RestartAsAdmin_Click(object sender, RoutedEventArgs e) => await RestartAsAdminAsync();
 
         private void OnThemeChanged(object sender, ThemeChangedEventArgs e) => UpdateThemeBrushes();
 
@@ -141,7 +145,7 @@ namespace Symlinker
             return brush;
         }
 
-        /// <summary>Fills the form from the command line, e.g. after restarting as administrator.</summary>
+        /// <summary>Fills the form from the command line.</summary>
         private void ApplyLaunchOptions()
         {
             var options = launchOptions;
@@ -169,57 +173,17 @@ namespace Symlinker
                 linkNameTextBox.Text = options.LinkName;
         }
 
-        private LaunchOptions GetCurrentOptions() =>
-            LaunchOptions.From(isFolder, SelectedKind, linkLocationTextBox.Text, linkNameTextBox.Text, destinationLocationTextBox.Text);
-
         /// <summary>
-        /// Symbolic links need administrator rights unless Developer Mode is on. Checked before
-        /// anything runs, so nothing on disk changes when the link can't be created anyway.
-        /// Returns false when link creation should stop here.
+        /// Checks again whether a symbolic link would need administrator rights, since Developer
+        /// Mode may have been turned on since the window opened.
         /// </summary>
-        private async Task<bool> EnsureCanCreateLinkAsync()
+        private void RefreshSymlinkAccessNow()
         {
-            if (hardLinkRadio.IsChecked == true || junctionRadio.IsChecked == true)
-                return true;
+            if (symLinkRadio.IsChecked != true)
+                return;
 
-            // Check again: Developer Mode may have been turned on since the window opened
             symlinksNeedAdmin = !Elevation.CanCreateSymbolicLinks();
             UpdateAdminNotice();
-            if (!symlinksNeedAdmin)
-                return true;
-
-            var settings = new MetroDialogSettings
-            {
-                AnimateShow = false,
-                AnimateHide = false,
-                AffirmativeButtonText = Res.ButtonRestartAsAdmin,
-                NegativeButtonText = Res.ButtonNotNow,
-                DefaultButtonFocus = MessageDialogResult.Affirmative,
-
-                // Smaller title so long translations fit the short window without scrolling
-                DialogTitleFontSize = 20,
-            };
-
-            var answer = await this.ShowMessageAsync(Res.DialogElevationTitle, Res.DialogElevation, MessageDialogStyle.AffirmativeAndNegative, settings);
-            if (answer == MessageDialogResult.Affirmative)
-                await RestartAsAdminAsync();
-
-            return false;
-        }
-
-        /// <summary>Restarts as administrator with the current form values. This window closes if the user accepts the UAC prompt.</summary>
-        private async Task RestartAsAdminAsync()
-        {
-            try
-            {
-                // The new window opens with the same values; this one closes
-                if (Elevation.RestartElevated(GetCurrentOptions()))
-                    Close();
-            }
-            catch (Exception exception)
-            {
-                await dialogs.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.MessageBoxExceptionOcurred + "\n" + exception.Message);
-            }
         }
 
         /// <summary>Checks every field, marks the bad ones and shows what's wrong. Returns true when all are fine.</summary>

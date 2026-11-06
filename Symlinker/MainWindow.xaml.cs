@@ -31,6 +31,7 @@ namespace Symlinker
 
         private readonly LinkNameAutoFill linkNameAutoFill = new();
         private readonly IDialogService dialogs;
+        private readonly LinkRunner linkRunner;
         private readonly LinkCreator linkCreator;
 
         private bool isFolder = true;
@@ -40,7 +41,13 @@ namespace Symlinker
             launchOptions = options;
             InitializeComponent();
             dialogs = new MetroDialogService(this);
-            linkCreator = new LinkCreator(dialogs, new CmdMklinkRunner());
+            linkRunner = new LinkRunner(
+                dialogs,
+                () => symlinksNeedAdmin,
+                async () => await ElevatedLinker.StartAsync(),
+                LinkCommand.RunAsync,
+                UpdateAdminNotice);
+            linkCreator = new LinkCreator(dialogs, linkRunner);
             InitializeInputs();
             Loaded += OnLoaded;
         }
@@ -181,9 +188,10 @@ namespace Symlinker
             createLinkButton.IsEnabled = false;
             try
             {
-                if (ValidateInputs() && await EnsureCanCreateLinkAsync())
+                if (ValidateInputs())
                 {
-                    await linkCreator.CreateAsync(new LinkRequest(
+                    RefreshSymlinkAccessNow();
+                    await linkCreator.CreateAsync(new LinkInput(
                         linkLocationTextBox.Text,
                         linkNameTextBox.Text,
                         destinationLocationTextBox.Text,

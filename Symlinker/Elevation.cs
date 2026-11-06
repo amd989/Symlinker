@@ -1,22 +1,16 @@
 namespace Symlinker
 {
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Runtime.InteropServices;
     using System.Security.Principal;
-    using System.Text;
     using System.Windows;
     using System.Windows.Interop;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
-    /// <summary>
-    /// Values the window starts with. Used to carry the form over when restarting as administrator.
-    /// </summary>
+    /// <summary>Values the window starts with, read from the command line.</summary>
     internal sealed class LaunchOptions
     {
         private const string ModeArg = "--mode";
@@ -44,26 +38,7 @@ namespace Symlinker
             : null;
 
         /// <summary>The link type, or null when not given or not recognized.</summary>
-        public LinkKind? Kind =>
-            string.Equals(LinkType, "symbolic", StringComparison.OrdinalIgnoreCase) ? LinkKind.Symbolic
-            : string.Equals(LinkType, "hard", StringComparison.OrdinalIgnoreCase) ? LinkKind.Hard
-            : string.Equals(LinkType, "junction", StringComparison.OrdinalIgnoreCase) ? LinkKind.Junction
-            : null;
-
-        /// <summary>Options that reopen the window with these values.</summary>
-        public static LaunchOptions From(bool isFolder, LinkKind kind, string linkLocation, string linkName, string target) => new()
-        {
-            Mode = isFolder ? "folder" : "file",
-            LinkType = kind switch
-            {
-                LinkKind.Hard => "hard",
-                LinkKind.Junction => "junction",
-                _ => "symbolic",
-            },
-            LinkLocation = linkLocation,
-            LinkName = linkName,
-            Target = target,
-        };
+        public LinkKind? Kind => LinkKinds.Parse(LinkType);
 
         /// <summary>Reads options from the command line. Unknown arguments (like the old --engage) are ignored.</summary>
         public static LaunchOptions Parse(string[] args)
@@ -87,64 +62,15 @@ namespace Symlinker
 
             return options;
         }
-
-        /// <summary>Builds a command line that <see cref="Parse"/> turns back into these options.</summary>
-        public string ToArguments()
-        {
-            var parts = new List<string>();
-            void Add(string name, string value)
-            {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    parts.Add(name);
-                    parts.Add(QuoteArgument(value));
-                }
-            }
-
-            Add(ModeArg, Mode);
-            Add(TypeArg, LinkType);
-            Add(LocationArg, LinkLocation);
-            Add(NameArg, LinkName);
-            Add(TargetArg, Target);
-            return string.Join(" ", parts);
-        }
-
-        /// <summary>
-        /// Quotes one argument so Windows splits it back exactly as given, including spaces
-        /// and trailing backslashes (like "C:\").
-        /// </summary>
-        internal static string QuoteArgument(string value)
-        {
-            if (value.Length != 0 && value.IndexOfAny(new[] { ' ', '\t', '\n', '\v', '"' }) < 0)
-                return value;
-
-            var quoted = new StringBuilder("\"");
-            var backslashes = 0;
-            foreach (var c in value)
-            {
-                if (c == '\\')
-                {
-                    backslashes++;
-                    continue;
-                }
-
-                // Backslashes only need escaping when a quote follows them
-                quoted.Append('\\', c == '"' ? (backslashes * 2) + 1 : backslashes);
-                quoted.Append(c);
-                backslashes = 0;
-            }
-
-            quoted.Append('\\', backslashes * 2);
-            quoted.Append('"');
-            return quoted.ToString();
-        }
     }
 
-    /// <summary>Administrator rights helpers. Symlinker runs unelevated and only asks for them when needed.</summary>
+    /// <summary>
+    /// Administrator rights helpers. Symlinker runs unelevated and only elevates the link
+    /// creation step when needed (see <see cref="ElevatedLinker"/>).
+    /// </summary>
     internal static class Elevation
     {
         private const int ErrorPrivilegeNotHeld = 1314;
-        private const int ErrorCancelled = 1223;
 
         public static bool IsElevated
         {
@@ -184,32 +110,6 @@ namespace Symlinker
             {
                 // Something else went wrong with the probe. Let mklink try and report its own error.
                 return true;
-            }
-        }
-
-        /// <summary>
-        /// Starts a new elevated instance with the given options.
-        /// Returns false when the user declines the UAC prompt.
-        /// </summary>
-        [ExcludeFromCodeCoverage(Justification = "Shows the UAC prompt and starts a new process.")]
-        public static bool RestartElevated(LaunchOptions options)
-        {
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = Environment.ProcessPath,
-                Arguments = options.ToArguments(),
-                UseShellExecute = true,
-                Verb = "runas",
-            };
-
-            try
-            {
-                Process.Start(startInfo)?.Dispose();
-                return true;
-            }
-            catch (Win32Exception exception) when (exception.NativeErrorCode == ErrorCancelled)
-            {
-                return false;
             }
         }
 

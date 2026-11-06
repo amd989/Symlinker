@@ -175,17 +175,55 @@ namespace Symlinker.Tests
         }
     }
 
-    /// <summary>Records mklink calls; <see cref="Handler"/> decides the result.</summary>
-    internal sealed class FakeMklink : IMklinkRunner
+    /// <summary>
+    /// Records link requests instead of running mklink. <see cref="PrepareResult"/> answers the
+    /// administrator rights step, and <see cref="Handler"/> decides each link's result.
+    /// </summary>
+    internal sealed class FakeLinkRunner : ILinkRunner
     {
-        public List<string> Calls { get; } = new();
+        public static LinkResult Created => new() { Success = true, Message = "created" };
 
-        public Func<string, (bool Success, string Message)> Handler { get; set; } = _ => (true, "created");
+        public List<LinkRequest> Prepared { get; } = new();
 
-        public Task<(bool Success, string Message)> RunAsync(string arguments)
+        public List<LinkRequest> Calls { get; } = new();
+
+        /// <summary>False acts like a declined UAC prompt.</summary>
+        public bool PrepareResult { get; set; } = true;
+
+        /// <summary>Runs when the administrator rights step is reached, before its answer.</summary>
+        public Action OnPrepare { get; set; }
+
+        public Func<LinkRequest, LinkResult> Handler { get; set; } = _ => Created;
+
+        public Task<bool> PrepareAsync(LinkRequest request)
         {
-            Calls.Add(arguments);
-            return Task.FromResult(Handler(arguments));
+            Prepared.Add(request);
+            OnPrepare?.Invoke();
+            return Task.FromResult(PrepareResult);
         }
+
+        public Task<LinkResult> RunAsync(LinkRequest request)
+        {
+            Calls.Add(request);
+            return Task.FromResult(Handler(request));
+        }
+    }
+
+    /// <summary>A stand-in for the elevated helper process.</summary>
+    internal sealed class FakeLinkHelper : ILinkHelper
+    {
+        public bool IsAlive { get; set; } = true;
+
+        public bool Disposed { get; private set; }
+
+        public List<LinkRequest> Calls { get; } = new();
+
+        public Task<LinkResult> CreateLinkAsync(LinkRequest request)
+        {
+            Calls.Add(request);
+            return Task.FromResult(new LinkResult { Success = true, Message = "elevated" });
+        }
+
+        public void Dispose() => Disposed = true;
     }
 }

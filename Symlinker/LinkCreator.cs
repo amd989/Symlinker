@@ -11,7 +11,7 @@ namespace Symlinker
     using Res = Symlinker.Properties.Resources;
 
     /// <summary>What the user entered in the window.</summary>
-    internal sealed record LinkRequest(string LinkLocation, string LinkName, string Destination, bool IsFolder, LinkKind Kind);
+    internal sealed record LinkInput(string LinkLocation, string LinkName, string Destination, bool IsFolder, LinkKind Kind);
 
     /// <summary>
     /// Creates links from what the user entered: validates it, asks before replacing anything,
@@ -20,12 +20,12 @@ namespace Symlinker
     internal sealed class LinkCreator
     {
         private readonly IDialogService dialogs;
-        private readonly IMklinkRunner mklink;
+        private readonly ILinkRunner runner;
 
-        public LinkCreator(IDialogService dialogs, IMklinkRunner mklink)
+        public LinkCreator(IDialogService dialogs, ILinkRunner runner)
         {
             this.dialogs = dialogs;
-            this.mklink = mklink;
+            this.runner = runner;
         }
 
         /// <summary>True while files are being moved, so the window can't be closed halfway through.</summary>
@@ -37,7 +37,7 @@ namespace Symlinker
         /// <summary>Minimum time between progress updates while copying.</summary>
         internal TimeSpan ProgressInterval { get; set; } = TimeSpan.FromMilliseconds(100);
 
-        public async Task CreateAsync(LinkRequest request)
+        public async Task CreateAsync(LinkInput request)
         {
             try
             {
@@ -64,14 +64,14 @@ namespace Symlinker
                     return;
                 }
 
-                var linkPath = $"{linkLocation}\\{linkName}";
+                // Full path: the administrator helper runs in a different working folder
+                var linkPath = Path.GetFullPath(Path.Combine(linkLocation, linkName));
 
                 // A real file or folder already sits where the link goes and the target is free:
                 // offer to move it to the target and leave a link behind (#33)
                 if (Directory.Exists(linkLocation) && Path.IsPathFullyQualified(destination))
                 {
-                    var existingPath = Path.Combine(linkLocation, linkName);
-                    FileSystemInfo existing = request.IsFolder ? new DirectoryInfo(existingPath) : new FileInfo(existingPath);
+                    FileSystemInfo existing = request.IsFolder ? new DirectoryInfo(linkPath) : new FileInfo(linkPath);
                     if (existing.Exists && !LinkMover.IsLink(existing) && IsFreeMoveTarget(destination, request.IsFolder))
                     {
                         await OfferMoveAsync(request, existing, linkPath, Path.GetFullPath(destination));
@@ -128,28 +128,36 @@ namespace Symlinker
         /// <summary>
         /// Creates the link, first asking to delete an entry with the same name from <paramref name="siblings"/>.
         /// </summary>
-        private async Task ReplaceOrCreateAsync(LinkRequest request, string linkPath, string[] siblings, string title, string question, Action<string> delete)
+        private async Task ReplaceOrCreateAsync(LinkInput request, string linkPath, string[] siblings, string title, string question, Action<string> delete)
         {
             var existing = siblings.FirstOrDefault(e => Path.GetFileName(e).Equals(request.LinkName, StringComparison.OrdinalIgnoreCase));
-            if (existing != null)
+            if (existing != null && !await dialogs.ConfirmAsync(title, question))
             {
-                if (!await dialogs.ConfirmAsync(title, question))
-                {
-                    await dialogs.ShowMessageAsync(Res.LinkCreationAbortedWarning, Res.LinkCreationAborted);
-                    return;
-                }
-
-                delete(existing);
+                await dialogs.ShowMessageAsync(Res.LinkCreationAbortedWarning, Res.LinkCreationAborted);
+                return;
             }
 
-            var (success, message) = await RunMklinkAsync(request, linkPath, request.Destination);
-            await dialogs.ShowMessageAsync(success ? Res.MessageBoxSuccessTitle : Res.MessageBoxErrorTitle, message);
+            // Ask for administrator rights before deleting anything; a declined prompt quietly stops here
+            var linkRequest = ToLinkRequest(request, linkPath, request.Destination);
+            if (!await runner.PrepareAsync(linkRequest))
+                return;
+
+            if (existing != null)
+                delete(existing);
+
+            var result = await runner.RunAsync(linkRequest);
+            await dialogs.ShowMessageAsync(result.Success ? Res.MessageBoxSuccessTitle : Res.MessageBoxErrorTitle, result.Message);
         }
 
-        private Task<(bool Success, string Message)> RunMklinkAsync(LinkRequest request, string linkPath, string destination) =>
-            mklink.RunAsync(Mklink.BuildArguments(request.IsFolder, request.Kind, linkPath, destination));
+        private static LinkRequest ToLinkRequest(LinkInput input, string linkPath, string target) => new()
+        {
+            Type = LinkKinds.ToName(input.Kind),
+            Link = linkPath,
+            Target = target,
+            Directory = input.IsFolder,
+        };
 
-        private async Task OfferMoveAsync(LinkRequest request, FileSystemInfo existing, string linkPath, string target)
+        private async Task OfferMoveAsync(LinkInput request, FileSystemInfo existing, string linkPath, string target)
         {
             var message = string.Format(
                 CultureInfo.CurrentUICulture,
@@ -163,10 +171,16 @@ namespace Symlinker
                 return;
             }
 
+            // Ask for administrator rights before moving anything, so a declined prompt
+            // never leaves files moved without a link
+            var linkRequest = ToLinkRequest(request, linkPath, target);
+            if (!await runner.PrepareAsync(linkRequest))
+                return;
+
             IsMoving = true;
             try
             {
-                await MoveAndLinkAsync(request, existing, linkPath, target);
+                await MoveAndLinkAsync(request.IsFolder, existing, linkRequest);
             }
             finally
             {
@@ -175,11 +189,12 @@ namespace Symlinker
         }
 
         /// <summary>
-        /// Moves <paramref name="source"/> to <paramref name="target"/> and creates the link where it was.
+        /// Moves <paramref name="source"/> to the link's target and creates the link where it was.
         /// Any failure before the link exists puts everything back the way it was.
         /// </summary>
-        private async Task MoveAndLinkAsync(LinkRequest request, FileSystemInfo source, string linkPath, string target)
+        private async Task MoveAndLinkAsync(bool isFolder, FileSystemInfo source, LinkRequest linkRequest)
         {
+            var target = linkRequest.Target;
             var originalPath = source.FullName;
 
             // The target is free (missing or an empty folder), so the source can't be inside it;
@@ -220,7 +235,7 @@ namespace Symlinker
                     currentPath = staging;
 
                     copiedToTarget = true;
-                    FileSystemInfo staged = request.IsFolder ? new DirectoryInfo(staging) : new FileInfo(staging);
+                    FileSystemInfo staged = isFolder ? new DirectoryInfo(staging) : new FileInfo(staging);
                     var copyError = await CopyWithProgressAsync(staged, target);
                     if (copyError != null)
                     {
@@ -230,10 +245,10 @@ namespace Symlinker
                     }
                 }
 
-                var (linked, linkMessage) = await RunMklinkAsync(request, linkPath, target);
-                if (!linked)
+                var linked = await runner.RunAsync(linkRequest);
+                if (!linked.Success)
                 {
-                    await RollBackMoveAsync(originalPath, currentPath, target, copiedToTarget, targetWasEmptyFolder, string.Format(CultureInfo.CurrentUICulture, Res.MoveFailed, linkMessage));
+                    await RollBackMoveAsync(originalPath, currentPath, target, copiedToTarget, targetWasEmptyFolder, string.Format(CultureInfo.CurrentUICulture, Res.MoveFailed, linked.Message));
                     return;
                 }
 

@@ -2,7 +2,6 @@ namespace Symlinker.Tests
 {
     using System;
     using System.IO;
-    using System.Runtime.InteropServices;
 
     public sealed class ElevationTests
     {
@@ -34,42 +33,6 @@ namespace Symlinker.Tests
             Assert.Null(options.Mode);
         }
 
-        [Fact]
-        public void ToArguments_SkipsEmptyValues()
-        {
-            var options = new LaunchOptions { Mode = "folder", LinkName = string.Empty, Target = @"C:\My Data\" };
-
-            Assert.Equal(@"--mode folder --target ""C:\My Data\\""", options.ToArguments());
-        }
-
-        [Fact]
-        public void ToArguments_RoundTripsThroughTheWindowsCommandLine()
-        {
-            var options = LaunchOptions.From(true, LinkKind.Junction, @"C:\", @"say ""hi""", @"D:\a\""b\ c\\");
-
-            var parsed = LaunchOptions.Parse(SplitCommandLine(options.ToArguments()));
-
-            Assert.Equal("folder", parsed.Mode);
-            Assert.Equal("junction", parsed.LinkType);
-            Assert.Equal(@"C:\", parsed.LinkLocation);
-            Assert.Equal(@"say ""hi""", parsed.LinkName);
-            Assert.Equal(@"D:\a\""b\ c\\", parsed.Target);
-        }
-
-        [Theory]
-        [InlineData("plain", "plain")]
-        [InlineData(@"C:\no-spaces\", @"C:\no-spaces\")]
-        [InlineData("", @"""""")]
-        [InlineData("a b", @"""a b""")]
-        [InlineData(@"C:\My Folder\", @"""C:\My Folder\\""")]
-        [InlineData(@"say ""hi""", @"""say \""hi\""""")]
-        [InlineData(@"a\""b", @"""a\\\""b""")]
-        [InlineData(@"a\b c", @"""a\b c""")]
-        public void QuoteArgument_EscapesOnlyWhatWindowsNeeds(string value, string expected)
-        {
-            Assert.Equal(expected, LaunchOptions.QuoteArgument(value));
-        }
-
         [Theory]
         [InlineData("folder", true)]
         [InlineData("FOLDER", true)]
@@ -90,17 +53,6 @@ namespace Symlinker.Tests
         public void Kind_ReadsTheLinkType(string linkType, string expected)
         {
             Assert.Equal(expected, new LaunchOptions { LinkType = linkType }.Kind?.ToString());
-        }
-
-        [Theory]
-        [InlineData(true, "Symbolic", "folder", "symbolic")]
-        [InlineData(true, "Junction", "folder", "junction")]
-        [InlineData(false, "Hard", "file", "hard")]
-        public void From_DescribesTheForm(bool isFolder, string kind, string mode, string linkType)
-        {
-            var options = LaunchOptions.From(isFolder, Enum.Parse<LinkKind>(kind), "location", "name", "target");
-
-            Assert.Equal((mode, linkType, "location", "name", "target"), (options.Mode, options.LinkType, options.LinkLocation, options.LinkName, options.Target));
         }
 
         [Fact]
@@ -134,28 +86,5 @@ namespace Symlinker.Tests
         {
             Assert.Equal(SymlinkSupport.Available, Elevation.CanCreateSymbolicLinks());
         }
-
-        private static string[] SplitCommandLine(string arguments)
-        {
-            // The program name is parsed by different rules, so give it a plain one
-            var argv = CommandLineToArgvW("program.exe " + arguments, out var count);
-            try
-            {
-                var result = new string[count - 1];
-                for (var i = 1; i < count; i++)
-                    result[i - 1] = Marshal.PtrToStringUni(Marshal.ReadIntPtr(argv, i * IntPtr.Size));
-                return result;
-            }
-            finally
-            {
-                LocalFree(argv);
-            }
-        }
-
-        [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        private static extern IntPtr CommandLineToArgvW(string commandLine, out int count);
-
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr LocalFree(IntPtr memory);
     }
 }

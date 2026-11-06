@@ -79,18 +79,6 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>Bitte füllen Sie alle Pflichtfelder aus.</value>
   </data>
-  <data name="ButtonNotNow" xml:space="preserve">
-    <value>Nicht jetzt</value>
-  </data>
-  <data name="ButtonRestartAsAdmin" xml:space="preserve">
-    <value>Als Administrator neu starten</value>
-  </data>
-  <data name="DialogElevationTitle" xml:space="preserve">
-    <value>Administratorrechte erforderlich</value>
-  </data>
-  <data name="DialogElevation" xml:space="preserve">
-    <value>Symbolische Links benötigen Administratorrechte, außer der Entwicklermodus ist aktiviert. Als Administrator neu starten? Ihre Eingaben bleiben erhalten.</value>
-  </data>
   <data name="ErrorLinkNameMissing" xml:space="preserve">
     <value>Geben Sie einen Namen für den Link ein.</value>
   </data>
@@ -131,7 +119,10 @@
     <value>Zieldatei auswählen</value>
   </data>
   <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
-    <value>Symbolische Links benötigen Administratorrechte oder den Entwicklermodus.</value>
+    <value>Symbolische Links benötigen Administratorrechte oder den Entwicklermodus. Windows fragt beim Erstellen des Links nach der Berechtigung.</value>
+  </data>
+  <data name="ElevationHelperFailed" xml:space="preserve">
+    <value>Administratorrechte zum Erstellen des Links konnten nicht abgerufen werden.</value>
   </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>Das zum Erstellen von Links benötigte Befehlszeilentool wurde nicht gefunden.</value>

@@ -8,18 +8,18 @@ namespace Symlinker.Tests
     using Res = Symlinker.Properties.Resources;
 
     /// <summary>
-    /// Runs the link workflow against the real file system, with fake dialogs and a fake mklink.
+    /// Runs the link workflow against the real file system, with fake dialogs and a fake link runner.
     /// </summary>
     public sealed class LinkCreatorTests : IDisposable
     {
         private readonly TempDir temp = new();
         private readonly FakeDialogs dialogs = new();
-        private readonly FakeMklink mklink = new();
+        private readonly FakeLinkRunner runner = new();
         private readonly LinkCreator creator;
 
         public LinkCreatorTests()
         {
-            creator = new LinkCreator(dialogs, mklink);
+            creator = new LinkCreator(dialogs, runner);
         }
 
         public void Dispose() => temp.Dispose();
@@ -30,7 +30,16 @@ namespace Symlinker.Tests
             string.Format(CultureInfo.CurrentUICulture, format, args);
 
         private Task Create(string linkName, string destination, bool isFolder = true, LinkKind kind = LinkKind.Symbolic, string linkLocation = null) =>
-            creator.CreateAsync(new LinkRequest(linkLocation ?? Links, linkName, destination, isFolder, kind));
+            creator.CreateAsync(new LinkInput(linkLocation ?? Links, linkName, destination, isFolder, kind));
+
+        private void AssertLinked(string type, string link, string target, bool directory)
+        {
+            var request = Assert.Single(runner.Calls);
+            Assert.Equal((type, link, target, directory), (request.Type, request.Link, request.Target, request.Directory));
+
+            // Administrator rights are settled for the same link before it is created
+            Assert.Equal(request, Assert.Single(runner.Prepared));
+        }
 
         private void UseCopyMove(TimeSpan? progressInterval = null)
         {
@@ -46,10 +55,10 @@ namespace Symlinker.Tests
         [InlineData("links", "name", "")]
         public async Task Create_AsksToFillBlanks(string location, string name, string destination)
         {
-            await creator.CreateAsync(new LinkRequest(location, name, destination, true, LinkKind.Symbolic));
+            await creator.CreateAsync(new LinkInput(location, name, destination, true, LinkKind.Symbolic));
 
             Assert.Equal((Res.MessageBoxErrorTitle, Res.FillBlanks), dialogs.Last);
-            Assert.Empty(mklink.Calls);
+            Assert.Empty(runner.Calls);
         }
 
         [Theory]
@@ -58,10 +67,10 @@ namespace Symlinker.Tests
         [InlineData("links", "name", "\"target\"")]
         public async Task Create_RejectsQuotes(string location, string name, string destination)
         {
-            await creator.CreateAsync(new LinkRequest(location, name, destination, true, LinkKind.Symbolic));
+            await creator.CreateAsync(new LinkInput(location, name, destination, true, LinkKind.Symbolic));
 
             Assert.Equal((Res.MessageBoxErrorTitle, Res.InvalidQuoteInPath), dialogs.Last);
-            Assert.Empty(mklink.Calls);
+            Assert.Empty(runner.Calls);
         }
 
         [Theory]
@@ -82,7 +91,7 @@ namespace Symlinker.Tests
             await Create("name", fullDestination, isFolder, linkLocation: temp.PathOf(location));
 
             Assert.Equal((Res.MessageBoxErrorTitle, Res.FilesOrFolderNotExists), dialogs.Last);
-            Assert.Empty(mklink.Calls);
+            Assert.Empty(runner.Calls);
         }
 
         // ---- Plain link creation ----
@@ -93,9 +102,9 @@ namespace Symlinker.Tests
             temp.Dir("links");
             var target = temp.Dir("target");
 
-            await creator.CreateAsync(new LinkRequest($"  {Links} ", " name ", $" {target} ", true, LinkKind.Junction));
+            await creator.CreateAsync(new LinkInput($"  {Links} ", " name ", $" {target} ", true, LinkKind.Junction));
 
-            Assert.Equal(Mklink.BuildArguments(true, LinkKind.Junction, $@"{Links}\name", target), Assert.Single(mklink.Calls));
+            AssertLinked("junction", $@"{Links}\name", target, directory: true);
             Assert.Equal((Res.MessageBoxSuccessTitle, "created"), dialogs.Last);
             Assert.Empty(dialogs.Questions);
         }
@@ -108,7 +117,7 @@ namespace Symlinker.Tests
 
             await Create("name.txt", target, isFolder: false, kind: LinkKind.Hard);
 
-            Assert.Equal(Mklink.BuildArguments(false, LinkKind.Hard, $@"{Links}\name.txt", target), Assert.Single(mklink.Calls));
+            AssertLinked("hard", $@"{Links}\name.txt", target, directory: false);
         }
 
         [Fact]
@@ -116,11 +125,25 @@ namespace Symlinker.Tests
         {
             temp.Dir("links");
             var target = temp.Dir("target");
-            mklink.Handler = _ => (false, "access denied");
+            runner.Handler = _ => LinkResult.Failed("access denied");
 
             await Create("name", target);
 
             Assert.Equal((Res.MessageBoxErrorTitle, "access denied"), dialogs.Last);
+        }
+
+        [Fact]
+        public async Task Create_StopsQuietly_WhenAdminRightsAreDeclined()
+        {
+            temp.Dir("links");
+            var target = temp.Dir("target");
+            runner.PrepareResult = false;
+
+            await Create("name", target);
+
+            Assert.Equal("symbolic", Assert.Single(runner.Prepared).Type);
+            Assert.Empty(runner.Calls);
+            Assert.Empty(dialogs.Messages);
         }
 
         // ---- Replacing an existing entry ----
@@ -137,7 +160,7 @@ namespace Symlinker.Tests
             var question = Assert.Single(dialogs.Questions);
             Assert.Equal((Res.DialogFolderExistsDialog, Res.DialogFolderExists), (question.Title, question.Message));
             Assert.False(Directory.Exists(temp.PathOf("links", "Name")));
-            Assert.Single(mklink.Calls);
+            Assert.Single(runner.Calls);
         }
 
         [Fact]
@@ -152,7 +175,27 @@ namespace Symlinker.Tests
 
             Assert.Equal((Res.LinkCreationAbortedWarning, Res.LinkCreationAborted), dialogs.Last);
             Assert.True(File.Exists(temp.PathOf("links", "name", "old.txt")));
-            Assert.Empty(mklink.Calls);
+            Assert.Empty(runner.Calls);
+        }
+
+        [Fact]
+        public async Task Create_AsksForAdminRights_BeforeReplacing()
+        {
+            var existing = temp.PathOf("links", "name");
+            temp.File(@"links\name\old.txt");
+            var target = temp.Dir("target");
+            temp.File(@"target\inside.txt");
+            var existedWhenAsked = false;
+            runner.OnPrepare = () => existedWhenAsked = Directory.Exists(existing);
+            runner.PrepareResult = false;
+
+            await Create("name", target);
+
+            Assert.Single(dialogs.Questions);
+            Assert.True(existedWhenAsked);
+            Assert.True(Directory.Exists(existing));
+            Assert.Empty(runner.Calls);
+            Assert.Empty(dialogs.Messages);
         }
 
         [Fact]
@@ -166,7 +209,7 @@ namespace Symlinker.Tests
             var question = Assert.Single(dialogs.Questions);
             Assert.Equal((Res.DialogDeleteFileWarning, Res.DialogDeleteFile), (question.Title, question.Message));
             Assert.False(File.Exists(temp.PathOf("links", "name.txt")));
-            Assert.Single(mklink.Calls);
+            Assert.Single(runner.Calls);
         }
 
         [Fact]
@@ -180,7 +223,7 @@ namespace Symlinker.Tests
 
             Assert.Equal((Res.LinkCreationAbortedWarning, Res.LinkCreationAborted), dialogs.Last);
             Assert.True(File.Exists(temp.PathOf("links", "name.txt")));
-            Assert.Empty(mklink.Calls);
+            Assert.Empty(runner.Calls);
         }
 
         [Fact]
@@ -208,7 +251,7 @@ namespace Symlinker.Tests
 
             Assert.Equal(Res.MessageBoxErrorTitle, dialogs.Last.Title);
             Assert.StartsWith(Res.MessageBoxExceptionOcurred + "\n", dialogs.Last.Message);
-            Assert.Empty(mklink.Calls);
+            Assert.Empty(runner.Calls);
         }
 
         // ---- Offering to move an existing entry ----
@@ -228,7 +271,26 @@ namespace Symlinker.Tests
             Assert.Equal((Res.ButtonMoveAndLink, Res.ButtonCancel), (question.Yes, question.No));
             Assert.Equal((Res.LinkCreationAbortedWarning, Res.LinkCreationAborted), dialogs.Last);
             Assert.True(File.Exists(temp.PathOf("links", "name", "data.txt")));
-            Assert.Empty(mklink.Calls);
+            Assert.Empty(runner.Calls);
+        }
+
+        [Fact]
+        public async Task Move_AsksForAdminRights_BeforeMovingAnything()
+        {
+            temp.File(@"links\name\data.txt");
+            var target = temp.PathOf("target");
+            var movingWhenAsked = true;
+            runner.OnPrepare = () => movingWhenAsked = creator.IsMoving;
+            runner.PrepareResult = false;
+
+            await Create("name", target);
+
+            Assert.Equal(("symbolic", target), (Assert.Single(runner.Prepared).Type, runner.Prepared[0].Target));
+            Assert.False(movingWhenAsked);
+            Assert.True(File.Exists(temp.PathOf("links", "name", "data.txt")));
+            Assert.False(Directory.Exists(target));
+            Assert.Empty(runner.Calls);
+            Assert.Empty(dialogs.Messages);
         }
 
         [Fact]
@@ -237,15 +299,15 @@ namespace Symlinker.Tests
             temp.File(@"links\name\data.txt", "data");
             var target = temp.PathOf("new", "parent", "target");
             var movingDuringLink = false;
-            mklink.Handler = _ =>
+            runner.Handler = _ =>
             {
                 movingDuringLink = creator.IsMoving;
-                return (true, "created");
+                return FakeLinkRunner.Created;
             };
 
             await Create("name", target);
 
-            Assert.Equal(Mklink.BuildArguments(true, LinkKind.Symbolic, $@"{Links}\name", target), Assert.Single(mklink.Calls));
+            AssertLinked("symbolic", $@"{Links}\name", target, directory: true);
             Assert.Equal("data", File.ReadAllText(Path.Combine(target, "data.txt")));
             Assert.False(Directory.Exists(temp.PathOf("links", "name")));
             Assert.Equal((Res.MessageBoxSuccessTitle, Format(Res.MoveSucceeded, "name", target)), dialogs.Last);
@@ -302,7 +364,7 @@ namespace Symlinker.Tests
 
             Assert.Equal((Res.MessageBoxErrorTitle, Res.MoveTargetInsideSource), dialogs.Last);
             Assert.True(File.Exists(temp.PathOf("links", "name", "data.txt")));
-            Assert.Empty(mklink.Calls);
+            Assert.Empty(runner.Calls);
         }
 
         [Fact]
@@ -373,7 +435,7 @@ namespace Symlinker.Tests
             Assert.True(File.Exists(temp.PathOf("links", "name", "data.txt")));
             Assert.True(Directory.Exists(target));
             Assert.Empty(Directory.EnumerateFileSystemEntries(target));
-            Assert.Empty(mklink.Calls);
+            Assert.Empty(runner.Calls);
         }
 
         [Fact]
@@ -393,7 +455,7 @@ namespace Symlinker.Tests
             Assert.True(File.Exists(temp.PathOf("links", "name", "data.txt")));
             Assert.False(File.Exists(target));
             Assert.False(Directory.Exists(target));
-            Assert.Empty(mklink.Calls);
+            Assert.Empty(runner.Calls);
         }
 
         [Fact]
@@ -401,7 +463,7 @@ namespace Symlinker.Tests
         {
             temp.File(@"links\name\data.txt");
             var target = temp.Dir("empty-target");
-            mklink.Handler = _ => (false, "no rights");
+            runner.Handler = _ => LinkResult.Failed("no rights");
 
             await Create("name", target);
 
@@ -417,7 +479,7 @@ namespace Symlinker.Tests
             temp.File(@"links\name\data.txt");
             var target = temp.PathOf("target");
             UseCopyMove();
-            mklink.Handler = _ => (false, "no rights");
+            runner.Handler = _ => LinkResult.Failed("no rights");
 
             await Create("name", target);
 
@@ -434,10 +496,10 @@ namespace Symlinker.Tests
             var target = temp.PathOf("target");
 
             // Something takes the original's place before it can be put back
-            mklink.Handler = _ =>
+            runner.Handler = _ =>
             {
                 File.WriteAllText(temp.PathOf("links", "name"), "in the way");
-                return (false, "no rights");
+                return LinkResult.Failed("no rights");
             };
 
             await Create("name", target);
@@ -456,10 +518,10 @@ namespace Symlinker.Tests
             FileStream lockedFile = null;
 
             // Something holds a file open in the old copy, so it can't be removed
-            mklink.Handler = _ =>
+            runner.Handler = _ =>
             {
                 lockedFile = new FileStream(Path.Combine(staging, "data.txt"), FileMode.Open, FileAccess.Read, FileShare.None);
-                return (true, "created");
+                return FakeLinkRunner.Created;
             };
 
             try
@@ -488,7 +550,7 @@ namespace Symlinker.Tests
             Assert.StartsWith(Format(Res.MoveFailed, string.Empty), dialogs.Last.Message);
             Assert.Equal("data", File.ReadAllText(original));
             Assert.False(File.Exists(target));
-            Assert.Empty(mklink.Calls);
+            Assert.Empty(runner.Calls);
         }
     }
 }

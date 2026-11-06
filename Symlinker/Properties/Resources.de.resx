@@ -184,4 +184,54 @@ oder Ordnermodus (einen Ordner mit einem anderen Ordner verknüpfen).</value>
   <data name="TooltipAbout" xml:space="preserve">
     <value>Über Symlinker</value>
   </data>
+  <data name="ButtonMoveAndLink" xml:space="preserve">
+    <value>Verschieben und verknüpfen</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="DialogMoveTitle" xml:space="preserve">
+    <value>Zum Ziel verschieben?</value>
+  </data>
+  <data name="DialogMoveFolder" xml:space="preserve">
+    <value>Hier ist bereits ein Ordner namens "{0}".
+
+Ins Ziel verschieben und an seiner Stelle einen Link anlegen? Alles, was den alten Pfad nutzt, funktioniert weiter.</value>
+  </data>
+  <data name="DialogMoveFile" xml:space="preserve">
+    <value>Hier ist bereits eine Datei namens "{0}".
+
+Ins Ziel verschieben und an ihrer Stelle einen Link anlegen? Alles, was den alten Pfad nutzt, funktioniert weiter.</value>
+  </data>
+  <data name="ProgressMoveTitle" xml:space="preserve">
+    <value>Dateien werden verschoben</value>
+  </data>
+  <data name="ProgressMovePreparing" xml:space="preserve">
+    <value>Wird vorbereitet...</value>
+  </data>
+  <data name="ProgressMoveMessage" xml:space="preserve">
+    <value>{0} von {1} kopiert</value>
+  </data>
+  <data name="MoveSucceeded" xml:space="preserve">
+    <value>"{0}" wurde ins Ziel verschoben, und an der alten Stelle steht jetzt ein Link.</value>
+  </data>
+  <data name="MoveFailed" xml:space="preserve">
+    <value>Das Verschieben wurde nicht abgeschlossen, daher wurde alles wiederhergestellt.
+
+{0}</value>
+  </data>
+  <data name="MoveCanceled" xml:space="preserve">
+    <value>Verschieben abgebrochen. Alles wurde wiederhergestellt.</value>
+  </data>
+  <data name="MoveCleanupFailed" xml:space="preserve">
+    <value>Die Dateien wurden verschoben und der Link wurde erstellt, aber die alte Kopie konnte nicht entfernt werden. Sie können sie selbst löschen:
+{0}</value>
+  </data>
+  <data name="MoveRollbackFailed" xml:space="preserve">
+    <value>Etwas ist schiefgelaufen und das Original konnte nicht wiederhergestellt werden. Ihre Dateien sind sicher unter:
+{0}</value>
+  </data>
+  <data name="MoveTargetInsideSource" xml:space="preserve">
+    <value>Das Ziel darf nicht innerhalb des zu verschiebenden Elements liegen und umgekehrt.</value>
+  </data>
 </root>

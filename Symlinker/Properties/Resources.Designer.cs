@@ -419,5 +419,139 @@ namespace Symlinker.Properties {
                 return ResourceManager.GetString("TooltipTypeSelectorTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move and link.
+        /// </summary>
+        public static string ButtonMoveAndLink {
+            get {
+                return ResourceManager.GetString("ButtonMoveAndLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string ButtonCancel {
+            get {
+                return ResourceManager.GetString("ButtonCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move to target?.
+        /// </summary>
+        public static string DialogMoveTitle {
+            get {
+                return ResourceManager.GetString("DialogMoveTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A folder named "{0}" is already here.
+        ///
+        ///Move it to the target and leave a link in its place? Anything using the old path will keep working..
+        /// </summary>
+        public static string DialogMoveFolder {
+            get {
+                return ResourceManager.GetString("DialogMoveFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A file named "{0}" is already here.
+        ///
+        ///Move it to the target and leave a link in its place? Anything using the old path will keep working..
+        /// </summary>
+        public static string DialogMoveFile {
+            get {
+                return ResourceManager.GetString("DialogMoveFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moving files.
+        /// </summary>
+        public static string ProgressMoveTitle {
+            get {
+                return ResourceManager.GetString("ProgressMoveTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting ready....
+        /// </summary>
+        public static string ProgressMovePreparing {
+            get {
+                return ResourceManager.GetString("ProgressMovePreparing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1} copied.
+        /// </summary>
+        public static string ProgressMoveMessage {
+            get {
+                return ResourceManager.GetString("ProgressMoveMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to "{0}" was moved to the target, and a link now stands in its old place..
+        /// </summary>
+        public static string MoveSucceeded {
+            get {
+                return ResourceManager.GetString("MoveSucceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The move did not finish, so everything was put back the way it was.
+        ///
+        ///{0}.
+        /// </summary>
+        public static string MoveFailed {
+            get {
+                return ResourceManager.GetString("MoveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move canceled. Everything was put back the way it was..
+        /// </summary>
+        public static string MoveCanceled {
+            get {
+                return ResourceManager.GetString("MoveCanceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The files were moved and the link was created, but the old copy could not be removed. You can delete it yourself:
+        ///{0}.
+        /// </summary>
+        public static string MoveCleanupFailed {
+            get {
+                return ResourceManager.GetString("MoveCleanupFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Something went wrong and the original could not be put back. Your files are safe at:
+        ///{0}.
+        /// </summary>
+        public static string MoveRollbackFailed {
+            get {
+                return ResourceManager.GetString("MoveRollbackFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The target can't be inside the item being moved, or the other way around..
+        /// </summary>
+        public static string MoveTargetInsideSource {
+            get {
+                return ResourceManager.GetString("MoveTargetInsideSource", resourceCulture);
+            }
+        }
     }
 }

@@ -184,4 +184,54 @@
   <data name="TooltipAbout" xml:space="preserve">
     <value>关于 Symlinker</value>
   </data>
+  <data name="ButtonMoveAndLink" xml:space="preserve">
+    <value>移动并链接</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="DialogMoveTitle" xml:space="preserve">
+    <value>移动到目标位置？</value>
+  </data>
+  <data name="DialogMoveFolder" xml:space="preserve">
+    <value>此处已存在名为“{0}”的文件夹。
+
+要将其移动到目标位置并在原处保留链接吗？使用旧路径的程序仍可正常工作。</value>
+  </data>
+  <data name="DialogMoveFile" xml:space="preserve">
+    <value>此处已存在名为“{0}”的文件。
+
+要将其移动到目标位置并在原处保留链接吗？使用旧路径的程序仍可正常工作。</value>
+  </data>
+  <data name="ProgressMoveTitle" xml:space="preserve">
+    <value>正在移动文件</value>
+  </data>
+  <data name="ProgressMovePreparing" xml:space="preserve">
+    <value>正在准备...</value>
+  </data>
+  <data name="ProgressMoveMessage" xml:space="preserve">
+    <value>已复制 {0} / {1}</value>
+  </data>
+  <data name="MoveSucceeded" xml:space="preserve">
+    <value>“{0}”已移动到目标位置，原处现在是一个链接。</value>
+  </data>
+  <data name="MoveFailed" xml:space="preserve">
+    <value>移动未完成，所有内容已恢复原状。
+
+{0}</value>
+  </data>
+  <data name="MoveCanceled" xml:space="preserve">
+    <value>移动已取消，所有内容已恢复原状。</value>
+  </data>
+  <data name="MoveCleanupFailed" xml:space="preserve">
+    <value>文件已移动且链接已创建，但无法删除旧副本。你可以手动删除:
+{0}</value>
+  </data>
+  <data name="MoveRollbackFailed" xml:space="preserve">
+    <value>出现问题，无法恢复原始内容。你的文件安全保存在:
+{0}</value>
+  </data>
+  <data name="MoveTargetInsideSource" xml:space="preserve">
+    <value>目标位置不能位于要移动的项目内部，反之亦然。</value>
+  </data>
 </root>

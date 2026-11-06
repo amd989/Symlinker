@@ -184,4 +184,54 @@ o modalità cartella (collegare una cartella a un'altra cartella).</value>
   <data name="TooltipAbout" xml:space="preserve">
     <value>Informazioni su Symlinker</value>
   </data>
+  <data name="ButtonMoveAndLink" xml:space="preserve">
+    <value>Sposta e collega</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="DialogMoveTitle" xml:space="preserve">
+    <value>Spostare nella destinazione?</value>
+  </data>
+  <data name="DialogMoveFolder" xml:space="preserve">
+    <value>Qui c'è già una cartella chiamata "{0}".
+
+Spostarla nella destinazione e lasciare un link al suo posto? Tutto ciò che usa il vecchio percorso continuerà a funzionare.</value>
+  </data>
+  <data name="DialogMoveFile" xml:space="preserve">
+    <value>Qui c'è già un file chiamato "{0}".
+
+Spostarlo nella destinazione e lasciare un link al suo posto? Tutto ciò che usa il vecchio percorso continuerà a funzionare.</value>
+  </data>
+  <data name="ProgressMoveTitle" xml:space="preserve">
+    <value>Spostamento dei file</value>
+  </data>
+  <data name="ProgressMovePreparing" xml:space="preserve">
+    <value>Preparazione...</value>
+  </data>
+  <data name="ProgressMoveMessage" xml:space="preserve">
+    <value>{0} di {1} copiati</value>
+  </data>
+  <data name="MoveSucceeded" xml:space="preserve">
+    <value>"{0}" è stato spostato nella destinazione e ora al suo posto c'è un link.</value>
+  </data>
+  <data name="MoveFailed" xml:space="preserve">
+    <value>Lo spostamento non è stato completato, quindi tutto è stato ripristinato.
+
+{0}</value>
+  </data>
+  <data name="MoveCanceled" xml:space="preserve">
+    <value>Spostamento annullato. Tutto è stato ripristinato.</value>
+  </data>
+  <data name="MoveCleanupFailed" xml:space="preserve">
+    <value>I file sono stati spostati e il link è stato creato, ma non è stato possibile rimuovere la vecchia copia. Puoi eliminarla manualmente:
+{0}</value>
+  </data>
+  <data name="MoveRollbackFailed" xml:space="preserve">
+    <value>Si è verificato un problema e non è stato possibile ripristinare l'originale. I tuoi file sono al sicuro in:
+{0}</value>
+  </data>
+  <data name="MoveTargetInsideSource" xml:space="preserve">
+    <value>La destinazione non può trovarsi all'interno dell'elemento da spostare, né viceversa.</value>
+  </data>
 </root>

@@ -184,4 +184,54 @@
   <data name="TooltipAbout" xml:space="preserve">
     <value>Symlinker について</value>
   </data>
+  <data name="ButtonMoveAndLink" xml:space="preserve">
+    <value>移動してリンク</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="DialogMoveTitle" xml:space="preserve">
+    <value>ターゲットに移動しますか？</value>
+  </data>
+  <data name="DialogMoveFolder" xml:space="preserve">
+    <value>ここには「{0}」という名前のフォルダーが既にあります。
+
+ターゲットに移動し、元の場所にリンクを残しますか？古いパスを使うものはそのまま動作します。</value>
+  </data>
+  <data name="DialogMoveFile" xml:space="preserve">
+    <value>ここには「{0}」という名前のファイルが既にあります。
+
+ターゲットに移動し、元の場所にリンクを残しますか？古いパスを使うものはそのまま動作します。</value>
+  </data>
+  <data name="ProgressMoveTitle" xml:space="preserve">
+    <value>ファイルを移動しています</value>
+  </data>
+  <data name="ProgressMovePreparing" xml:space="preserve">
+    <value>準備しています...</value>
+  </data>
+  <data name="ProgressMoveMessage" xml:space="preserve">
+    <value>{1} 中 {0} をコピーしました</value>
+  </data>
+  <data name="MoveSucceeded" xml:space="preserve">
+    <value>「{0}」をターゲットに移動し、元の場所にリンクを作成しました。</value>
+  </data>
+  <data name="MoveFailed" xml:space="preserve">
+    <value>移動が完了しなかったため、すべて元の状態に戻しました。
+
+{0}</value>
+  </data>
+  <data name="MoveCanceled" xml:space="preserve">
+    <value>移動をキャンセルしました。すべて元の状態に戻しました。</value>
+  </data>
+  <data name="MoveCleanupFailed" xml:space="preserve">
+    <value>ファイルを移動してリンクを作成しましたが、古いコピーを削除できませんでした。手動で削除できます:
+{0}</value>
+  </data>
+  <data name="MoveRollbackFailed" xml:space="preserve">
+    <value>問題が発生し、元の状態に戻せませんでした。ファイルは次の場所に安全に保存されています:
+{0}</value>
+  </data>
+  <data name="MoveTargetInsideSource" xml:space="preserve">
+    <value>ターゲットを移動対象の中に置くことはできません。その逆もできません。</value>
+  </data>
 </root>

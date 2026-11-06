@@ -66,7 +66,10 @@ Write-Output "Version: $Version (package $msixVersion)"
 [xml]$template = Get-Content (Join-Path $templateDir "AppxManifest.xml")
 $identity = $template.Package.Identity
 
-$hostArch = if ([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture -eq 'Arm64') { 'arm64' } else { 'x64' }
+# The machine's own architecture, not this PowerShell's (x64 PowerShell can run emulated on Arm64).
+# RuntimeInformation.OSArchitecture would do this, but Windows PowerShell 5.1 doesn't have it.
+$nativeArch = (Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment').PROCESSOR_ARCHITECTURE
+$hostArch = if ($nativeArch -eq 'ARM64') { 'arm64' } else { 'x64' }
 if (($Install -or $Wack) -and $Architectures -notcontains $hostArch) {
     Write-Error "-Install and -Wack need the $hostArch build. Add it to -Architectures."
 }
@@ -107,7 +110,7 @@ if (Test-Path $outDir) {
     catch { Write-Error "Couldn't clear $outDir. Close any Symlinker started from it and try again." }
 }
 New-Item -ItemType Directory -Force $bundleInput | Out-Null
-Add-Type -AssemblyName System.IO.Compression.FileSystem
+Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
 
 foreach ($arch in $Architectures) {
     Write-Output ""

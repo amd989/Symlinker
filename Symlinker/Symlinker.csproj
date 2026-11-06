@@ -58,6 +58,9 @@
     <PackageReference Include="MahApps.Metro.IconPacks.Material" />
   </ItemGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="Symlinker.Tests" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>

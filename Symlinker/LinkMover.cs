@@ -31,8 +31,12 @@ namespace Symlinker
         };
 
         /// <summary>Whether the entry is a symbolic link or junction (not a regular file or folder).</summary>
+        /// <remarks>
+        /// The attribute check skips the slower link lookup for regular entries. A missing entry
+        /// reports every attribute, but has no link target, so it is not a link either.
+        /// </remarks>
         public static bool IsLink(FileSystemInfo info) =>
-            info.Exists && info.Attributes.HasFlag(FileAttributes.ReparsePoint) && info.LinkTarget != null;
+            info.Attributes.HasFlag(FileAttributes.ReparsePoint) && info.LinkTarget != null;
 
         /// <summary>Whether <paramref name="path"/> is <paramref name="parent"/> itself or somewhere inside it.</summary>
         public static bool IsSameOrInside(string path, string parent)

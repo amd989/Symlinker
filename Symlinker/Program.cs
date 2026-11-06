@@ -3,8 +3,10 @@ namespace Symlinker
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
+    [ExcludeFromCodeCoverage(Justification = "Entry point that relaunches itself elevated through UAC.")]
     internal static class Program
     {
         [STAThread]

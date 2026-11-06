@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Symlinker is a Windows Forms application (.NET 8) that provides a GUI for creating symbolic links, hard links, and directory junctions on Windows. It wraps the Windows `mklink` command with an easy-to-use interface.
+Symlinker is a WPF application (.NET 10) that provides a GUI for creating symbolic links, hard links, and directory junctions on Windows. It wraps the Windows `mklink` command with an easy-to-use interface.
 
 **Target Platform:** Windows 10+ only (as of 2025 modernization)
 
@@ -43,67 +43,68 @@ The `release.ps1` script:
 dotnet run --project "Symlinker/Symlinker.csproj"
 ```
 
+### Running the Tests
+
+```powershell
+dotnet test --project Symlinker.Tests
+```
+
+- xUnit v3 on Microsoft.Testing.Platform (opted in through [global.json](global.json)), with coverage from `coverlet.MTP`
+- Every run collects coverage for the `Symlinker` assembly and **fails below 100% line, branch or method coverage**. The Cobertura report lands in `TestResults/`
+- Tests use the real file system under `%TEMP%`. Symbolic link tests need Developer Mode or an elevated prompt (GitHub's Windows runners are elevated)
+- Code that needs a live window or UAC (`MainWindow`, `App`, `Program`, `MetroDialogService`) is marked `[ExcludeFromCodeCoverage]`. Keep logic out of those and put it in a tested class instead
+
 ## Architecture
+
+WPF app (.NET 10) using MahApps.Metro. The window is thin view glue; the logic lives in plain classes that the tests drive with fake dialogs and a fake mklink.
 
 ### Key Components
 
-1. **Program.cs**: Entry point with UAC elevation logic
-   - Automatically re-launches itself with administrator privileges using the `--engage` flag
-   - Uses Windows API (`BCM_SETSHIELD`) to display UAC shield icon
+1. **Program.cs**: Entry point. Relaunches itself elevated (`runas`) with the `--engage` flag
+2. **App.xaml(.cs)**: Loads MahApps styles and syncs the theme with Windows
+3. **MainWindow.xaml(.cs)**: View glue: file/folder mode, pickers, drag and drop, link name auto-fill
+4. **LinkCreator.cs**: The link workflow: validation, replace-existing prompts, and moving an existing file or folder to the target (rename on the same drive, copy with progress across drives, rollback on failure)
+5. **LinkMover.cs**: File system helpers for moving: copy that keeps attributes and recreates nested links, delete that never follows links
+6. **Mklink.cs**: `LinkKind`, mklink argument building, and `CmdMklinkRunner` which runs `cmd /c mklink`
+7. **Dialogs.cs**: `IDialogService` / `IProgressDialog`, and `MetroDialogService` which shows them in the window
+8. **UiHelpers.cs**: Path name extraction, picker start folders, byte formatting, app version, `LinkNameAutoFill`
 
-2. **MainWindow.cs**: Main form and business logic
-   - Handles UI state for file vs. folder symlink modes
-   - Manages three link types: Symbolic Link, Hard Link, Directory Junction
-   - Executes `cmd.exe /c mklink` with appropriate parameters
-   - Supports drag-and-drop for file/folder paths
+### Link Type Mapping
 
-3. **MainWindow.Designer.cs**: Auto-generated Windows Forms designer code
-   - Contains all UI control initialization
-
-### Link Creation Flow
-
-1. User selects link type (file/folder) via `typeSelectorComboBox`
-2. `Switcher()` method updates UI labels and available link types
-3. User inputs link location, link name, and destination
-4. `CreateLink()` validates paths and checks for conflicts
-5. `SendCommand()` builds and executes mklink command with proper escaping
-6. Process output/error handlers display results via MessageBox
-
-### Important Patterns
-
-- **Command Building**: Uses `string.Format()` with `CultureInfo.InvariantCulture` for mklink command construction
-- **Path Handling**: Wraps paths in quotes to support spaces
-- **Link Type Mapping**:
-  - Symbolic Link: `/D` (directory) or empty (file)
-  - Hard Link: `/H`
-  - Directory Junction: `/J` (folders only)
+- Symbolic Link: `/D` (directory) or empty (file)
+- Hard Link: `/H` (files only)
+- Directory Junction: `/D /J` (folders only)
 
 ### Dependencies
 
 Managed via Central Package Management ([Directory.Packages.props](Directory.Packages.props)):
 
-- **Microsoft-WindowsAPICodePack-Core** (1.1.5): Common file dialogs
-- **Microsoft-WindowsAPICodePack-Shell** (1.1.5): Shell integration
+- **MahApps.Metro**: Window chrome, dialogs, theming
+- **MahApps.Metro.IconPacks.Material**: Icons
+- **xunit.v3**, **coverlet.MTP**: Tests and coverage
 
 ## Project Structure
 
 ```
 Symlinker/
-├── Symlinker/          # Main project directory
-│   ├── MainWindow.cs         # Core form logic
-│   ├── MainWindow.Designer.cs # UI designer code
-│   ├── MainWindow.resx       # Form resources
+├── Symlinker/                # App
+│   ├── LinkCreator.cs        # Link workflow (tested)
+│   ├── LinkMover.cs          # Move/copy/delete helpers (tested)
+│   ├── Mklink.cs             # mklink arguments and runner (tested)
+│   ├── Dialogs.cs            # Dialog abstraction + MahApps implementation
+│   ├── UiHelpers.cs          # Small UI helpers (tested)
+│   ├── MainWindow.xaml(.cs)  # Window (view glue)
+│   ├── App.xaml(.cs)         # Application, theme sync
 │   ├── Program.cs            # Entry point with UAC elevation
-│   ├── Properties/
-│   │   ├── Resources.Designer.cs  # Localized strings
-│   │   └── Settings.Designer.cs   # App settings
-│   ├── icon.ico              # Application icon
-│   └── Symlinker.csproj
-├── Symlinker.sln             # Solution file
+│   └── Properties/           # Localized resources and settings
+├── Symlinker.Tests/          # xUnit tests, 100% coverage gate
+├── Symlinker.sln
 ├── Directory.Packages.props  # Central package versions
+├── global.json               # Opts dotnet test into Microsoft.Testing.Platform
 ├── release.ps1               # ClickOnce build/publish script
 └── .github/workflows/
-    └── release.yml           # GitHub Actions for tagged releases
+    ├── ci.yml                # Build and test on pull requests
+    └── release.yml           # Tagged releases
 ```
 
 ## Release Process

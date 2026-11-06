@@ -1,9 +1,11 @@
 namespace Symlinker
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Windows;
 
     using ControlzEx.Theming;
 
+    [ExcludeFromCodeCoverage(Justification = "WPF startup; syncs the theme with Windows.")]
     public partial class App : Application
     {
         protected override void OnStartup(StartupEventArgs e)

@@ -19,3 +19,14 @@ jobs:
 
       - name: Build
         run: dotnet build Symlinker/Symlinker.csproj --configuration Release
+
+      - name: Test (fails below 100% coverage)
+        run: dotnet test --project Symlinker.Tests/Symlinker.Tests.csproj --configuration Release
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: TestResults/*.cobertura.xml
+          if-no-files-found: ignore

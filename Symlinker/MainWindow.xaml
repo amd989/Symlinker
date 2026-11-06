@@ -514,7 +514,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <iconPacks:PackIconMaterial Kind="AlertCircleOutline" Width="14" Height="14"
+                    <iconPacks:PackIconMaterial Kind="AlertOutline" Width="14" Height="14"
                                                 VerticalAlignment="Top" Margin="0,1,6,0"
                                                 Foreground="{DynamicResource Symlinker.Brushes.Error}"/>
                     <TextBlock x:Name="errorText" Grid.Column="1"

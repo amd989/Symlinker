@@ -50,7 +50,7 @@ namespace Symlinker
         private bool symlinksNeedAdmin;
         private bool checkingSymlinkAccess;
 
-        // Administrator helper for the link being created, started on demand
+        // Administrator helper, started on the first symbolic link that needs it and kept until the window closes
         private ElevatedLinker elevatedLinker;
 
         private void InitializeInputs()
@@ -80,6 +80,9 @@ namespace Symlinker
                 if (symlinksNeedAdmin)
                     RefreshSymlinkAccess();
             };
+
+            // The administrator helper stays up for the whole session; closing the window ends it
+            Closed += (s, e) => StopElevatedLinker();
         }
 
         private async void RefreshSymlinkAccess()
@@ -106,18 +109,24 @@ namespace Symlinker
             UpdateAdminNotice();
         }
 
-        /// <summary>Shows the UAC shield and the footer notice while a symbolic link would need administrator rights.</summary>
+        /// <summary>Whether the selected link is a symbolic link that needs administrator rights.</summary>
+        private bool LinkNeedsAdmin => symlinksNeedAdmin && symLinkRadio?.IsChecked == true;
+
+        /// <summary>
+        /// Shows the UAC shield and the footer notice while creating the link would show a UAC
+        /// prompt. Once the user has approved it for this session, neither is needed.
+        /// </summary>
         private void UpdateAdminNotice()
         {
             if (adminPanel == null || createLinkShield == null || symLinkRadio == null)
                 return;
 
-            var needsAdmin = symlinksNeedAdmin && symLinkRadio.IsChecked == true;
-            createLinkShield.Visibility = needsAdmin && createLinkShield.Source != null ? Visibility.Visible : Visibility.Collapsed;
+            var wouldPrompt = LinkNeedsAdmin && elevatedLinker?.IsAlive != true;
+            createLinkShield.Visibility = wouldPrompt && createLinkShield.Source != null ? Visibility.Visible : Visibility.Collapsed;
             adminNoticeShield.Visibility = adminNoticeShield.Source != null ? Visibility.Visible : Visibility.Collapsed;
 
             // Field errors take the same spot and matter more
-            adminPanel.Visibility = needsAdmin && inputErrors.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            adminPanel.Visibility = wouldPrompt && inputErrors.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void OnThemeChanged(object sender, ThemeChangedEventArgs e) => UpdateThemeBrushes();
@@ -215,15 +224,22 @@ namespace Symlinker
         }
 
         /// <summary>
-        /// Starts the administrator helper if this link needs it (one UAC prompt). Call it before
-        /// anything on disk changes, so a declined prompt leaves everything as it was.
-        /// Returns false when link creation should stop: the user canceled the prompt (nothing is
-        /// shown then) or the helper couldn't start (an error is shown).
+        /// Starts the administrator helper if this link needs it and it isn't running yet. That
+        /// shows one UAC prompt; the helper then stays up until the window closes, so later links
+        /// don't ask again. Call it before anything on disk changes, so a declined prompt leaves
+        /// everything as it was. Returns false when link creation should stop: the user canceled
+        /// the prompt (nothing is shown then) or the helper couldn't start (an error is shown).
         /// </summary>
         private async Task<bool> ElevateIfNeededAsync()
         {
-            if (elevatedLinker != null || !symlinksNeedAdmin || symLinkRadio.IsChecked != true)
+            if (!LinkNeedsAdmin)
                 return true;
+
+            if (elevatedLinker?.IsAlive == true)
+                return true;
+
+            // The helper went away (e.g. ended from Task Manager); start a new one
+            StopElevatedLinker();
 
             try
             {
@@ -235,10 +251,11 @@ namespace Symlinker
                 return false;
             }
 
+            UpdateAdminNotice();
             return elevatedLinker != null;
         }
 
-        /// <summary>Closes the administrator helper, if one was started for this link.</summary>
+        /// <summary>Closes the administrator helper, if one is running.</summary>
         private void StopElevatedLinker()
         {
             elevatedLinker?.Dispose();

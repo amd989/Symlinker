@@ -276,7 +276,8 @@ namespace Symlinker
 
         /// <summary>
         /// Runs mklink and returns whether it worked, with the message to show the user.
-        /// Goes through the administrator helper when <see cref="ElevateIfNeededAsync"/> started one.
+        /// Symbolic links that need administrator rights go through the helper started by
+        /// <see cref="ElevateIfNeededAsync"/>; everything else runs unelevated.
         /// </summary>
         private async Task<(bool Success, string Message)> RunMklinkAsync(string link, string destination)
         {
@@ -291,7 +292,7 @@ namespace Symlinker
             LinkResult result;
             try
             {
-                result = elevatedLinker != null
+                result = elevatedLinker != null && LinkNeedsAdmin
                     ? await elevatedLinker.CreateLinkAsync(request)
                     : await LinkCommand.RunAsync(request);
             }
@@ -640,7 +641,6 @@ namespace Symlinker
             }
             finally
             {
-                StopElevatedLinker();
                 createLinkButton.IsEnabled = true;
             }
         }

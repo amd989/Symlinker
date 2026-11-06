@@ -18,7 +18,7 @@ namespace Symlinker
     /// Creates links through a copy of Symlinker running as administrator, so the window itself
     /// stays unelevated (and keeps drag and drop). Starting it shows one UAC prompt. It then waits
     /// on a named pipe for link requests until disposed, so a caller can elevate before changing
-    /// anything on disk and create the link later.
+    /// anything on disk, create the link later, and keep using it for more links.
     /// </summary>
     internal sealed class ElevatedLinker : IDisposable
     {
@@ -96,6 +96,22 @@ namespace Symlinker
                 pipe.Dispose();
                 process?.Dispose();
                 throw;
+            }
+        }
+
+        /// <summary>Whether the helper is still running and connected.</summary>
+        public bool IsAlive
+        {
+            get
+            {
+                try
+                {
+                    return pipe.IsConnected && !process.HasExited;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             }
         }
 

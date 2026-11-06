@@ -1,7 +1,9 @@
 namespace Symlinker
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
+    [ExcludeFromCodeCoverage(Justification = "Entry point that starts the WPF application.")]
     internal static class Program
     {
         [STAThread]

@@ -7,6 +7,32 @@ namespace Symlinker
 
     using Res = Symlinker.Properties.Resources;
 
+    /// <summary>The kinds of link mklink can create.</summary>
+    internal enum LinkKind
+    {
+        Symbolic,
+        Hard,
+        Junction,
+    }
+
+    /// <summary>The names used for <see cref="LinkKind"/> on the command line and in <see cref="LinkRequest.Type"/>.</summary>
+    internal static class LinkKinds
+    {
+        public static string ToName(LinkKind kind) => kind switch
+        {
+            LinkKind.Hard => "hard",
+            LinkKind.Junction => "junction",
+            _ => "symbolic",
+        };
+
+        /// <summary>Reads a link type name (any case). Returns null when it isn't one.</summary>
+        public static LinkKind? Parse(string name) =>
+            string.Equals(name, "symbolic", StringComparison.OrdinalIgnoreCase) ? LinkKind.Symbolic
+            : string.Equals(name, "hard", StringComparison.OrdinalIgnoreCase) ? LinkKind.Hard
+            : string.Equals(name, "junction", StringComparison.OrdinalIgnoreCase) ? LinkKind.Junction
+            : null;
+    }
+
     /// <summary>One link to create. Sent to the elevated helper as JSON, so it only holds plain values.</summary>
     internal sealed class LinkRequest
     {
@@ -36,7 +62,10 @@ namespace Symlinker
     /// <summary>Creates links with <c>mklink</c>. Used by the window and by the elevated helper.</summary>
     internal static class LinkCommand
     {
-        public static async Task<LinkResult> RunAsync(LinkRequest request)
+        public static Task<LinkResult> RunAsync(LinkRequest request) => RunAsync(request, "cmd");
+
+        /// <summary>Runs mklink through <paramref name="shell"/>, which tests replace to check a missing shell.</summary>
+        internal static async Task<LinkResult> RunAsync(LinkRequest request, string shell)
         {
             var arguments = BuildArguments(request);
             if (arguments == null)
@@ -46,7 +75,7 @@ namespace Symlinker
             {
                 var startInfo = new ProcessStartInfo
                 {
-                    FileName = "cmd",
+                    FileName = shell,
                     Arguments = arguments,
                     UseShellExecute = false,
                     CreateNoWindow = true,
@@ -78,7 +107,7 @@ namespace Symlinker
         /// Builds the cmd.exe arguments. Returns null for anything that could break out of the
         /// quotes, since the elevated helper runs whatever it is sent.
         /// </summary>
-        private static string BuildArguments(LinkRequest request)
+        internal static string BuildArguments(LinkRequest request)
         {
             if (request == null || string.IsNullOrWhiteSpace(request.Link) || string.IsNullOrWhiteSpace(request.Target))
                 return null;

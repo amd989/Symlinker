@@ -2,7 +2,7 @@ namespace Symlinker
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
@@ -18,6 +18,7 @@ namespace Symlinker
     using Res = Symlinker.Properties.Resources;
 
     /// <summary>Marks a text field as holding a bad value, so its template can highlight it.</summary>
+    [ExcludeFromCodeCoverage(Justification = "WPF attached property plumbing.")]
     public static class InputError
     {
         /// <summary>Identifies the HasError attached property.</summary>
@@ -31,7 +32,7 @@ namespace Symlinker
         public static void SetHasError(DependencyObject element, bool value) => element.SetValue(HasErrorProperty, value);
     }
 
-    /// <summary>Input checks, inline errors, launch options and administrator rights for symbolic links.</summary>
+    /// <summary>Inline errors, launch options and the administrator rights notice. The checks live in <see cref="InputValidator"/>.</summary>
     public partial class MainWindow
     {
         private const string ErrorBrushKey = "Symlinker.Brushes.Error";
@@ -49,9 +50,6 @@ namespace Symlinker
         // Whether creating a symbolic link needs administrator rights (no admin, no Developer Mode)
         private bool symlinksNeedAdmin;
         private bool checkingSymlinkAccess;
-
-        // Administrator helper, started on the first symbolic link that needs it and kept until the window closes
-        private ElevatedLinker elevatedLinker;
 
         private void InitializeInputs()
         {
@@ -82,7 +80,7 @@ namespace Symlinker
             };
 
             // The administrator helper stays up for the whole session; closing the window ends it
-            Closed += (s, e) => StopElevatedLinker();
+            Closed += (s, e) => linkRunner.Dispose();
         }
 
         private async void RefreshSymlinkAccess()
@@ -109,9 +107,6 @@ namespace Symlinker
             UpdateAdminNotice();
         }
 
-        /// <summary>Whether the selected link is a symbolic link that needs administrator rights.</summary>
-        private bool LinkNeedsAdmin => symlinksNeedAdmin && symLinkRadio?.IsChecked == true;
-
         /// <summary>
         /// Shows the UAC shield and the footer notice while creating the link would show a UAC
         /// prompt. Once the user has approved it for this session, neither is needed.
@@ -121,7 +116,7 @@ namespace Symlinker
             if (adminPanel == null || createLinkShield == null || symLinkRadio == null)
                 return;
 
-            var wouldPrompt = LinkNeedsAdmin && elevatedLinker?.IsAlive != true;
+            var wouldPrompt = symlinksNeedAdmin && symLinkRadio.IsChecked == true && !linkRunner.HelperRunning;
             createLinkShield.Visibility = wouldPrompt && createLinkShield.Source != null ? Visibility.Visible : Visibility.Collapsed;
             adminNoticeShield.Visibility = adminNoticeShield.Source != null ? Visibility.Visible : Visibility.Collapsed;
 
@@ -140,14 +135,7 @@ namespace Symlinker
             // Text on the accent color: black or white, whichever reads better on the user's
             // Windows accent (MahApps' IdealForeground is white even on light accents)
             if (TryFindResource("MahApps.Colors.Accent") is Color accent)
-            {
-                // The accent is partly transparent, so judge the color actually seen on screen
-                if (TryFindResource("MahApps.Colors.ThemeBackground") is Color background)
-                    accent = Blend(accent, background);
-
-                var onAccent = ContrastRatio(accent, Colors.Black) > ContrastRatio(accent, Colors.White) ? Colors.Black : Colors.White;
-                Resources[OnAccentBrushKey] = Frozen(onAccent);
-            }
+                Resources[OnAccentBrushKey] = Frozen(ColorContrast.TextOn(accent, TryFindResource("MahApps.Colors.ThemeBackground") as Color?));
         }
 
         private static SolidColorBrush Frozen(Color color)
@@ -155,29 +143,6 @@ namespace Symlinker
             var brush = new SolidColorBrush(color);
             brush.Freeze();
             return brush;
-        }
-
-        private static Color Blend(Color top, Color bottom)
-        {
-            var a = top.A / 255.0;
-            byte Mix(byte t, byte b) => (byte)Math.Round((t * a) + (b * (1 - a)));
-            return Color.FromRgb(Mix(top.R, bottom.R), Mix(top.G, bottom.G), Mix(top.B, bottom.B));
-        }
-
-        /// <summary>WCAG contrast ratio between two colors (1 to 21).</summary>
-        private static double ContrastRatio(Color a, Color b)
-        {
-            static double Channel(byte value)
-            {
-                var c = value / 255.0;
-                return c <= 0.03928 ? c / 12.92 : Math.Pow((c + 0.055) / 1.055, 2.4);
-            }
-
-            static double Luminance(Color c) => (0.2126 * Channel(c.R)) + (0.7152 * Channel(c.G)) + (0.0722 * Channel(c.B));
-
-            var la = Luminance(a);
-            var lb = Luminance(b);
-            return (Math.Max(la, lb) + 0.05) / (Math.Min(la, lb) + 0.05);
         }
 
         /// <summary>Fills the form from the command line.</summary>
@@ -189,14 +154,12 @@ namespace Symlinker
                 return;
 
             // Mode first: switching it may clear a target that doesn't fit
-            if (string.Equals(options.Mode, "file", StringComparison.OrdinalIgnoreCase))
-                fileTypeRadio.IsChecked = true;
-            else if (string.Equals(options.Mode, "folder", StringComparison.OrdinalIgnoreCase))
-                folderTypeRadio.IsChecked = true;
+            if (options.IsFolderMode is bool folderMode)
+                (folderMode ? folderTypeRadio : fileTypeRadio).IsChecked = true;
 
-            if (string.Equals(options.LinkType, "hard", StringComparison.OrdinalIgnoreCase) && !isFolder)
+            if (options.Kind == LinkKind.Hard && !isFolder)
                 hardLinkRadio.IsChecked = true;
-            else if (string.Equals(options.LinkType, "junction", StringComparison.OrdinalIgnoreCase) && isFolder)
+            else if (options.Kind == LinkKind.Junction && isFolder)
                 junctionRadio.IsChecked = true;
 
             if (options.LinkLocation != null)
@@ -223,102 +186,26 @@ namespace Symlinker
             UpdateAdminNotice();
         }
 
-        /// <summary>
-        /// Starts the administrator helper if this link needs it and it isn't running yet. That
-        /// shows one UAC prompt; the helper then stays up until the window closes, so later links
-        /// don't ask again. Call it before anything on disk changes, so a declined prompt leaves
-        /// everything as it was. Returns false when link creation should stop: the user canceled
-        /// the prompt (nothing is shown then) or the helper couldn't start (an error is shown).
-        /// </summary>
-        private async Task<bool> ElevateIfNeededAsync()
-        {
-            if (!LinkNeedsAdmin)
-                return true;
-
-            if (elevatedLinker?.IsAlive == true)
-                return true;
-
-            // The helper went away (e.g. ended from Task Manager); start a new one
-            StopElevatedLinker();
-
-            try
-            {
-                elevatedLinker = await ElevatedLinker.StartAsync();
-            }
-            catch (Exception exception)
-            {
-                await this.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.MessageBoxExceptionOcurred + "\n" + exception.Message, settings: FastDialog);
-                return false;
-            }
-
-            UpdateAdminNotice();
-            return elevatedLinker != null;
-        }
-
-        /// <summary>Closes the administrator helper, if one is running.</summary>
-        private void StopElevatedLinker()
-        {
-            elevatedLinker?.Dispose();
-            elevatedLinker = null;
-        }
-
         /// <summary>Checks every field, marks the bad ones and shows what's wrong. Returns true when all are fine.</summary>
         private bool ValidateInputs()
         {
             inputErrors.Clear();
 
-            var name = linkNameTextBox.Text.Trim();
-            var location = linkLocationTextBox.Text.Trim();
-            var target = destinationLocationTextBox.Text.Trim();
+            var boxes = new Dictionary<InputField, TextBox>
+            {
+                [InputField.LinkName] = linkNameTextBox,
+                [InputField.LinkLocation] = linkLocationTextBox,
+                [InputField.Target] = destinationLocationTextBox,
+            };
 
-            if (name.Length == 0)
-                AddInputError(linkNameTextBox, Res.ErrorLinkNameMissing);
-            else if (name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
-                AddInputError(linkNameTextBox, Res.ErrorLinkNameInvalid);
-
-            if (location.Length == 0)
-                AddInputError(linkLocationTextBox, Res.ErrorLinkLocationMissing);
-            else if (location.Contains('"'))
-                AddInputError(linkLocationTextBox, Res.InvalidQuoteInPath);
-            else if (!Directory.Exists(location))
-                AddInputError(linkLocationTextBox, Res.ErrorLinkLocationNotFound);
-
-            if (target.Length == 0)
-                AddInputError(destinationLocationTextBox, isFolder ? Res.ErrorTargetFolderMissing : Res.ErrorTargetFileMissing);
-            else if (target.Contains('"'))
-                AddInputError(destinationLocationTextBox, Res.InvalidQuoteInPath);
-            else if (isFolder && File.Exists(target))
-                AddInputError(destinationLocationTextBox, Res.ErrorTargetIsFile);
-            else if (!isFolder && Directory.Exists(target))
-                AddInputError(destinationLocationTextBox, Res.ErrorTargetIsFolder);
-            else if (!(isFolder ? Directory.Exists(target) : File.Exists(target)) && !LinkPathInUse(location, name))
-                AddInputError(destinationLocationTextBox, isFolder ? Res.ErrorTargetFolderNotFound : Res.ErrorTargetFileNotFound);
+            foreach (var (field, message) in InputValidator.Validate(linkNameTextBox.Text, linkLocationTextBox.Text, destinationLocationTextBox.Text, isFolder))
+                AddInputError(boxes[field], message);
 
             ShowInputErrors();
             if (inputErrors.Count != 0)
                 inputErrors[0].Key.Focus();
 
             return inputErrors.Count == 0;
-        }
-
-        /// <summary>
-        /// Whether something already exists where the link would go. Link creation decides what
-        /// to do then, so a missing target isn't reported here.
-        /// </summary>
-        private static bool LinkPathInUse(string location, string name)
-        {
-            if (location.Length == 0 || name.Length == 0)
-                return false;
-
-            try
-            {
-                var path = Path.Combine(location, name);
-                return Directory.Exists(path) || File.Exists(path);
-            }
-            catch (ArgumentException)
-            {
-                return false;
-            }
         }
 
         private void AddInputError(TextBox box, string message) => inputErrors.Add(new KeyValuePair<TextBox, string>(box, message));
@@ -368,16 +255,6 @@ namespace Symlinker
             var label = isFolder ? Res.TooltipBrowseTargetFolder : Res.TooltipBrowseTargetFile;
             targetBrowseButton.ToolTip = label;
             AutomationProperties.SetName(targetBrowseButton, label);
-        }
-
-        /// <summary>Whether the target path still makes sense after switching between folder and file mode.</summary>
-        private static bool TargetFitsMode(string target, bool folderMode)
-        {
-            target = target.Trim();
-            if (target.Length == 0)
-                return false;
-
-            return folderMode ? Directory.Exists(target) : File.Exists(target);
         }
     }
 }

@@ -28,6 +28,18 @@ dotnet run --project "Symlinker/Symlinker.csproj"
 
 The app starts unelevated. It only asks for administrator rights when a symbolic link needs them (see "Administrator rights" below).
 
+### Running the Tests
+
+```powershell
+dotnet test --project Symlinker.Tests
+```
+
+- xUnit v3 on Microsoft.Testing.Platform (opted in through [global.json](global.json)), with coverage from `coverlet.MTP`
+- Every run collects coverage for the `Symlinker` assembly and **fails below 100% line, branch or method coverage**. The Cobertura report lands in `TestResults/`
+- Tests use the real file system under `%TEMP%`. Symbolic link tests need Developer Mode or an elevated prompt (GitHub's Windows runners are elevated)
+- Code that needs a live window, UAC or native calls (`MainWindow`, `App`, `Program`, `MetroDialogService`, `InputError`, `ElevatedLinker.StartAsync`, `Elevation.GetShieldIcon`) is marked `[ExcludeFromCodeCoverage]`. Keep logic out of those and put it in a tested class instead
+- The elevated helper's pipe protocol is tested in-process: the test plays the window's end of the pipe and runs `ElevatedLinker.RunHelper` on a background thread, so no UAC prompt is involved
+
 ### Publishing
 
 - `./release.ps1` builds and publishes the ClickOnce installer to the `gh-pages` branch (`-OnlyBuild` skips deployment). It reads the Git tag for the version (`v1.2.3` becomes `1.2.3.0`).
@@ -35,32 +47,39 @@ The app starts unelevated. It only asks for administrator rights when a symbolic
 
 ## Architecture
 
+The window is view glue. Logic lives in plain classes that the tests drive with fake dialogs and a fake mklink.
+
 ### Key Components
 
 1. **Program.cs**: Entry point. Parses command-line options (`LaunchOptions`) and opens the main window. It does not elevate. With `--link-helper` it runs the hidden elevated helper instead (see "Administrator rights").
 2. **App.xaml / App.xaml.cs**: Loads MahApps.Metro styles and syncs the theme (light/dark and accent color) with Windows.
 3. **MainWindow.xaml**: The whole UI. Two cards (link location, target), pill toggles for folder/file mode and link type, and a footer with the About button, an inline error line and the Create link button. Styles live in `Window.Resources`.
-4. **MainWindow.xaml.cs**: Mode switching, link name auto-fill, file pickers, drag and drop, and link creation (`CreateLink()`, `SendCommand()`, the move-and-link flow, and `RunMklinkAsync()`).
-5. **MainWindow.Inputs.cs**: Field validation with inline errors (`InputError.HasError` attached property plus the footer message), theme-dependent brushes, restoring launch options, the up-front admin notice, and starting the elevated helper on demand (`ElevateIfNeededAsync()`).
+4. **MainWindow.xaml.cs**: Mode switching, link name auto-fill, file pickers, drag and drop. Hands link creation to `LinkCreator`.
+5. **MainWindow.Inputs.cs**: Inline errors (`InputError.HasError` attached property plus the footer message), theme-dependent brushes, restoring launch options, and the up-front admin notice.
 6. **Elevation.cs**: `LaunchOptions` (command-line parsing) and `Elevation` (admin check, symbolic link privilege probe, the UAC shield icon).
-7. **LinkCommand.cs**: `LinkRequest`/`LinkResult` and `LinkCommand.RunAsync()`, which runs `cmd.exe /c mklink`. Used by the window and by the elevated helper.
-8. **ElevatedLinker.cs**: Starts `Symlinker.exe --link-helper` as administrator and sends it link requests over a named pipe.
-9. **LinkMover.cs**: File system helpers for moving an existing file or folder to the target before linking.
+7. **LinkCreator.cs**: The link workflow: replace-existing prompts, and moving an existing file or folder to the target (rename on the same drive, copy with progress across drives, rollback on failure).
+8. **LinkRunner.cs**: `ILinkRunner`, which `LinkCreator` uses to create links. `LinkRunner` runs mklink unelevated, except symbolic links that need admin, which go through the elevated helper. `PrepareAsync()` starts the helper (one UAC prompt) before anything on disk changes.
+9. **LinkCommand.cs**: `LinkKind`, `LinkRequest`/`LinkResult` and `LinkCommand.RunAsync()`, which runs `cmd.exe /c mklink`. Used unelevated and by the elevated helper.
+10. **ElevatedLinker.cs**: Starts `Symlinker.exe --link-helper` as administrator and sends it link requests over a named pipe. `RunHelper()` is the helper's side.
+11. **LinkMover.cs**: File system helpers for moving: copy that keeps attributes and recreates nested links, delete that never follows links.
+12. **InputValidator.cs**: Field checks behind the inline errors, and `ColorContrast` for text on the accent color.
+13. **Dialogs.cs**: `IDialogService` / `IProgressDialog`, and `MetroDialogService`, which shows them in the window.
+14. **UiHelpers.cs**: Path name extraction, picker start folders, byte formatting, app version, `LinkNameAutoFill`.
 
 ### Link Creation Flow
 
 1. User picks folder or file mode (pills) and a link type. Junction is folder-only, hard link is file-only.
 2. User fills in the link location, link name and target (typing, browsing, or drag and drop).
-3. Create link (or Enter, it is the default button) runs `ValidateInputs()`, which marks bad fields inline.
+3. Create link (or Enter, it is the default button) runs `ValidateInputs()`, which marks the fields `InputValidator` flags.
 4. `RefreshSymlinkAccessNow()` probes again whether a symbolic link needs administrator rights.
-5. `CreateLink()` handles an existing item at the link path (delete it, or move it to the target), then `SendCommand()` runs mklink and shows the result. `ElevateIfNeededAsync()` is called before the first change on disk.
+5. `LinkCreator.CreateAsync()` handles an existing item at the link path (replace it, or move it to the target), then runs mklink and shows the result. `ILinkRunner.PrepareAsync()` is called before the first change on disk.
 
 ### Administrator rights
 
 - Junctions and hard links never need admin. Symbolic links need admin unless Windows Developer Mode is on.
 - `Elevation.CanCreateSymbolicLinks()` probes by creating a throwaway symlink in the temp folder.
 - The probe runs when the window loads (again on activation while admin is needed, and on Create link). If symbolic links need admin, Create link shows the UAC shield and the footer says Windows will ask for permission, so the user knows before filling in the form. Field errors take the same footer spot and hide the notice.
-- The window never restarts or elevates itself, so drag and drop keeps working. When a symbolic link needs admin, `ElevateIfNeededAsync()` starts `Symlinker.exe --link-helper <pipe> <pid>` with `runas` (one UAC prompt). The helper has no window: it connects back over the named pipe and creates each link it is sent with mklink. It stays up until the window closes (or it is ended, then the next symbolic link starts a new one), so the user approves UAC once per session. While it runs, the shield and the footer notice are hidden. Only symbolic links that need admin go through it; junctions and hard links always run unelevated.
+- The window never restarts or elevates itself, so drag and drop keeps working. When a symbolic link needs admin, `LinkRunner.PrepareAsync()` starts `Symlinker.exe --link-helper <pipe> <pid>` with `runas` (one UAC prompt). The helper has no window: it connects back over the named pipe and creates each link it is sent with mklink. It stays up until the window closes (or it is ended, then the next symbolic link starts a new one), so the user approves UAC once per session. While it runs, the shield and the footer notice are hidden. Only symbolic links that need admin go through it; junctions and hard links always run unelevated.
 - Elevation happens before anything on disk changes (deleting an existing item, or the move-and-link flow), so declining the UAC prompt (Win32 error 1223) quietly stops and leaves everything as it was.
 - Both ends check the other's process ID on the pipe (`GetNamedPipeClientProcessId` / `GetNamedPipeServerProcessId`), and `LinkCommand` rejects paths with quotes or line breaks, so the helper only ever runs a single mklink.
 - Command-line options (`--mode`, `--type`, `--location`, `--name`, `--target`) still prefill the form. The old `--engage` flag is still accepted and ignored.
@@ -76,6 +95,7 @@ Managed via Central Package Management ([Directory.Packages.props](Directory.Pac
 
 - **MahApps.Metro**: Window chrome, dialogs, theming
 - **MahApps.Metro.IconPacks.Material**: Icons
+- **xunit.v3**, **coverlet.MTP**: Tests and coverage
 
 ## Project Structure
 
@@ -84,12 +104,17 @@ Symlinker/
 ├── Symlinker/
 │   ├── App.xaml(.cs)            # Application, theme sync
 │   ├── MainWindow.xaml          # UI and styles
-│   ├── MainWindow.xaml.cs       # Core window logic and link creation
-│   ├── MainWindow.Inputs.cs     # Validation, inline errors, admin notice
+│   ├── MainWindow.xaml.cs       # Window glue
+│   ├── MainWindow.Inputs.cs     # Inline errors, admin notice
 │   ├── Elevation.cs             # LaunchOptions, symlink probe, UAC shield
+│   ├── LinkCreator.cs           # Link workflow
+│   ├── LinkRunner.cs            # Unelevated or elevated mklink
 │   ├── LinkCommand.cs           # Runs mklink
 │   ├── ElevatedLinker.cs        # Elevated link helper over a named pipe
-│   ├── LinkMover.cs             # Move-and-link file system helpers
+│   ├── LinkMover.cs             # Move/copy/delete helpers
+│   ├── InputValidator.cs        # Field checks, accent contrast
+│   ├── Dialogs.cs               # Dialog abstraction + MahApps implementation
+│   ├── UiHelpers.cs             # Small UI helpers
 │   ├── Program.cs               # Entry point
 │   ├── Properties/
 │   │   ├── Resources.resx           # English strings
@@ -98,8 +123,10 @@ Symlinker/
 │   │   └── app.manifest             # asInvoker, PerMonitorV2 DPI
 │   ├── icon.ico
 │   └── Symlinker.csproj
+├── Symlinker.Tests/            # xUnit tests, 100% coverage gate
 ├── Symlinker.sln
 ├── Directory.Packages.props
+├── global.json                 # Opts dotnet test into Microsoft.Testing.Platform
 ├── release.ps1                 # ClickOnce build/publish
 ├── build-portable.ps1          # Portable ZIP for Scoop
 └── .github/workflows/          # ci.yml, release.yml

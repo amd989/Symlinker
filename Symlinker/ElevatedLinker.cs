@@ -3,6 +3,7 @@ namespace Symlinker
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.IO.Pipes;
@@ -20,7 +21,7 @@ namespace Symlinker
     /// on a named pipe for link requests until disposed, so a caller can elevate before changing
     /// anything on disk, create the link later, and keep using it for more links.
     /// </summary>
-    internal sealed class ElevatedLinker : IDisposable
+    internal sealed class ElevatedLinker : ILinkHelper
     {
         /// <summary>Command line switch that runs Symlinker as the helper instead of opening the window.</summary>
         public const string HelperArg = "--link-helper";
@@ -35,7 +36,8 @@ namespace Symlinker
         private readonly StreamReader reader;
         private readonly StreamWriter writer;
 
-        private ElevatedLinker(NamedPipeServerStream pipe, Process process)
+        /// <summary>Wraps a connected pipe and the helper process on its other end.</summary>
+        internal ElevatedLinker(NamedPipeServerStream pipe, Process process)
         {
             this.pipe = pipe;
             this.process = process;
@@ -47,6 +49,7 @@ namespace Symlinker
         /// Starts the helper as administrator. Returns null when the user cancels the UAC prompt.
         /// Throws when the helper starts but can't be reached.
         /// </summary>
+        [ExcludeFromCodeCoverage(Justification = "Shows the UAC prompt and starts an elevated process.")]
         public static async Task<ElevatedLinker> StartAsync()
         {
             var pipeName = "Symlinker-" + Guid.NewGuid().ToString("N");
@@ -139,7 +142,10 @@ namespace Symlinker
         /// Runs in the elevated copy: connects back to the window that started it and creates
         /// each link it is sent, until the window closes the connection. Returns the exit code.
         /// </summary>
-        public static int RunHelper(string[] args)
+        public static int RunHelper(string[] args) => RunHelper(args, HelperConnectTimeoutMs);
+
+        /// <summary>The helper loop, with a connect timeout that tests can shorten.</summary>
+        internal static int RunHelper(string[] args, int connectTimeoutMs)
         {
             if (args.Length != 3 || !uint.TryParse(args[2], NumberStyles.None, CultureInfo.InvariantCulture, out var parentId))
                 return 2;
@@ -147,10 +153,10 @@ namespace Symlinker
             try
             {
                 using var pipe = new NamedPipeClientStream(".", args[1], PipeDirection.InOut);
-                pipe.Connect(HelperConnectTimeoutMs);
+                pipe.Connect(connectTimeoutMs);
 
                 // Only take requests from the window that asked for elevation
-                if (!GetNamedPipeServerProcessId(pipe.SafePipeHandle, out var serverId) || serverId != parentId)
+                if (GetServerProcessId(pipe) != parentId)
                     return 3;
 
                 // Not disposed: the window closing the pipe is the normal way to finish, and
@@ -182,6 +188,11 @@ namespace Symlinker
                 return 1;
             }
         }
+
+        /// <summary>The process on the server end of the pipe, or null when Windows can't tell.</summary>
+        [ExcludeFromCodeCoverage(Justification = "Native lookup whose failure can't be triggered in a test.")]
+        private static uint? GetServerProcessId(PipeStream pipe) =>
+            GetNamedPipeServerProcessId(pipe.SafePipeHandle, out var serverId) ? serverId : null;
 
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]

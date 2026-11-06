@@ -1,6 +1,7 @@
 namespace Symlinker
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Runtime.InteropServices;
     using System.Security.Principal;
@@ -29,6 +30,15 @@ namespace Symlinker
         public string LinkName { get; set; }
 
         public string Target { get; set; }
+
+        /// <summary>True for folder mode, false for file mode, null when not given or not recognized.</summary>
+        public bool? IsFolderMode =>
+            string.Equals(Mode, "folder", StringComparison.OrdinalIgnoreCase) ? true
+            : string.Equals(Mode, "file", StringComparison.OrdinalIgnoreCase) ? false
+            : null;
+
+        /// <summary>The link type, or null when not given or not recognized.</summary>
+        public LinkKind? Kind => LinkKinds.Parse(LinkType);
 
         /// <summary>Reads options from the command line. Unknown arguments (like the old --engage) are ignored.</summary>
         public static LaunchOptions Parse(string[] args)
@@ -76,16 +86,19 @@ namespace Symlinker
         /// or Windows Developer Mode allows it without elevation.
         /// Junctions and hard links never need this.
         /// </summary>
-        public static bool CanCreateSymbolicLinks()
+        public static bool CanCreateSymbolicLinks() => CanCreateSymbolicLinks(IsElevated, File.CreateSymbolicLink);
+
+        /// <summary>The check behind <see cref="CanCreateSymbolicLinks()"/>, with the link creation replaceable in tests.</summary>
+        internal static bool CanCreateSymbolicLinks(bool isElevated, Func<string, string, FileSystemInfo> createSymbolicLink)
         {
-            if (IsElevated)
+            if (isElevated)
                 return true;
 
             // Try for real: a throwaway link in the temp folder, pointing nowhere
             var probe = Path.Combine(Path.GetTempPath(), "symlinker-probe-" + Guid.NewGuid().ToString("N"));
             try
             {
-                File.CreateSymbolicLink(probe, probe + "-target");
+                createSymbolicLink(probe, probe + "-target");
                 File.Delete(probe);
                 return true;
             }
@@ -104,6 +117,7 @@ namespace Symlinker
         /// The Windows UAC shield (small size), shown on actions that need administrator rights.
         /// Returns null if Windows doesn't provide it.
         /// </summary>
+        [ExcludeFromCodeCoverage(Justification = "Native shell icon; the failure path can't be triggered.")]
         public static ImageSource GetShieldIcon()
         {
             var info = new StockIconInfo { Size = (uint)Marshal.SizeOf<StockIconInfo>() };

@@ -138,6 +138,60 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>Please fill in all the required fields.</value>
   </data>
+  <data name="ButtonNotNow" xml:space="preserve">
+    <value>Not now</value>
+  </data>
+  <data name="ButtonRestartAsAdmin" xml:space="preserve">
+    <value>Restart as administrator</value>
+  </data>
+  <data name="DialogElevationTitle" xml:space="preserve">
+    <value>Administrator rights needed</value>
+  </data>
+  <data name="DialogElevation" xml:space="preserve">
+    <value>Symbolic links need administrator rights unless Developer Mode is on in Windows Settings. Restart as administrator? Your entries will be kept.</value>
+  </data>
+  <data name="ErrorLinkNameMissing" xml:space="preserve">
+    <value>Enter a name for the link.</value>
+  </data>
+  <data name="ErrorLinkNameInvalid" xml:space="preserve">
+    <value>The link name can't contain any of these characters: \ / : * ? " &lt; &gt; |</value>
+  </data>
+  <data name="ErrorLinkLocationMissing" xml:space="preserve">
+    <value>Choose the folder to create the link in.</value>
+  </data>
+  <data name="ErrorLinkLocationNotFound" xml:space="preserve">
+    <value>The link location folder doesn't exist.</value>
+  </data>
+  <data name="ErrorTargetFolderMissing" xml:space="preserve">
+    <value>Choose the folder the link points to.</value>
+  </data>
+  <data name="ErrorTargetFileMissing" xml:space="preserve">
+    <value>Choose the file the link points to.</value>
+  </data>
+  <data name="ErrorTargetFolderNotFound" xml:space="preserve">
+    <value>The target folder doesn't exist.</value>
+  </data>
+  <data name="ErrorTargetFileNotFound" xml:space="preserve">
+    <value>The target file doesn't exist.</value>
+  </data>
+  <data name="ErrorTargetIsFile" xml:space="preserve">
+    <value>The target is a file. Switch to File mode to link it.</value>
+  </data>
+  <data name="ErrorTargetIsFolder" xml:space="preserve">
+    <value>The target is a folder. Switch to Folder mode to link it.</value>
+  </data>
+  <data name="TooltipBrowseLinkLocation" xml:space="preserve">
+    <value>Browse for the link location folder</value>
+  </data>
+  <data name="TooltipBrowseTargetFolder" xml:space="preserve">
+    <value>Browse for the target folder</value>
+  </data>
+  <data name="TooltipBrowseTargetFile" xml:space="preserve">
+    <value>Browse for the target file</value>
+  </data>
+  <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
+    <value>Symbolic links need administrator rights or Developer Mode.</value>
+  </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>Cannot find the command-line tool needed to create links.</value>
   </data>
@@ -166,10 +220,10 @@
     <value>Link name</value>
   </data>
   <data name="PlaceholderLinkPath" xml:space="preserve">
-    <value>C:\path\to\location</value>
+    <value>Folder to create the link in</value>
   </data>
   <data name="PlaceholderTargetPath" xml:space="preserve">
-    <value>D:\path\to\target</value>
+    <value>Path the link points to</value>
   </data>
   <data name="PlaceholderTargetFolder" xml:space="preserve">
     <value>Target folder</value>
@@ -194,9 +248,6 @@
   </data>
   <data name="ButtonCreateLink" xml:space="preserve">
     <value>Create link</value>
-  </data>
-  <data name="ButtonAddAnother" xml:space="preserve">
-    <value>Add another</value>
   </data>
   <data name="MessageBoxAboutTitle" xml:space="preserve">
     <value>About</value>
@@ -224,7 +275,7 @@ Click the icon or drag and drop a file/folder here.</value>
 Use symbolic links as the default.</value>
   </data>
   <data name="TooltipLinkTypeFolderDescription" xml:space="preserve">
-    <value>Choose the link type: symbolic link, hard link, or directory junction.
+    <value>Choose the link type: symbolic link or directory junction.
 Use symbolic links as the default.</value>
   </data>
   <data name="TooltipLinkTypeTitle" xml:space="preserve">

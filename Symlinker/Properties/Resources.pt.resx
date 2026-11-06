@@ -79,6 +79,60 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>Preencha todos os campos obrigatórios.</value>
   </data>
+  <data name="ButtonNotNow" xml:space="preserve">
+    <value>Agora não</value>
+  </data>
+  <data name="ButtonRestartAsAdmin" xml:space="preserve">
+    <value>Reiniciar como administrador</value>
+  </data>
+  <data name="DialogElevationTitle" xml:space="preserve">
+    <value>Permissões de administrador necessárias</value>
+  </data>
+  <data name="DialogElevation" xml:space="preserve">
+    <value>Links simbólicos exigem permissões de administrador, a menos que o Modo de Desenvolvedor esteja ativado. Reiniciar como administrador? Os dados serão mantidos.</value>
+  </data>
+  <data name="ErrorLinkNameMissing" xml:space="preserve">
+    <value>Digite um nome para o link.</value>
+  </data>
+  <data name="ErrorLinkNameInvalid" xml:space="preserve">
+    <value>O nome do link não pode conter nenhum destes caracteres: \ / : * ? " &lt; &gt; |</value>
+  </data>
+  <data name="ErrorLinkLocationMissing" xml:space="preserve">
+    <value>Escolha a pasta onde o link será criado.</value>
+  </data>
+  <data name="ErrorLinkLocationNotFound" xml:space="preserve">
+    <value>A pasta do local do link não existe.</value>
+  </data>
+  <data name="ErrorTargetFolderMissing" xml:space="preserve">
+    <value>Escolha a pasta para a qual o link aponta.</value>
+  </data>
+  <data name="ErrorTargetFileMissing" xml:space="preserve">
+    <value>Escolha o arquivo para o qual o link aponta.</value>
+  </data>
+  <data name="ErrorTargetFolderNotFound" xml:space="preserve">
+    <value>A pasta de destino não existe.</value>
+  </data>
+  <data name="ErrorTargetFileNotFound" xml:space="preserve">
+    <value>O arquivo de destino não existe.</value>
+  </data>
+  <data name="ErrorTargetIsFile" xml:space="preserve">
+    <value>O destino é um arquivo. Mude para Arquivo para vinculá-lo.</value>
+  </data>
+  <data name="ErrorTargetIsFolder" xml:space="preserve">
+    <value>O destino é uma pasta. Mude para Pasta para vinculá-la.</value>
+  </data>
+  <data name="TooltipBrowseLinkLocation" xml:space="preserve">
+    <value>Procurar a pasta do local do link</value>
+  </data>
+  <data name="TooltipBrowseTargetFolder" xml:space="preserve">
+    <value>Procurar a pasta de destino</value>
+  </data>
+  <data name="TooltipBrowseTargetFile" xml:space="preserve">
+    <value>Procurar o arquivo de destino</value>
+  </data>
+  <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
+    <value>Links simbólicos exigem permissões de administrador ou o Modo de Desenvolvedor.</value>
+  </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>Não foi possível encontrar a ferramenta de linha de comando necessária para criar links.</value>
   </data>
@@ -107,10 +161,10 @@
     <value>Nome do link</value>
   </data>
   <data name="PlaceholderLinkPath" xml:space="preserve">
-    <value>C:\caminho\para\local</value>
+    <value>Pasta onde o link será criado</value>
   </data>
   <data name="PlaceholderTargetPath" xml:space="preserve">
-    <value>D:\caminho\para\destino</value>
+    <value>Caminho para o qual o link aponta</value>
   </data>
   <data name="PlaceholderTargetFolder" xml:space="preserve">
     <value>Pasta de destino</value>
@@ -135,9 +189,6 @@
   </data>
   <data name="ButtonCreateLink" xml:space="preserve">
     <value>Criar link</value>
-  </data>
-  <data name="ButtonAddAnother" xml:space="preserve">
-    <value>Adicionar outro</value>
   </data>
   <data name="MessageBoxAboutTitle" xml:space="preserve">
     <value>Sobre</value>
@@ -165,7 +216,7 @@ Clique no ícone ou arraste e solte um arquivo ou pasta aqui.</value>
 Use links simbólicos como padrão.</value>
   </data>
   <data name="TooltipLinkTypeFolderDescription" xml:space="preserve">
-    <value>Escolha o tipo de link: link simbólico, link físico ou junção de diretório.
+    <value>Escolha o tipo de link: link simbólico ou junção de diretório.
 Use links simbólicos como padrão.</value>
   </data>
   <data name="TooltipLinkTypeTitle" xml:space="preserve">

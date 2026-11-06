@@ -79,6 +79,60 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>Bitte füllen Sie alle Pflichtfelder aus.</value>
   </data>
+  <data name="ButtonNotNow" xml:space="preserve">
+    <value>Nicht jetzt</value>
+  </data>
+  <data name="ButtonRestartAsAdmin" xml:space="preserve">
+    <value>Als Administrator neu starten</value>
+  </data>
+  <data name="DialogElevationTitle" xml:space="preserve">
+    <value>Administratorrechte erforderlich</value>
+  </data>
+  <data name="DialogElevation" xml:space="preserve">
+    <value>Symbolische Links benötigen Administratorrechte, außer der Entwicklermodus ist aktiviert. Als Administrator neu starten? Ihre Eingaben bleiben erhalten.</value>
+  </data>
+  <data name="ErrorLinkNameMissing" xml:space="preserve">
+    <value>Geben Sie einen Namen für den Link ein.</value>
+  </data>
+  <data name="ErrorLinkNameInvalid" xml:space="preserve">
+    <value>Der Linkname darf keines dieser Zeichen enthalten: \ / : * ? " &lt; &gt; |</value>
+  </data>
+  <data name="ErrorLinkLocationMissing" xml:space="preserve">
+    <value>Wählen Sie den Ordner, in dem der Link erstellt wird.</value>
+  </data>
+  <data name="ErrorLinkLocationNotFound" xml:space="preserve">
+    <value>Der Ordner für den Link existiert nicht.</value>
+  </data>
+  <data name="ErrorTargetFolderMissing" xml:space="preserve">
+    <value>Wählen Sie den Ordner, auf den der Link zeigt.</value>
+  </data>
+  <data name="ErrorTargetFileMissing" xml:space="preserve">
+    <value>Wählen Sie die Datei, auf die der Link zeigt.</value>
+  </data>
+  <data name="ErrorTargetFolderNotFound" xml:space="preserve">
+    <value>Der Zielordner existiert nicht.</value>
+  </data>
+  <data name="ErrorTargetFileNotFound" xml:space="preserve">
+    <value>Die Zieldatei existiert nicht.</value>
+  </data>
+  <data name="ErrorTargetIsFile" xml:space="preserve">
+    <value>Das Ziel ist eine Datei. Wechseln Sie zu Datei, um sie zu verlinken.</value>
+  </data>
+  <data name="ErrorTargetIsFolder" xml:space="preserve">
+    <value>Das Ziel ist ein Ordner. Wechseln Sie zu Ordner, um ihn zu verlinken.</value>
+  </data>
+  <data name="TooltipBrowseLinkLocation" xml:space="preserve">
+    <value>Ordner für den Link auswählen</value>
+  </data>
+  <data name="TooltipBrowseTargetFolder" xml:space="preserve">
+    <value>Zielordner auswählen</value>
+  </data>
+  <data name="TooltipBrowseTargetFile" xml:space="preserve">
+    <value>Zieldatei auswählen</value>
+  </data>
+  <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
+    <value>Symbolische Links benötigen Administratorrechte oder den Entwicklermodus.</value>
+  </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>Das zum Erstellen von Links benötigte Befehlszeilentool wurde nicht gefunden.</value>
   </data>
@@ -107,10 +161,10 @@
     <value>Linkname</value>
   </data>
   <data name="PlaceholderLinkPath" xml:space="preserve">
-    <value>C:\Pfad\zum\Speicherort</value>
+    <value>Ordner, in dem der Link entsteht</value>
   </data>
   <data name="PlaceholderTargetPath" xml:space="preserve">
-    <value>D:\Pfad\zum\Ziel</value>
+    <value>Pfad, auf den der Link zeigt</value>
   </data>
   <data name="PlaceholderTargetFolder" xml:space="preserve">
     <value>Zielordner</value>
@@ -135,9 +189,6 @@
   </data>
   <data name="ButtonCreateLink" xml:space="preserve">
     <value>Link erstellen</value>
-  </data>
-  <data name="ButtonAddAnother" xml:space="preserve">
-    <value>Weiteren hinzufügen</value>
   </data>
   <data name="MessageBoxAboutTitle" xml:space="preserve">
     <value>Info</value>
@@ -165,7 +216,7 @@ Klicken Sie auf das Symbol oder ziehen Sie eine Datei/einen Ordner hierher.</val
 Verwenden Sie symbolische Links als Standard.</value>
   </data>
   <data name="TooltipLinkTypeFolderDescription" xml:space="preserve">
-    <value>Wählen Sie den Linktyp: symbolischer Link, Hardlink oder Verzeichnisverknüpfung.
+    <value>Wählen Sie den Linktyp: symbolischer Link oder Verzeichnisverknüpfung.
 Verwenden Sie symbolische Links als Standard.</value>
   </data>
   <data name="TooltipLinkTypeTitle" xml:space="preserve">

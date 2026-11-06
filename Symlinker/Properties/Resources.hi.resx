@@ -79,6 +79,60 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>कृपया सभी आवश्यक फ़ील्ड भरें।</value>
   </data>
+  <data name="ButtonNotNow" xml:space="preserve">
+    <value>अभी नहीं</value>
+  </data>
+  <data name="ButtonRestartAsAdmin" xml:space="preserve">
+    <value>व्यवस्थापक के रूप में पुनः प्रारंभ करें</value>
+  </data>
+  <data name="DialogElevationTitle" xml:space="preserve">
+    <value>व्यवस्थापक अधिकार आवश्यक</value>
+  </data>
+  <data name="DialogElevation" xml:space="preserve">
+    <value>सिम्बॉलिक लिंक के लिए व्यवस्थापक अधिकार चाहिए, जब तक डेवलपर मोड चालू न हो। व्यवस्थापक के रूप में पुनः प्रारंभ करें? आपकी प्रविष्टियाँ बनी रहेंगी।</value>
+  </data>
+  <data name="ErrorLinkNameMissing" xml:space="preserve">
+    <value>लिंक के लिए एक नाम दर्ज करें।</value>
+  </data>
+  <data name="ErrorLinkNameInvalid" xml:space="preserve">
+    <value>लिंक के नाम में इनमें से कोई वर्ण नहीं हो सकता: \ / : * ? " &lt; &gt; |</value>
+  </data>
+  <data name="ErrorLinkLocationMissing" xml:space="preserve">
+    <value>वह फ़ोल्डर चुनें जिसमें लिंक बनाया जाएगा।</value>
+  </data>
+  <data name="ErrorLinkLocationNotFound" xml:space="preserve">
+    <value>लिंक स्थान वाला फ़ोल्डर मौजूद नहीं है।</value>
+  </data>
+  <data name="ErrorTargetFolderMissing" xml:space="preserve">
+    <value>वह फ़ोल्डर चुनें जिसकी ओर लिंक इंगित करता है।</value>
+  </data>
+  <data name="ErrorTargetFileMissing" xml:space="preserve">
+    <value>वह फ़ाइल चुनें जिसकी ओर लिंक इंगित करता है।</value>
+  </data>
+  <data name="ErrorTargetFolderNotFound" xml:space="preserve">
+    <value>लक्ष्य फ़ोल्डर मौजूद नहीं है।</value>
+  </data>
+  <data name="ErrorTargetFileNotFound" xml:space="preserve">
+    <value>लक्ष्य फ़ाइल मौजूद नहीं है।</value>
+  </data>
+  <data name="ErrorTargetIsFile" xml:space="preserve">
+    <value>लक्ष्य एक फ़ाइल है। इसे लिंक करने के लिए फ़ाइल चुनें।</value>
+  </data>
+  <data name="ErrorTargetIsFolder" xml:space="preserve">
+    <value>लक्ष्य एक फ़ोल्डर है। इसे लिंक करने के लिए फ़ोल्डर चुनें।</value>
+  </data>
+  <data name="TooltipBrowseLinkLocation" xml:space="preserve">
+    <value>लिंक स्थान के लिए फ़ोल्डर ब्राउज़ करें</value>
+  </data>
+  <data name="TooltipBrowseTargetFolder" xml:space="preserve">
+    <value>लक्ष्य फ़ोल्डर ब्राउज़ करें</value>
+  </data>
+  <data name="TooltipBrowseTargetFile" xml:space="preserve">
+    <value>लक्ष्य फ़ाइल ब्राउज़ करें</value>
+  </data>
+  <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
+    <value>सिम्बॉलिक लिंक के लिए व्यवस्थापक अधिकार या डेवलपर मोड चाहिए।</value>
+  </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>लिंक बनाने के लिए आवश्यक कमांड-लाइन टूल नहीं मिला।</value>
   </data>
@@ -107,10 +161,10 @@
     <value>लिंक का नाम</value>
   </data>
   <data name="PlaceholderLinkPath" xml:space="preserve">
-    <value>C:\पथ\स्थान</value>
+    <value>वह फ़ोल्डर जिसमें लिंक बनेगा</value>
   </data>
   <data name="PlaceholderTargetPath" xml:space="preserve">
-    <value>D:\पथ\लक्ष्य</value>
+    <value>वह पथ जिसकी ओर लिंक इंगित करेगा</value>
   </data>
   <data name="PlaceholderTargetFolder" xml:space="preserve">
     <value>लक्ष्य फ़ोल्डर</value>
@@ -135,9 +189,6 @@
   </data>
   <data name="ButtonCreateLink" xml:space="preserve">
     <value>लिंक बनाएं</value>
-  </data>
-  <data name="ButtonAddAnother" xml:space="preserve">
-    <value>एक और जोड़ें</value>
   </data>
   <data name="MessageBoxAboutTitle" xml:space="preserve">
     <value>परिचय</value>
@@ -165,7 +216,7 @@
 डिफ़ॉल्ट रूप से सिम्बॉलिक लिंक का उपयोग करें।</value>
   </data>
   <data name="TooltipLinkTypeFolderDescription" xml:space="preserve">
-    <value>लिंक प्रकार चुनें: सिम्बॉलिक लिंक, हार्ड लिंक, या डायरेक्टरी जंक्शन।
+    <value>लिंक प्रकार चुनें: सिम्बॉलिक लिंक या डायरेक्टरी जंक्शन।
 डिफ़ॉल्ट रूप से सिम्बॉलिक लिंक का उपयोग करें।</value>
   </data>
   <data name="TooltipLinkTypeTitle" xml:space="preserve">

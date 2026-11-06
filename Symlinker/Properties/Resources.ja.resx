@@ -79,6 +79,60 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>すべての必須フィールドに入力してください。</value>
   </data>
+  <data name="ButtonNotNow" xml:space="preserve">
+    <value>後で</value>
+  </data>
+  <data name="ButtonRestartAsAdmin" xml:space="preserve">
+    <value>管理者として再起動</value>
+  </data>
+  <data name="DialogElevationTitle" xml:space="preserve">
+    <value>管理者権限が必要です</value>
+  </data>
+  <data name="DialogElevation" xml:space="preserve">
+    <value>シンボリックリンクには管理者権限が必要です (開発者モードがオンの場合を除く)。管理者として再起動しますか? 入力内容は保持されます。</value>
+  </data>
+  <data name="ErrorLinkNameMissing" xml:space="preserve">
+    <value>リンクの名前を入力してください。</value>
+  </data>
+  <data name="ErrorLinkNameInvalid" xml:space="preserve">
+    <value>リンク名に次の文字は使用できません: \ / : * ? " &lt; &gt; |</value>
+  </data>
+  <data name="ErrorLinkLocationMissing" xml:space="preserve">
+    <value>リンクを作成するフォルダーを選択してください。</value>
+  </data>
+  <data name="ErrorLinkLocationNotFound" xml:space="preserve">
+    <value>リンクの場所のフォルダーが存在しません。</value>
+  </data>
+  <data name="ErrorTargetFolderMissing" xml:space="preserve">
+    <value>リンク先のフォルダーを選択してください。</value>
+  </data>
+  <data name="ErrorTargetFileMissing" xml:space="preserve">
+    <value>リンク先のファイルを選択してください。</value>
+  </data>
+  <data name="ErrorTargetFolderNotFound" xml:space="preserve">
+    <value>ターゲットフォルダーが存在しません。</value>
+  </data>
+  <data name="ErrorTargetFileNotFound" xml:space="preserve">
+    <value>ターゲットファイルが存在しません。</value>
+  </data>
+  <data name="ErrorTargetIsFile" xml:space="preserve">
+    <value>ターゲットはファイルです。リンクするには [ファイル] に切り替えてください。</value>
+  </data>
+  <data name="ErrorTargetIsFolder" xml:space="preserve">
+    <value>ターゲットはフォルダーです。リンクするには [フォルダー] に切り替えてください。</value>
+  </data>
+  <data name="TooltipBrowseLinkLocation" xml:space="preserve">
+    <value>リンクの場所のフォルダーを参照</value>
+  </data>
+  <data name="TooltipBrowseTargetFolder" xml:space="preserve">
+    <value>ターゲットフォルダーを参照</value>
+  </data>
+  <data name="TooltipBrowseTargetFile" xml:space="preserve">
+    <value>ターゲットファイルを参照</value>
+  </data>
+  <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
+    <value>シンボリックリンクには管理者権限または開発者モードが必要です。</value>
+  </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>リンクの作成に必要なコマンドラインツールが見つかりません。</value>
   </data>
@@ -107,10 +161,10 @@
     <value>リンク名</value>
   </data>
   <data name="PlaceholderLinkPath" xml:space="preserve">
-    <value>C:\パス\場所</value>
+    <value>リンクを作成するフォルダー</value>
   </data>
   <data name="PlaceholderTargetPath" xml:space="preserve">
-    <value>D:\パス\ターゲット</value>
+    <value>リンク先のパス</value>
   </data>
   <data name="PlaceholderTargetFolder" xml:space="preserve">
     <value>ターゲットフォルダー</value>
@@ -135,9 +189,6 @@
   </data>
   <data name="ButtonCreateLink" xml:space="preserve">
     <value>リンクを作成</value>
-  </data>
-  <data name="ButtonAddAnother" xml:space="preserve">
-    <value>別のリンクを追加</value>
   </data>
   <data name="MessageBoxAboutTitle" xml:space="preserve">
     <value>バージョン情報</value>
@@ -165,7 +216,7 @@
 既定ではシンボリックリンクを使用してください。</value>
   </data>
   <data name="TooltipLinkTypeFolderDescription" xml:space="preserve">
-    <value>リンクの種類を選択してください: シンボリックリンク、ハードリンク、またはディレクトリジャンクション。
+    <value>リンクの種類を選択してください: シンボリックリンクまたはディレクトリジャンクション。
 既定ではシンボリックリンクを使用してください。</value>
   </data>
   <data name="TooltipLinkTypeTitle" xml:space="preserve">

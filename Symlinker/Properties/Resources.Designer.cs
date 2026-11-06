@@ -83,20 +83,29 @@ namespace Symlinker.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add another.
-        /// </summary>
-        public static string ButtonAddAnother {
-            get {
-                return ResourceManager.GetString("ButtonAddAnother", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Create link.
         /// </summary>
         public static string ButtonCreateLink {
             get {
                 return ResourceManager.GetString("ButtonCreateLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not now.
+        /// </summary>
+        public static string ButtonNotNow {
+            get {
+                return ResourceManager.GetString("ButtonNotNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restart as administrator.
+        /// </summary>
+        public static string ButtonRestartAsAdmin {
+            get {
+                return ResourceManager.GetString("ButtonRestartAsAdmin", resourceCulture);
             }
         }
         
@@ -146,6 +155,24 @@ namespace Symlinker.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Symbolic links need administrator rights unless Developer Mode is on in Windows Settings. Restart as administrator? Your entries will be kept..
+        /// </summary>
+        public static string DialogElevation {
+            get {
+                return ResourceManager.GetString("DialogElevation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Administrator rights needed.
+        /// </summary>
+        public static string DialogElevationTitle {
+            get {
+                return ResourceManager.GetString("DialogElevationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A folder with this link name already exists in the selected directory. Would you like to delete it and create a new link?.
         /// </summary>
         public static string DialogFolderExists {
@@ -160,6 +187,96 @@ namespace Symlinker.Properties {
         public static string DialogFolderExistsDialog {
             get {
                 return ResourceManager.GetString("DialogFolderExistsDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the folder to create the link in..
+        /// </summary>
+        public static string ErrorLinkLocationMissing {
+            get {
+                return ResourceManager.GetString("ErrorLinkLocationMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The link location folder doesn't exist..
+        /// </summary>
+        public static string ErrorLinkLocationNotFound {
+            get {
+                return ResourceManager.GetString("ErrorLinkLocationNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The link name can't contain any of these characters: \ / : * ? " &lt; &gt; |.
+        /// </summary>
+        public static string ErrorLinkNameInvalid {
+            get {
+                return ResourceManager.GetString("ErrorLinkNameInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a name for the link..
+        /// </summary>
+        public static string ErrorLinkNameMissing {
+            get {
+                return ResourceManager.GetString("ErrorLinkNameMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the file the link points to..
+        /// </summary>
+        public static string ErrorTargetFileMissing {
+            get {
+                return ResourceManager.GetString("ErrorTargetFileMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The target file doesn't exist..
+        /// </summary>
+        public static string ErrorTargetFileNotFound {
+            get {
+                return ResourceManager.GetString("ErrorTargetFileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the folder the link points to..
+        /// </summary>
+        public static string ErrorTargetFolderMissing {
+            get {
+                return ResourceManager.GetString("ErrorTargetFolderMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The target folder doesn't exist..
+        /// </summary>
+        public static string ErrorTargetFolderNotFound {
+            get {
+                return ResourceManager.GetString("ErrorTargetFolderNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The target is a file. Switch to File mode to link it..
+        /// </summary>
+        public static string ErrorTargetIsFile {
+            get {
+                return ResourceManager.GetString("ErrorTargetIsFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The target is a folder. Switch to Folder mode to link it..
+        /// </summary>
+        public static string ErrorTargetIsFolder {
+            get {
+                return ResourceManager.GetString("ErrorTargetIsFolder", resourceCulture);
             }
         }
         
@@ -254,6 +371,15 @@ namespace Symlinker.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Symbolic links need administrator rights or Developer Mode..
+        /// </summary>
+        public static string NoticeSymlinkNeedsAdmin {
+            get {
+                return ResourceManager.GetString("NoticeSymlinkNeedsAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File.
         /// </summary>
         public static string PillFile {
@@ -308,7 +434,7 @@ namespace Symlinker.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to C:\path\to\location.
+        ///   Looks up a localized string similar to Folder to create the link in.
         /// </summary>
         public static string PlaceholderLinkPath {
             get {
@@ -335,7 +461,7 @@ namespace Symlinker.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to D:\path\to\target.
+        ///   Looks up a localized string similar to Path the link points to.
         /// </summary>
         public static string PlaceholderTargetPath {
             get {
@@ -349,6 +475,33 @@ namespace Symlinker.Properties {
         public static string TooltipAbout {
             get {
                 return ResourceManager.GetString("TooltipAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse for the link location folder.
+        /// </summary>
+        public static string TooltipBrowseLinkLocation {
+            get {
+                return ResourceManager.GetString("TooltipBrowseLinkLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse for the target file.
+        /// </summary>
+        public static string TooltipBrowseTargetFile {
+            get {
+                return ResourceManager.GetString("TooltipBrowseTargetFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse for the target folder.
+        /// </summary>
+        public static string TooltipBrowseTargetFolder {
+            get {
+                return ResourceManager.GetString("TooltipBrowseTargetFolder", resourceCulture);
             }
         }
         
@@ -373,7 +526,7 @@ namespace Symlinker.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose the link type: symbolic link, hard link, or directory junction.
+        ///   Looks up a localized string similar to Choose the link type: symbolic link or directory junction.
         ///Use symbolic links as the default..
         /// </summary>
         public static string TooltipLinkTypeFolderDescription {

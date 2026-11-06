@@ -184,4 +184,54 @@ ou le mode dossier (lier un dossier à un autre dossier).</value>
   <data name="TooltipAbout" xml:space="preserve">
     <value>À propos de Symlinker</value>
   </data>
+  <data name="ButtonMoveAndLink" xml:space="preserve">
+    <value>Déplacer et lier</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="DialogMoveTitle" xml:space="preserve">
+    <value>Déplacer vers la cible ?</value>
+  </data>
+  <data name="DialogMoveFolder" xml:space="preserve">
+    <value>Un dossier nommé « {0} » existe déjà ici.
+
+Le déplacer vers la cible et laisser un lien à sa place ? Tout ce qui utilise l'ancien chemin continuera de fonctionner.</value>
+  </data>
+  <data name="DialogMoveFile" xml:space="preserve">
+    <value>Un fichier nommé « {0} » existe déjà ici.
+
+Le déplacer vers la cible et laisser un lien à sa place ? Tout ce qui utilise l'ancien chemin continuera de fonctionner.</value>
+  </data>
+  <data name="ProgressMoveTitle" xml:space="preserve">
+    <value>Déplacement des fichiers</value>
+  </data>
+  <data name="ProgressMovePreparing" xml:space="preserve">
+    <value>Préparation...</value>
+  </data>
+  <data name="ProgressMoveMessage" xml:space="preserve">
+    <value>{0} sur {1} copiés</value>
+  </data>
+  <data name="MoveSucceeded" xml:space="preserve">
+    <value>« {0} » a été déplacé vers la cible, et un lien le remplace à son ancien emplacement.</value>
+  </data>
+  <data name="MoveFailed" xml:space="preserve">
+    <value>Le déplacement n'a pas abouti, tout a donc été remis en l'état.
+
+{0}</value>
+  </data>
+  <data name="MoveCanceled" xml:space="preserve">
+    <value>Déplacement annulé. Tout a été remis en l'état.</value>
+  </data>
+  <data name="MoveCleanupFailed" xml:space="preserve">
+    <value>Les fichiers ont été déplacés et le lien a été créé, mais l'ancienne copie n'a pas pu être supprimée. Vous pouvez la supprimer vous-même :
+{0}</value>
+  </data>
+  <data name="MoveRollbackFailed" xml:space="preserve">
+    <value>Un problème est survenu et l'original n'a pas pu être restauré. Vos fichiers sont en sécurité ici :
+{0}</value>
+  </data>
+  <data name="MoveTargetInsideSource" xml:space="preserve">
+    <value>La cible ne peut pas se trouver dans l'élément déplacé, ni l'inverse.</value>
+  </data>
 </root>

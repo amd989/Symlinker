@@ -243,4 +243,54 @@ or folder mode (link a folder to another folder).</value>
   <data name="TooltipAbout" xml:space="preserve">
     <value>About Symlinker</value>
   </data>
+  <data name="ButtonMoveAndLink" xml:space="preserve">
+    <value>Move and link</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DialogMoveTitle" xml:space="preserve">
+    <value>Move to target?</value>
+  </data>
+  <data name="DialogMoveFolder" xml:space="preserve">
+    <value>A folder named "{0}" is already here.
+
+Move it to the target and leave a link in its place? Anything using the old path will keep working.</value>
+  </data>
+  <data name="DialogMoveFile" xml:space="preserve">
+    <value>A file named "{0}" is already here.
+
+Move it to the target and leave a link in its place? Anything using the old path will keep working.</value>
+  </data>
+  <data name="ProgressMoveTitle" xml:space="preserve">
+    <value>Moving files</value>
+  </data>
+  <data name="ProgressMovePreparing" xml:space="preserve">
+    <value>Getting ready...</value>
+  </data>
+  <data name="ProgressMoveMessage" xml:space="preserve">
+    <value>{0} of {1} copied</value>
+  </data>
+  <data name="MoveSucceeded" xml:space="preserve">
+    <value>"{0}" was moved to the target, and a link now stands in its old place.</value>
+  </data>
+  <data name="MoveFailed" xml:space="preserve">
+    <value>The move did not finish, so everything was put back the way it was.
+
+{0}</value>
+  </data>
+  <data name="MoveCanceled" xml:space="preserve">
+    <value>Move canceled. Everything was put back the way it was.</value>
+  </data>
+  <data name="MoveCleanupFailed" xml:space="preserve">
+    <value>The files were moved and the link was created, but the old copy could not be removed. You can delete it yourself:
+{0}</value>
+  </data>
+  <data name="MoveRollbackFailed" xml:space="preserve">
+    <value>Something went wrong and the original could not be put back. Your files are safe at:
+{0}</value>
+  </data>
+  <data name="MoveTargetInsideSource" xml:space="preserve">
+    <value>The target can't be inside the item being moved, or the other way around.</value>
+  </data>
 </root>

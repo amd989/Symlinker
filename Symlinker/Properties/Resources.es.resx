@@ -184,4 +184,54 @@ o modo carpeta (enlazar una carpeta a otra carpeta).</value>
   <data name="TooltipAbout" xml:space="preserve">
     <value>Acerca de Symlinker</value>
   </data>
+  <data name="ButtonMoveAndLink" xml:space="preserve">
+    <value>Mover y enlazar</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="DialogMoveTitle" xml:space="preserve">
+    <value>¿Mover al destino?</value>
+  </data>
+  <data name="DialogMoveFolder" xml:space="preserve">
+    <value>Ya hay una carpeta llamada "{0}" aquí.
+
+¿Moverla al destino y dejar un enlace en su lugar? Todo lo que use la ruta anterior seguirá funcionando.</value>
+  </data>
+  <data name="DialogMoveFile" xml:space="preserve">
+    <value>Ya hay un archivo llamado "{0}" aquí.
+
+¿Moverlo al destino y dejar un enlace en su lugar? Todo lo que use la ruta anterior seguirá funcionando.</value>
+  </data>
+  <data name="ProgressMoveTitle" xml:space="preserve">
+    <value>Moviendo archivos</value>
+  </data>
+  <data name="ProgressMovePreparing" xml:space="preserve">
+    <value>Preparando...</value>
+  </data>
+  <data name="ProgressMoveMessage" xml:space="preserve">
+    <value>{0} de {1} copiados</value>
+  </data>
+  <data name="MoveSucceeded" xml:space="preserve">
+    <value>"{0}" se movió al destino y ahora hay un enlace en su lugar anterior.</value>
+  </data>
+  <data name="MoveFailed" xml:space="preserve">
+    <value>El movimiento no se completó, así que todo se dejó como estaba.
+
+{0}</value>
+  </data>
+  <data name="MoveCanceled" xml:space="preserve">
+    <value>Movimiento cancelado. Todo se dejó como estaba.</value>
+  </data>
+  <data name="MoveCleanupFailed" xml:space="preserve">
+    <value>Los archivos se movieron y se creó el enlace, pero no se pudo eliminar la copia anterior. Puedes borrarla tú mismo:
+{0}</value>
+  </data>
+  <data name="MoveRollbackFailed" xml:space="preserve">
+    <value>Algo salió mal y no se pudo restaurar el original. Tus archivos están a salvo en:
+{0}</value>
+  </data>
+  <data name="MoveTargetInsideSource" xml:space="preserve">
+    <value>El destino no puede estar dentro del elemento que se mueve, ni al revés.</value>
+  </data>
 </root>

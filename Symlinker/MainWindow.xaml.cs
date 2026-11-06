@@ -1,6 +1,7 @@
 namespace Symlinker
 {
     using System;
+    using System.ComponentModel;
     using System.Diagnostics;
     using System.Globalization;
 
@@ -8,6 +9,7 @@ namespace Symlinker
     using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
@@ -35,6 +37,9 @@ namespace Symlinker
 
         // Last link name filled in from the target, so user-typed names are never overwritten
         private string autoFilledLinkName = string.Empty;
+
+        // True while files are being moved, so the window can't be closed halfway through
+        private bool isMoving;
 
         private static readonly MetroDialogSettings FastDialog = new()
         {
@@ -162,6 +167,19 @@ namespace Symlinker
 
                 var link = $"\"{linkLocation}\\{linkName}\"";
 
+                // A real file or folder already sits where the link goes and the target is free:
+                // offer to move it to the target and leave a link behind (#33)
+                if (Directory.Exists(linkLocation) && Path.IsPathFullyQualified(destination))
+                {
+                    var linkPath = Path.Combine(linkLocation, linkName);
+                    FileSystemInfo existing = isFolder ? new DirectoryInfo(linkPath) : new FileInfo(linkPath);
+                    if (existing.Exists && !LinkMover.IsLink(existing) && IsFreeMoveTarget(destination))
+                    {
+                        await OfferMoveAsync(existing, link, Path.GetFullPath(destination));
+                        return;
+                    }
+                }
+
                 if (isFolder && Directory.Exists(linkLocation) && Directory.Exists(destination))
                 {
                     var directories = Directory.GetDirectories(linkLocation);
@@ -225,6 +243,16 @@ namespace Symlinker
 
         private async Task SendCommand(string link, string destination)
         {
+            var (success, message) = await RunMklinkAsync(link, destination);
+            await this.ShowMessageAsync(
+                success ? Res.MessageBoxSuccessTitle : Res.MessageBoxErrorTitle,
+                message,
+                settings: FastDialog);
+        }
+
+        /// <summary>Runs mklink and returns whether it worked, with the message to show the user.</summary>
+        private async Task<(bool Success, string Message)> RunMklinkAsync(string link, string destination)
+        {
             try
             {
                 var typeLink = GetLinkTypeFlag();
@@ -240,37 +268,281 @@ namespace Symlinker
                     RedirectStandardOutput = true
                 };
 
-                var gotOutput = false;
-                var process = new Process { StartInfo = processStartInfo, EnableRaisingEvents = true };
-                process.ErrorDataReceived += Process_ErrorDataReceived;
-                process.OutputDataReceived += (s, ev) =>
-                {
-                    if (!string.IsNullOrEmpty(ev.Data))
-                    {
-                        gotOutput = true;
-                        Dispatcher.InvokeAsync(() => this.ShowMessageAsync(Res.MessageBoxSuccessTitle, ev.Data, settings: FastDialog));
-                    }
-                };
+                using var process = new Process { StartInfo = processStartInfo };
                 process.Start();
-                process.BeginOutputReadLine();
-                process.BeginErrorReadLine();
+                var output = process.StandardOutput.ReadToEndAsync();
+                var error = process.StandardError.ReadToEndAsync();
                 await process.WaitForExitAsync();
 
-                if (process.ExitCode == 0 && !gotOutput)
-                    await this.ShowMessageAsync(Res.MessageBoxSuccessTitle, Res.LinkSuccessfullyCreated, settings: FastDialog);
+                var outputText = (await output).Trim();
+                var errorText = (await error).Trim();
 
-                process.Dispose();
+                if (process.ExitCode == 0)
+                    return (true, outputText.Length > 0 ? outputText : Res.LinkSuccessfullyCreated);
+
+                return (false, errorText.Length > 0 ? errorText : outputText);
             }
             catch (Exception)
             {
-                await this.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.CmdNotFound, settings: FastDialog);
+                return (false, Res.CmdNotFound);
             }
         }
 
-        private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        /// <summary>
+        /// Whether the target path is free to receive a moved item: it doesn't exist yet,
+        /// or (in folder mode) it is an empty folder.
+        /// </summary>
+        private bool IsFreeMoveTarget(string destination)
         {
-            if (!string.IsNullOrEmpty(e.Data))
-                Dispatcher.InvokeAsync(() => this.ShowMessageAsync(Res.MessageBoxErrorTitle, e.Data, settings: FastDialog));
+            if (File.Exists(destination))
+                return false;
+
+            if (!Directory.Exists(destination))
+                return true;
+
+            return isFolder && !Directory.EnumerateFileSystemEntries(destination).Any();
+        }
+
+        private async Task OfferMoveAsync(FileSystemInfo existing, string link, string target)
+        {
+            var settings = new MetroDialogSettings
+            {
+                AnimateShow = false,
+                AnimateHide = false,
+                AffirmativeButtonText = Res.ButtonMoveAndLink,
+                NegativeButtonText = Res.ButtonCancel,
+            };
+
+            var message = string.Format(
+                CultureInfo.CurrentUICulture,
+                isFolder ? Res.DialogMoveFolder : Res.DialogMoveFile,
+                existing.Name,
+                target);
+
+            var answer = await this.ShowMessageAsync(Res.DialogMoveTitle, message, MessageDialogStyle.AffirmativeAndNegative, settings);
+            if (answer != MessageDialogResult.Affirmative)
+            {
+                await this.ShowMessageAsync(Res.LinkCreationAbortedWarning, Res.LinkCreationAborted, settings: FastDialog);
+                return;
+            }
+
+            isMoving = true;
+            try
+            {
+                await MoveAndLinkAsync(existing, link, target);
+            }
+            finally
+            {
+                isMoving = false;
+            }
+        }
+
+        /// <summary>
+        /// Moves <paramref name="source"/> to <paramref name="target"/> and creates the link where it was.
+        /// Any failure before the link exists puts everything back the way it was.
+        /// </summary>
+        private async Task MoveAndLinkAsync(FileSystemInfo source, string link, string target)
+        {
+            var originalPath = source.FullName;
+
+            if (LinkMover.IsSameOrInside(target, originalPath) || LinkMover.IsSameOrInside(originalPath, target))
+            {
+                await this.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.MoveTargetInsideSource, settings: FastDialog);
+                return;
+            }
+
+            var targetWasEmptyFolder = Directory.Exists(target);
+
+            // Where the original currently lives; it only leaves originalPath once we start moving
+            var currentPath = originalPath;
+            var copiedToTarget = false;
+
+            try
+            {
+                var targetParent = Path.GetDirectoryName(target);
+                if (targetParent != null)
+                    Directory.CreateDirectory(targetParent);
+
+                // Only ever an empty folder here (checked before offering the move)
+                if (targetWasEmptyFolder)
+                    Directory.Delete(target);
+
+                if (LinkMover.IsSameVolume(originalPath, target))
+                {
+                    // Same drive: a rename, instant and atomic
+                    LinkMover.Rename(originalPath, target);
+                    currentPath = target;
+                }
+                else
+                {
+                    // Different drive: set the original aside first. This fails right away if
+                    // something has its files open, before any time is spent copying.
+                    var staging = LinkMover.GetUnusedPath(originalPath + ".symlinker-move");
+                    LinkMover.Rename(originalPath, staging);
+                    currentPath = staging;
+
+                    copiedToTarget = true;
+                    FileSystemInfo staged = isFolder ? new DirectoryInfo(staging) : new FileInfo(staging);
+                    var copyError = await CopyWithProgressAsync(staged, target);
+                    if (copyError != null)
+                    {
+                        var title = copyError == Res.MoveCanceled ? Res.LinkCreationAbortedWarning : Res.MessageBoxErrorTitle;
+                        await RollBackMoveAsync(originalPath, currentPath, target, copiedToTarget, targetWasEmptyFolder, copyError, title);
+                        return;
+                    }
+                }
+
+                var (linked, linkMessage) = await RunMklinkAsync(link, target);
+                if (!linked)
+                {
+                    await RollBackMoveAsync(originalPath, currentPath, target, copiedToTarget, targetWasEmptyFolder, string.Format(CultureInfo.CurrentUICulture, Res.MoveFailed, linkMessage));
+                    return;
+                }
+
+                if (currentPath != target)
+                {
+                    try
+                    {
+                        LinkMover.Delete(currentPath);
+                    }
+                    catch (Exception)
+                    {
+                        await this.ShowMessageAsync(
+                            Res.MessageBoxSuccessTitle,
+                            string.Format(CultureInfo.CurrentUICulture, Res.MoveCleanupFailed, currentPath),
+                            settings: FastDialog);
+                        return;
+                    }
+                }
+
+                await this.ShowMessageAsync(
+                    Res.MessageBoxSuccessTitle,
+                    string.Format(CultureInfo.CurrentUICulture, Res.MoveSucceeded, source.Name, target),
+                    settings: FastDialog);
+            }
+            catch (Exception exception)
+            {
+                await RollBackMoveAsync(originalPath, currentPath, target, copiedToTarget, targetWasEmptyFolder, string.Format(CultureInfo.CurrentUICulture, Res.MoveFailed, exception.Message));
+            }
+        }
+
+        /// <summary>Puts the original back where it was and removes any partial copy, then explains what happened.</summary>
+        private async Task RollBackMoveAsync(string originalPath, string currentPath, string target, bool copiedToTarget, bool targetWasEmptyFolder, string message, string title = null)
+        {
+            title ??= Res.MessageBoxErrorTitle;
+
+            try
+            {
+                // Only remove the target when it is our own copy, never the only copy of the files
+                if (copiedToTarget && currentPath != target)
+                    LinkMover.Delete(target);
+
+                if (currentPath != originalPath)
+                    LinkMover.Rename(currentPath, originalPath);
+
+                if (targetWasEmptyFolder)
+                    Directory.CreateDirectory(target);
+            }
+            catch (Exception)
+            {
+                if (currentPath != originalPath)
+                {
+                    message = string.Format(CultureInfo.CurrentUICulture, Res.MoveRollbackFailed, currentPath);
+                    title = Res.MessageBoxErrorTitle;
+                }
+            }
+
+            await this.ShowMessageAsync(title, message, settings: FastDialog);
+        }
+
+        /// <summary>
+        /// Copies with a cancelable progress dialog. Returns null when the copy finished,
+        /// otherwise the message to show the user.
+        /// </summary>
+        private async Task<string> CopyWithProgressAsync(FileSystemInfo source, string target)
+        {
+            var settings = new MetroDialogSettings
+            {
+                AnimateShow = false,
+                AnimateHide = false,
+                NegativeButtonText = Res.ButtonCancel,
+            };
+
+            var controller = await this.ShowProgressAsync(Res.ProgressMoveTitle, Res.ProgressMovePreparing, isCancelable: true, settings: settings);
+            controller.SetIndeterminate();
+
+            using var cancellation = new CancellationTokenSource();
+            controller.Canceled += (s, e) => cancellation.Cancel();
+
+            try
+            {
+                var total = await Task.Run(() => LinkMover.GetTotalBytes(source), cancellation.Token);
+
+                void Show(long done)
+                {
+                    controller.SetProgress(total == 0 ? 1 : Math.Min(1, (double)done / total));
+                    controller.SetMessage(string.Format(CultureInfo.CurrentUICulture, Res.ProgressMoveMessage, FormatBytes(done), FormatBytes(total)));
+                }
+
+                Show(0);
+                IProgress<long> progress = new Progress<long>(Show);
+                var stopwatch = Stopwatch.StartNew();
+                long copied = 0;
+                long lastReport = 0;
+
+                await Task.Run(
+                    () => LinkMover.Copy(
+                        source,
+                        target,
+                        bytes =>
+                        {
+                            copied += bytes;
+                            if (stopwatch.ElapsedMilliseconds - lastReport >= 100)
+                            {
+                                lastReport = stopwatch.ElapsedMilliseconds;
+                                progress.Report(copied);
+                            }
+                        },
+                        cancellation.Token),
+                    cancellation.Token);
+
+                return null;
+            }
+            catch (OperationCanceledException)
+            {
+                return Res.MoveCanceled;
+            }
+            catch (Exception exception)
+            {
+                return string.Format(CultureInfo.CurrentUICulture, Res.MoveFailed, exception.Message);
+            }
+            finally
+            {
+                await controller.CloseAsync();
+            }
+        }
+
+        private static string FormatBytes(long bytes)
+        {
+            string[] units = { "B", "KB", "MB", "GB", "TB" };
+            double size = bytes;
+            var unit = 0;
+            while (size >= 1024 && unit < units.Length - 1)
+            {
+                size /= 1024;
+                unit++;
+            }
+
+            return string.Format(CultureInfo.CurrentUICulture, unit == 0 ? "{0:0} {1}" : "{0:0.0} {1}", size, units[unit]);
+        }
+
+        /// <summary>Keeps the window open while files are being moved, so a move is never cut off halfway.</summary>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (isMoving)
+                e.Cancel = true;
+
+            base.OnClosing(e);
         }
 
         private void ExploreButton1_Click(object sender, RoutedEventArgs e)

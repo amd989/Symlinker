@@ -184,4 +184,54 @@
   <data name="TooltipAbout" xml:space="preserve">
     <value>Symlinker के बारे में</value>
   </data>
+  <data name="ButtonMoveAndLink" xml:space="preserve">
+    <value>ले जाएं और लिंक करें</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>रद्द करें</value>
+  </data>
+  <data name="DialogMoveTitle" xml:space="preserve">
+    <value>लक्ष्य पर ले जाएं?</value>
+  </data>
+  <data name="DialogMoveFolder" xml:space="preserve">
+    <value>यहां "{0}" नाम का एक फ़ोल्डर पहले से मौजूद है।
+
+इसे लक्ष्य पर ले जाएं और इसकी जगह एक लिंक छोड़ें? पुराने पथ का उपयोग करने वाली हर चीज़ काम करती रहेगी।</value>
+  </data>
+  <data name="DialogMoveFile" xml:space="preserve">
+    <value>यहां "{0}" नाम की एक फ़ाइल पहले से मौजूद है।
+
+इसे लक्ष्य पर ले जाएं और इसकी जगह एक लिंक छोड़ें? पुराने पथ का उपयोग करने वाली हर चीज़ काम करती रहेगी।</value>
+  </data>
+  <data name="ProgressMoveTitle" xml:space="preserve">
+    <value>फ़ाइलें ले जाई जा रही हैं</value>
+  </data>
+  <data name="ProgressMovePreparing" xml:space="preserve">
+    <value>तैयारी हो रही है...</value>
+  </data>
+  <data name="ProgressMoveMessage" xml:space="preserve">
+    <value>{1} में से {0} कॉपी हुआ</value>
+  </data>
+  <data name="MoveSucceeded" xml:space="preserve">
+    <value>"{0}" को लक्ष्य पर ले जाया गया, और पुरानी जगह पर अब एक लिंक है।</value>
+  </data>
+  <data name="MoveFailed" xml:space="preserve">
+    <value>ले जाना पूरा नहीं हुआ, इसलिए सब कुछ पहले जैसा कर दिया गया।
+
+{0}</value>
+  </data>
+  <data name="MoveCanceled" xml:space="preserve">
+    <value>ले जाना रद्द किया गया। सब कुछ पहले जैसा कर दिया गया।</value>
+  </data>
+  <data name="MoveCleanupFailed" xml:space="preserve">
+    <value>फ़ाइलें ले जाई गईं और लिंक बन गया, लेकिन पुरानी कॉपी हटाई नहीं जा सकी। आप इसे स्वयं हटा सकते हैं:
+{0}</value>
+  </data>
+  <data name="MoveRollbackFailed" xml:space="preserve">
+    <value>कुछ गलत हो गया और मूल को वापस नहीं रखा जा सका। आपकी फ़ाइलें यहां सुरक्षित हैं:
+{0}</value>
+  </data>
+  <data name="MoveTargetInsideSource" xml:space="preserve">
+    <value>लक्ष्य, ले जाए जा रहे आइटम के अंदर नहीं हो सकता, और न ही इसका उल्टा।</value>
+  </data>
 </root>

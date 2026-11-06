@@ -184,4 +184,54 @@ ou modo pasta (vincular uma pasta a outra pasta).</value>
   <data name="TooltipAbout" xml:space="preserve">
     <value>Sobre o Symlinker</value>
   </data>
+  <data name="ButtonMoveAndLink" xml:space="preserve">
+    <value>Mover e criar link</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="DialogMoveTitle" xml:space="preserve">
+    <value>Mover para o destino?</value>
+  </data>
+  <data name="DialogMoveFolder" xml:space="preserve">
+    <value>Já existe aqui uma pasta chamada "{0}".
+
+Movê-la para o destino e deixar um link no lugar dela? Tudo que usa o caminho antigo continuará funcionando.</value>
+  </data>
+  <data name="DialogMoveFile" xml:space="preserve">
+    <value>Já existe aqui um arquivo chamado "{0}".
+
+Movê-lo para o destino e deixar um link no lugar dele? Tudo que usa o caminho antigo continuará funcionando.</value>
+  </data>
+  <data name="ProgressMoveTitle" xml:space="preserve">
+    <value>Movendo arquivos</value>
+  </data>
+  <data name="ProgressMovePreparing" xml:space="preserve">
+    <value>Preparando...</value>
+  </data>
+  <data name="ProgressMoveMessage" xml:space="preserve">
+    <value>{0} de {1} copiados</value>
+  </data>
+  <data name="MoveSucceeded" xml:space="preserve">
+    <value>"{0}" foi movido para o destino e agora há um link no lugar antigo.</value>
+  </data>
+  <data name="MoveFailed" xml:space="preserve">
+    <value>A movimentação não foi concluída, então tudo voltou a ser como era.
+
+{0}</value>
+  </data>
+  <data name="MoveCanceled" xml:space="preserve">
+    <value>Movimentação cancelada. Tudo voltou a ser como era.</value>
+  </data>
+  <data name="MoveCleanupFailed" xml:space="preserve">
+    <value>Os arquivos foram movidos e o link foi criado, mas a cópia antiga não pôde ser removida. Você pode excluí-la manualmente:
+{0}</value>
+  </data>
+  <data name="MoveRollbackFailed" xml:space="preserve">
+    <value>Algo deu errado e o original não pôde ser restaurado. Seus arquivos estão seguros em:
+{0}</value>
+  </data>
+  <data name="MoveTargetInsideSource" xml:space="preserve">
+    <value>O destino não pode estar dentro do item que está sendo movido, nem o contrário.</value>
+  </data>
 </root>

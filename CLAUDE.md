@@ -62,6 +62,7 @@ dotnet test --project Symlinker.Tests
 
 - Upload the `.msixbundle` in Partner Center > Symlinker > the submission > Packages. Store ID `9P8H93Z0TGK4`.
 - Manifest template and tile assets live in `packaging/msix/`. Identity values there must match Partner Center.
+- `Properties/DisplayName` must be a name reserved in Partner Center (Manage app names). "Symlinker" alone is taken, so it is "Symlinker - Symlink Creator". The Start menu name (`VisualElements DisplayName`) stays "Symlinker".
 - `-p:MsixBuild=true` swaps in `Properties/app.msix.manifest` (`requireAdministrator`), since the packaged app cannot restart itself with `runas`. So the Store build always runs as administrator and never shows the restart prompt. The script fails if the built exe doesn't ask for admin.
 - The manifest disables file/registry write virtualization so links created under AppData land in the real location.
 

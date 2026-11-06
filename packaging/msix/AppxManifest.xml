@@ -21,7 +21,8 @@
     ProcessorArchitecture="$ARCH$" />
 
   <Properties>
-    <DisplayName>Symlinker</DisplayName>
+    <!-- Must be a name reserved in Partner Center ("Symlinker" alone is taken). -->
+    <DisplayName>Symlinker - Symlink Creator</DisplayName>
     <PublisherDisplayName>Alejandro MD</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
     <!-- Links must land where the user points, not in the package's private AppData copy. -->

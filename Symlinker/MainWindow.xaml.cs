@@ -33,6 +33,9 @@ namespace Symlinker
 
         private bool isFolder = true;
 
+        // Last link name filled in from the target, so user-typed names are never overwritten
+        private string autoFilledLinkName = string.Empty;
+
         private static readonly MetroDialogSettings FastDialog = new()
         {
             AnimateShow = false,
@@ -107,13 +110,34 @@ namespace Symlinker
             {
                 destinationFolderName.Text = isFolder ? Res.PlaceholderTargetFolder : Res.PlaceholderTargetFile;
                 destinationFolderName.SetResourceReference(ForegroundProperty, PlaceholderBrushKey);
+                AutoFillLinkName(string.Empty);
                 return;
             }
 
             var trimmed = path.TrimEnd('\\', '/');
             var lastSep = trimmed.LastIndexOfAny(new[] { '\\', '/' });
-            destinationFolderName.Text = lastSep >= 0 ? trimmed[(lastSep + 1)..] : trimmed;
+            var name = lastSep >= 0 ? trimmed[(lastSep + 1)..] : trimmed;
+            destinationFolderName.Text = name;
             destinationFolderName.SetResourceReference(ForegroundProperty, PrimaryTextBrushKey);
+            AutoFillLinkName(name);
+        }
+
+        /// <summary>
+        /// Keeps the link name in sync with the target's name until the user types their own.
+        /// </summary>
+        private void AutoFillLinkName(string targetName)
+        {
+            var current = linkNameTextBox.Text;
+            var userEdited = current.Length != 0 && current != autoFilledLinkName;
+            if (userEdited)
+                return;
+
+            // Skip names that can't be used as a link name, like a drive root ("D:")
+            if (targetName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+                targetName = string.Empty;
+
+            autoFilledLinkName = targetName;
+            linkNameTextBox.Text = targetName;
         }
 
         private async Task CreateLink()
@@ -252,23 +276,62 @@ namespace Symlinker
         private void ExploreButton1_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new Microsoft.Win32.OpenFolderDialog();
+
+            // Start in the folder already entered so consecutive links don't need re-navigating
+            var current = GetExistingDirectory(linkLocationTextBox.Text, useParent: false);
+            if (current != null)
+                dialog.InitialDirectory = current;
+
             if (dialog.ShowDialog() == true)
                 linkLocationTextBox.Text = dialog.FolderName;
         }
 
         private void ExploreButton2_Click(object sender, RoutedEventArgs e)
         {
+            // Start next to the current target so sibling folders/files are one click away
+            var current = GetExistingDirectory(destinationLocationTextBox.Text, useParent: true);
+
             if (isFolder)
             {
                 var dialog = new Microsoft.Win32.OpenFolderDialog();
+                if (current != null)
+                    dialog.InitialDirectory = current;
                 if (dialog.ShowDialog() == true)
                     destinationLocationTextBox.Text = dialog.FolderName;
             }
             else
             {
                 var dialog = new Microsoft.Win32.OpenFileDialog();
+                if (current != null)
+                    dialog.InitialDirectory = current;
                 if (dialog.ShowDialog() == true)
                     destinationLocationTextBox.Text = dialog.FileName;
+            }
+        }
+
+        /// <summary>
+        /// Returns an existing directory to open a picker in, based on a path typed by the user.
+        /// With <paramref name="useParent"/>, returns the folder that contains the path instead.
+        /// Returns null when nothing usable exists.
+        /// </summary>
+        private static string GetExistingDirectory(string path, bool useParent)
+        {
+            try
+            {
+                path = path.Trim();
+                if (string.IsNullOrEmpty(path))
+                    return null;
+
+                var full = Path.GetFullPath(path);
+                var candidate = useParent ? Path.GetDirectoryName(Path.TrimEndingDirectorySeparator(full)) : full;
+
+                // Fall back to the path itself when it has no parent (e.g. a drive root)
+                candidate ??= full;
+                return Directory.Exists(candidate) ? candidate : null;
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 

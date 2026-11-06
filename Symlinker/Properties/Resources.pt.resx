@@ -79,18 +79,6 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>Preencha todos os campos obrigatórios.</value>
   </data>
-  <data name="ButtonNotNow" xml:space="preserve">
-    <value>Agora não</value>
-  </data>
-  <data name="ButtonRestartAsAdmin" xml:space="preserve">
-    <value>Reiniciar como administrador</value>
-  </data>
-  <data name="DialogElevationTitle" xml:space="preserve">
-    <value>Permissões de administrador necessárias</value>
-  </data>
-  <data name="DialogElevation" xml:space="preserve">
-    <value>Links simbólicos exigem permissões de administrador, a menos que o Modo de Desenvolvedor esteja ativado. Reiniciar como administrador? Os dados serão mantidos.</value>
-  </data>
   <data name="ErrorLinkNameMissing" xml:space="preserve">
     <value>Digite um nome para o link.</value>
   </data>
@@ -131,7 +119,10 @@
     <value>Procurar o arquivo de destino</value>
   </data>
   <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
-    <value>Links simbólicos exigem permissões de administrador ou o Modo de Desenvolvedor.</value>
+    <value>Links simbólicos exigem permissões de administrador ou o Modo de Desenvolvedor. O Windows pedirá permissão ao criar o link.</value>
+  </data>
+  <data name="ElevationHelperFailed" xml:space="preserve">
+    <value>Não foi possível obter permissões de administrador para criar o link.</value>
   </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>Não foi possível encontrar a ferramenta de linha de comando necessária para criar links.</value>

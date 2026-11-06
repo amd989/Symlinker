@@ -536,14 +536,9 @@
                            VerticalAlignment="Top" Margin="0,1,6,0"/>
                     <TextBlock Grid.Column="1" FontSize="12" FontFamily="Segoe UI"
                                TextWrapping="Wrap" MaxHeight="34" TextTrimming="CharacterEllipsis"
-                               Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}">
-                        <Run Text="{x:Static p:Resources.NoticeSymlinkNeedsAdmin}"/>
-                        <Hyperlink Click="RestartAsAdmin_Click"
-                                   Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                   FontWeight="SemiBold">
-                            <Run Text="{x:Static p:Resources.ButtonRestartAsAdmin}"/>
-                        </Hyperlink>
-                    </TextBlock>
+                               Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                               Text="{x:Static p:Resources.NoticeSymlinkNeedsAdmin}"
+                               ToolTip="{x:Static p:Resources.NoticeSymlinkNeedsAdmin}"/>
                 </Grid>
 
                 <Button Grid.Column="2" x:Name="createLinkButton"

@@ -79,18 +79,6 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>कृपया सभी आवश्यक फ़ील्ड भरें।</value>
   </data>
-  <data name="ButtonNotNow" xml:space="preserve">
-    <value>अभी नहीं</value>
-  </data>
-  <data name="ButtonRestartAsAdmin" xml:space="preserve">
-    <value>व्यवस्थापक के रूप में पुनः प्रारंभ करें</value>
-  </data>
-  <data name="DialogElevationTitle" xml:space="preserve">
-    <value>व्यवस्थापक अधिकार आवश्यक</value>
-  </data>
-  <data name="DialogElevation" xml:space="preserve">
-    <value>सिम्बॉलिक लिंक के लिए व्यवस्थापक अधिकार चाहिए, जब तक डेवलपर मोड चालू न हो। व्यवस्थापक के रूप में पुनः प्रारंभ करें? आपकी प्रविष्टियाँ बनी रहेंगी।</value>
-  </data>
   <data name="ErrorLinkNameMissing" xml:space="preserve">
     <value>लिंक के लिए एक नाम दर्ज करें।</value>
   </data>
@@ -131,7 +119,10 @@
     <value>लक्ष्य फ़ाइल ब्राउज़ करें</value>
   </data>
   <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
-    <value>सिम्बॉलिक लिंक के लिए व्यवस्थापक अधिकार या डेवलपर मोड चाहिए।</value>
+    <value>सिम्बॉलिक लिंक के लिए व्यवस्थापक अधिकार या डेवलपर मोड चाहिए। लिंक बनाते समय Windows अनुमति मांगेगा।</value>
+  </data>
+  <data name="ElevationHelperFailed" xml:space="preserve">
+    <value>लिंक बनाने के लिए व्यवस्थापक अधिकार नहीं मिल सके।</value>
   </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>लिंक बनाने के लिए आवश्यक कमांड-लाइन टूल नहीं मिला।</value>

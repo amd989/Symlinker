@@ -112,11 +112,11 @@ namespace Symlinker
             destinationFolderName.SetResourceReference(ForegroundProperty, PlaceholderBrushKey);
         }
 
-        private string GetLinkTypeFlag()
+        private string GetLinkType()
         {
-            if (hardLinkRadio.IsChecked == true) return "/H ";
-            if (junctionRadio.IsChecked == true) return "/J ";
-            return string.Empty;
+            if (hardLinkRadio.IsChecked == true) return "hard";
+            if (junctionRadio.IsChecked == true) return "junction";
+            return "symbolic";
         }
 
         private void DestinationPath_TextChanged(object sender, TextChangedEventArgs e)
@@ -176,7 +176,8 @@ namespace Symlinker
                     return;
                 }
 
-                var link = $"\"{linkLocation}\\{linkName}\"";
+                // Full path: the administrator helper runs in a different working folder
+                var link = Path.GetFullPath(Path.Combine(linkLocation, linkName));
 
                 // A real file or folder already sits where the link goes and the target is free:
                 // offer to move it to the target and leave a link behind (#33)
@@ -204,6 +205,10 @@ namespace Symlinker
                             FastDialog);
                         if (answer == MessageDialogResult.Affirmative)
                         {
+                            // Ask for administrator rights before deleting anything
+                            if (!await ElevateIfNeededAsync())
+                                return;
+
                             var dir2Delete = directories.First(e => Path.GetFileName(e).Equals(linkName, StringComparison.OrdinalIgnoreCase));
                             Directory.Delete(dir2Delete, true);
                             await SendCommand(link, destination);
@@ -229,6 +234,10 @@ namespace Symlinker
                             FastDialog);
                         if (answer == MessageDialogResult.Affirmative)
                         {
+                            // Ask for administrator rights before deleting anything
+                            if (!await ElevateIfNeededAsync())
+                                return;
+
                             var file2Delete = files.First(e => Path.GetFileName(e).Equals(linkName, StringComparison.OrdinalIgnoreCase));
                             File.Delete(file2Delete);
                             await SendCommand(link, destination);
@@ -254,6 +263,10 @@ namespace Symlinker
 
         private async Task SendCommand(string link, string destination)
         {
+            // A declined UAC prompt quietly stops here
+            if (!await ElevateIfNeededAsync())
+                return;
+
             var (success, message) = await RunMklinkAsync(link, destination);
             await this.ShowMessageAsync(
                 success ? Res.MessageBoxSuccessTitle : Res.MessageBoxErrorTitle,
@@ -261,42 +274,33 @@ namespace Symlinker
                 settings: FastDialog);
         }
 
-        /// <summary>Runs mklink and returns whether it worked, with the message to show the user.</summary>
+        /// <summary>
+        /// Runs mklink and returns whether it worked, with the message to show the user.
+        /// Goes through the administrator helper when <see cref="ElevateIfNeededAsync"/> started one.
+        /// </summary>
         private async Task<(bool Success, string Message)> RunMklinkAsync(string link, string destination)
         {
+            var request = new LinkRequest
+            {
+                Type = GetLinkType(),
+                Link = link,
+                Target = destination,
+                Directory = isFolder,
+            };
+
+            LinkResult result;
             try
             {
-                var typeLink = GetLinkTypeFlag();
-                var directory = isFolder ? "/D " : string.Empty;
-                var stringCommand = $"/c mklink {directory}{typeLink}{link} \"{destination}\"";
-                var processStartInfo = new ProcessStartInfo
-                {
-                    FileName = "cmd",
-                    Arguments = stringCommand,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true
-                };
-
-                using var process = new Process { StartInfo = processStartInfo };
-                process.Start();
-                var output = process.StandardOutput.ReadToEndAsync();
-                var error = process.StandardError.ReadToEndAsync();
-                await process.WaitForExitAsync();
-
-                var outputText = (await output).Trim();
-                var errorText = (await error).Trim();
-
-                if (process.ExitCode == 0)
-                    return (true, outputText.Length > 0 ? outputText : Res.LinkSuccessfullyCreated);
-
-                return (false, errorText.Length > 0 ? errorText : outputText);
+                result = elevatedLinker != null
+                    ? await elevatedLinker.CreateLinkAsync(request)
+                    : await LinkCommand.RunAsync(request);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return (false, Res.CmdNotFound);
+                result = LinkResult.Failed(Res.MessageBoxExceptionOcurred + "\n" + exception.Message);
             }
+
+            return (result.Success, result.Message);
         }
 
         /// <summary>
@@ -336,6 +340,11 @@ namespace Symlinker
                 await this.ShowMessageAsync(Res.LinkCreationAbortedWarning, Res.LinkCreationAborted, settings: FastDialog);
                 return;
             }
+
+            // Ask for administrator rights before moving anything, so a declined prompt
+            // never leaves files moved without a link
+            if (!await ElevateIfNeededAsync())
+                return;
 
             isMoving = true;
             try
@@ -623,11 +632,15 @@ namespace Symlinker
             createLinkButton.IsEnabled = false;
             try
             {
-                if (ValidateInputs() && await EnsureCanCreateLinkAsync())
+                if (ValidateInputs())
+                {
+                    RefreshSymlinkAccessNow();
                     await CreateLink();
+                }
             }
             finally
             {
+                StopElevatedLinker();
                 createLinkButton.IsEnabled = true;
             }
         }

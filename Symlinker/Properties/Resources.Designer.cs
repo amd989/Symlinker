@@ -92,24 +92,6 @@ namespace Symlinker.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not now.
-        /// </summary>
-        public static string ButtonNotNow {
-            get {
-                return ResourceManager.GetString("ButtonNotNow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Restart as administrator.
-        /// </summary>
-        public static string ButtonRestartAsAdmin {
-            get {
-                return ResourceManager.GetString("ButtonRestartAsAdmin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to LINK LOCATION.
         /// </summary>
         public static string CardHeaderLinkLocation {
@@ -155,24 +137,6 @@ namespace Symlinker.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Symbolic links need administrator rights unless Developer Mode is on in Windows Settings. Restart as administrator? Your entries will be kept..
-        /// </summary>
-        public static string DialogElevation {
-            get {
-                return ResourceManager.GetString("DialogElevation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Administrator rights needed.
-        /// </summary>
-        public static string DialogElevationTitle {
-            get {
-                return ResourceManager.GetString("DialogElevationTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to A folder with this link name already exists in the selected directory. Would you like to delete it and create a new link?.
         /// </summary>
         public static string DialogFolderExists {
@@ -187,6 +151,15 @@ namespace Symlinker.Properties {
         public static string DialogFolderExistsDialog {
             get {
                 return ResourceManager.GetString("DialogFolderExistsDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Couldn't get administrator rights to create the link.
+        /// </summary>
+        public static string ElevationHelperFailed {
+            get {
+                return ResourceManager.GetString("ElevationHelperFailed", resourceCulture);
             }
         }
         
@@ -371,7 +344,7 @@ namespace Symlinker.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Symbolic links need administrator rights or Developer Mode..
+        ///   Looks up a localized string similar to Symbolic links need administrator rights or Developer Mode. Windows will ask for permission when you create the link..
         /// </summary>
         public static string NoticeSymlinkNeedsAdmin {
             get {

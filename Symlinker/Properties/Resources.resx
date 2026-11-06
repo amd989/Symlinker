@@ -138,18 +138,6 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>Please fill in all the required fields.</value>
   </data>
-  <data name="ButtonNotNow" xml:space="preserve">
-    <value>Not now</value>
-  </data>
-  <data name="ButtonRestartAsAdmin" xml:space="preserve">
-    <value>Restart as administrator</value>
-  </data>
-  <data name="DialogElevationTitle" xml:space="preserve">
-    <value>Administrator rights needed</value>
-  </data>
-  <data name="DialogElevation" xml:space="preserve">
-    <value>Symbolic links need administrator rights unless Developer Mode is on in Windows Settings. Restart as administrator? Your entries will be kept.</value>
-  </data>
   <data name="ErrorLinkNameMissing" xml:space="preserve">
     <value>Enter a name for the link.</value>
   </data>
@@ -190,7 +178,10 @@
     <value>Browse for the target file</value>
   </data>
   <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
-    <value>Symbolic links need administrator rights or Developer Mode.</value>
+    <value>Symbolic links need administrator rights or Developer Mode. Windows will ask for permission when you create the link.</value>
+  </data>
+  <data name="ElevationHelperFailed" xml:space="preserve">
+    <value>Couldn't get administrator rights to create the link.</value>
   </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>Cannot find the command-line tool needed to create links.</value>

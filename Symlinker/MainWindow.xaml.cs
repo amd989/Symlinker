@@ -26,7 +26,7 @@ namespace Symlinker
         [DllImport("dwmapi.dll")]
         private static extern int DwmSetWindowAttribute(nint hwnd, int attr, ref int attrValue, int attrSize);
 
-        private const string PlaceholderBrushKey = "MahApps.Brushes.Gray3";
+        private const string PlaceholderBrushKey = "MahApps.Brushes.Gray2";
         private const string PrimaryTextBrushKey = "MahApps.Brushes.ThemeForeground";
 
         private readonly LinkNameAutoFill linkNameAutoFill = new();
@@ -35,11 +35,13 @@ namespace Symlinker
 
         private bool isFolder = true;
 
-        public MainWindow()
+        internal MainWindow(LaunchOptions options = null)
         {
+            launchOptions = options;
             InitializeComponent();
             dialogs = new MetroDialogService(this);
             linkCreator = new LinkCreator(dialogs, new CmdMklinkRunner());
+            InitializeInputs();
             Loaded += OnLoaded;
         }
 
@@ -50,6 +52,7 @@ namespace Symlinker
             DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref preference, sizeof(int));
 
             UpdateMode();
+            ApplyLaunchOptions();
         }
 
         private void TypeRadio_Checked(object sender, RoutedEventArgs e)
@@ -81,14 +84,22 @@ namespace Symlinker
             hardLinkRadio.ToolTip = linkTypeTooltip;
             junctionRadio.ToolTip = linkTypeTooltip;
 
-            if (destinationLocationTextBox != null)
+            UpdateTargetBrowseLabel();
+            ClearInputErrors();
+
+            // Keep the target when it still fits the new mode (an existing folder or file)
+            if (!InputValidator.TargetFitsMode(destinationLocationTextBox.Text, isFolder))
                 destinationLocationTextBox.Text = string.Empty;
 
-            if (destinationFolderName != null)
-            {
-                destinationFolderName.Text = isFolder ? Res.PlaceholderTargetFolder : Res.PlaceholderTargetFile;
-                destinationFolderName.SetResourceReference(ForegroundProperty, PlaceholderBrushKey);
-            }
+            if (destinationLocationTextBox.Text.Length == 0)
+                ShowTargetPlaceholder();
+        }
+
+        private void ShowTargetPlaceholder()
+        {
+            destinationFolderName.Text = isFolder ? Res.PlaceholderTargetFolder : Res.PlaceholderTargetFile;
+            destinationFolderName.FontStyle = FontStyles.Italic;
+            destinationFolderName.SetResourceReference(ForegroundProperty, PlaceholderBrushKey);
         }
 
         private LinkKind SelectedKind =>
@@ -101,14 +112,14 @@ namespace Symlinker
             var path = destinationLocationTextBox.Text;
             if (string.IsNullOrEmpty(path))
             {
-                destinationFolderName.Text = isFolder ? Res.PlaceholderTargetFolder : Res.PlaceholderTargetFile;
-                destinationFolderName.SetResourceReference(ForegroundProperty, PlaceholderBrushKey);
+                ShowTargetPlaceholder();
                 AutoFillLinkName(string.Empty);
                 return;
             }
 
             var name = UiHelpers.GetName(path);
             destinationFolderName.Text = name;
+            destinationFolderName.FontStyle = FontStyles.Normal;
             destinationFolderName.SetResourceReference(ForegroundProperty, PrimaryTextBrushKey);
             AutoFillLinkName(name);
         }
@@ -170,12 +181,15 @@ namespace Symlinker
             createLinkButton.IsEnabled = false;
             try
             {
-                await linkCreator.CreateAsync(new LinkRequest(
-                    linkLocationTextBox.Text,
-                    linkNameTextBox.Text,
-                    destinationLocationTextBox.Text,
-                    isFolder,
-                    SelectedKind));
+                if (ValidateInputs() && await EnsureCanCreateLinkAsync())
+                {
+                    await linkCreator.CreateAsync(new LinkRequest(
+                        linkLocationTextBox.Text,
+                        linkNameTextBox.Text,
+                        destinationLocationTextBox.Text,
+                        isFolder,
+                        SelectedKind));
+                }
             }
             finally
             {

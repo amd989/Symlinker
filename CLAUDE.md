@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Symlinker is a WPF application (.NET 10) that provides a GUI for creating symbolic links, hard links, and directory junctions on Windows. It wraps the Windows `mklink` command with an easy-to-use interface.
+Symlinker is a WPF application (.NET 10, MahApps.Metro) that provides a GUI for creating symbolic links, hard links, and directory junctions on Windows. It wraps the Windows `mklink` command with an easy-to-use interface.
 
-**Target Platform:** Windows 10+ only (as of 2025 modernization)
+**Target Platform:** Windows 10+ only
 
 ## Build & Development Commands
 
@@ -20,28 +20,13 @@ dotnet build "Symlinker/Symlinker.csproj" --configuration Debug
 dotnet build "Symlinker/Symlinker.csproj" --configuration Release
 ```
 
-### Publishing (ClickOnce)
-
-The application uses ClickOnce deployment and is published to GitHub Pages:
-
-```powershell
-# Full build and publish to gh-pages branch
-./release.ps1
-
-# Build only (skip deployment)
-./release.ps1 -OnlyBuild
-```
-
-The `release.ps1` script:
-- Reads the Git tag to determine version (e.g., `v1.2.3` becomes `1.2.3.0`)
-- Uses MSBuild to publish with ClickOnce profile
-- Deploys to `gh-pages` branch for auto-update support
-
 ### Running the Application
 
 ```powershell
 dotnet run --project "Symlinker/Symlinker.csproj"
 ```
+
+The app starts unelevated. It only asks for administrator rights when a symbolic link needs them (see "Administrator rights" below).
 
 ### Running the Tests
 
@@ -52,28 +37,51 @@ dotnet test --project Symlinker.Tests
 - xUnit v3 on Microsoft.Testing.Platform (opted in through [global.json](global.json)), with coverage from `coverlet.MTP`
 - Every run collects coverage for the `Symlinker` assembly and **fails below 100% line, branch or method coverage**. The Cobertura report lands in `TestResults/`
 - Tests use the real file system under `%TEMP%`. Symbolic link tests need Developer Mode or an elevated prompt (GitHub's Windows runners are elevated)
-- Code that needs a live window or UAC (`MainWindow`, `App`, `Program`, `MetroDialogService`) is marked `[ExcludeFromCodeCoverage]`. Keep logic out of those and put it in a tested class instead
+- Code that needs a live window, UAC or native icons (`MainWindow`, `App`, `Program`, `MetroDialogService`, `InputError`, `Elevation.RestartElevated`, `Elevation.GetShieldIcon`) is marked `[ExcludeFromCodeCoverage]`. Keep logic out of those and put it in a tested class instead
+
+### Publishing
+
+- `./release.ps1` builds and publishes the ClickOnce installer to the `gh-pages` branch (`-OnlyBuild` skips deployment). It reads the Git tag for the version (`v1.2.3` becomes `1.2.3.0`).
+- `./build-portable.ps1` builds the portable ZIP used for Scoop.
 
 ## Architecture
 
-WPF app (.NET 10) using MahApps.Metro. The window is thin view glue; the logic lives in plain classes that the tests drive with fake dialogs and a fake mklink.
+The window is view glue. Logic lives in plain classes that the tests drive with fake dialogs and a fake mklink.
 
 ### Key Components
 
-1. **Program.cs**: Entry point. Relaunches itself elevated (`runas`) with the `--engage` flag
-2. **App.xaml(.cs)**: Loads MahApps styles and syncs the theme with Windows
-3. **MainWindow.xaml(.cs)**: View glue: file/folder mode, pickers, drag and drop, link name auto-fill
-4. **LinkCreator.cs**: The link workflow: validation, replace-existing prompts, and moving an existing file or folder to the target (rename on the same drive, copy with progress across drives, rollback on failure)
-5. **LinkMover.cs**: File system helpers for moving: copy that keeps attributes and recreates nested links, delete that never follows links
-6. **Mklink.cs**: `LinkKind`, mklink argument building, and `CmdMklinkRunner` which runs `cmd /c mklink`
-7. **Dialogs.cs**: `IDialogService` / `IProgressDialog`, and `MetroDialogService` which shows them in the window
-8. **UiHelpers.cs**: Path name extraction, picker start folders, byte formatting, app version, `LinkNameAutoFill`
+1. **Program.cs**: Entry point. Parses command-line options (`LaunchOptions`) and opens the main window. It does not elevate.
+2. **App.xaml / App.xaml.cs**: Loads MahApps.Metro styles and syncs the theme (light/dark and accent color) with Windows.
+3. **MainWindow.xaml**: The whole UI. Two cards (link location, target), pill toggles for folder/file mode and link type, and a footer with the About button, an inline error line and the Create link button. Styles live in `Window.Resources`.
+4. **MainWindow.xaml.cs**: Mode switching, link name auto-fill, file pickers, drag and drop. Hands link creation to `LinkCreator`.
+5. **MainWindow.Inputs.cs**: Inline errors (`InputError.HasError` attached property plus the footer message), theme-dependent brushes, restoring launch options, the up-front admin notice, and the administrator restart prompt.
+6. **Elevation.cs**: `LaunchOptions` (command-line parsing and correctly quoted argument building) and `Elevation` (admin check, symbolic link privilege probe, elevated restart with `runas`, the UAC shield icon).
+7. **LinkCreator.cs**: The link workflow: replace-existing prompts, and moving an existing file or folder to the target (rename on the same drive, copy with progress across drives, rollback on failure).
+8. **LinkMover.cs**: File system helpers for moving: copy that keeps attributes and recreates nested links, delete that never follows links.
+9. **Mklink.cs**: `LinkKind`, mklink argument building, and `CmdMklinkRunner`, which runs `cmd.exe /c mklink`.
+10. **InputValidator.cs**: Field checks behind the inline errors, and `ColorContrast` for text on the accent color.
+11. **Dialogs.cs**: `IDialogService` / `IProgressDialog`, and `MetroDialogService`, which shows them in the window.
+12. **UiHelpers.cs**: Path name extraction, picker start folders, byte formatting, app version, `LinkNameAutoFill`.
 
-### Link Type Mapping
+### Link Creation Flow
 
-- Symbolic Link: `/D` (directory) or empty (file)
-- Hard Link: `/H` (files only)
-- Directory Junction: `/D /J` (folders only)
+1. User picks folder or file mode (pills) and a link type. Junction is folder-only, hard link is file-only.
+2. User fills in the link location, link name and target (typing, browsing, or drag and drop).
+3. Create link (or Enter, it is the default button) runs `ValidateInputs()`, which marks the fields `InputValidator` flags.
+4. `EnsureCanCreateLinkAsync()` checks whether a symbolic link can be created. If not, it offers to restart as administrator.
+5. `LinkCreator.CreateAsync()` handles an existing item at the link path (replace it, or move it to the target), then runs mklink and shows the result.
+
+### Administrator rights
+
+- Junctions and hard links never need admin. Symbolic links need admin unless Windows Developer Mode is on.
+- `Elevation.CanCreateSymbolicLinks()` probes by creating a throwaway symlink in the temp folder.
+- The probe runs when the window loads (and again on activation while admin is needed). If symbolic links need admin, Create link shows the UAC shield and the footer shows a notice with a "Restart as administrator" link, so the user knows before filling in the form. Field errors take the same footer spot and hide the notice.
+- When elevation is needed, the app restarts itself with `runas` and passes the form values as quoted arguments (`--mode`, `--type`, `--location`, `--name`, `--target`). The old `--engage` flag is still accepted and ignored.
+
+### Important Patterns
+
+- **Command building**: mklink flags are `/D` (directory symlink), `/H` (hard link), `/J` (junction); paths are wrapped in quotes.
+- **Theme colors**: Use `DynamicResource` with MahApps brushes (`MahApps.Brushes.Gray1..10`, `Accent`, `ThemeForeground`). The gray scale is not monotonic in the dark theme, so check contrast in both themes. `Symlinker.Brushes.Error` and `Symlinker.Brushes.OnAccent` are set at runtime in `MainWindow.Inputs.cs`.
 
 ### Dependencies
 
@@ -87,24 +95,33 @@ Managed via Central Package Management ([Directory.Packages.props](Directory.Pac
 
 ```
 Symlinker/
-├── Symlinker/                # App
-│   ├── LinkCreator.cs        # Link workflow (tested)
-│   ├── LinkMover.cs          # Move/copy/delete helpers (tested)
-│   ├── Mklink.cs             # mklink arguments and runner (tested)
-│   ├── Dialogs.cs            # Dialog abstraction + MahApps implementation
-│   ├── UiHelpers.cs          # Small UI helpers (tested)
-│   ├── MainWindow.xaml(.cs)  # Window (view glue)
-│   ├── App.xaml(.cs)         # Application, theme sync
-│   ├── Program.cs            # Entry point with UAC elevation
-│   └── Properties/           # Localized resources and settings
-├── Symlinker.Tests/          # xUnit tests, 100% coverage gate
+├── Symlinker/
+│   ├── App.xaml(.cs)            # Application, theme sync
+│   ├── MainWindow.xaml          # UI and styles
+│   ├── MainWindow.xaml.cs       # Window glue
+│   ├── MainWindow.Inputs.cs     # Inline errors, admin restart
+│   ├── Elevation.cs             # LaunchOptions and elevation helpers
+│   ├── LinkCreator.cs           # Link workflow
+│   ├── LinkMover.cs             # Move/copy/delete helpers
+│   ├── Mklink.cs                # mklink arguments and runner
+│   ├── InputValidator.cs        # Field checks, accent contrast
+│   ├── Dialogs.cs               # Dialog abstraction + MahApps implementation
+│   ├── UiHelpers.cs             # Small UI helpers
+│   ├── Program.cs               # Entry point
+│   ├── Properties/
+│   │   ├── Resources.resx           # English strings
+│   │   ├── Resources.<lang>.resx    # de, es, fr, hi, it, ja, pt, zh
+│   │   ├── Resources.Designer.cs    # Typed string accessors
+│   │   └── app.manifest             # asInvoker, PerMonitorV2 DPI
+│   ├── icon.ico
+│   └── Symlinker.csproj
+├── Symlinker.Tests/            # xUnit tests, 100% coverage gate
 ├── Symlinker.sln
-├── Directory.Packages.props  # Central package versions
-├── global.json               # Opts dotnet test into Microsoft.Testing.Platform
-├── release.ps1               # ClickOnce build/publish script
-└── .github/workflows/
-    ├── ci.yml                # Build and test on pull requests
-    └── release.yml           # Tagged releases
+├── Directory.Packages.props
+├── global.json                 # Opts dotnet test into Microsoft.Testing.Platform
+├── release.ps1                 # ClickOnce build/publish
+├── build-portable.ps1          # Portable ZIP for Scoop
+└── .github/workflows/          # ci.yml, release.yml
 ```
 
 ## Release Process
@@ -112,21 +129,16 @@ Symlinker/
 Releases are automated via GitHub Actions:
 
 1. Push a Git tag: `git tag v1.2.3 && git push origin v1.2.3`
-2. GitHub Actions workflow ([.github/workflows/release.yml](.github/workflows/release.yml)) triggers
-3. `release.ps1` executes on Windows runner
-4. Application published to `gh-pages` branch
-5. ClickOnce installer auto-updates existing installations
+2. [.github/workflows/release.yml](.github/workflows/release.yml) runs `release.ps1` on a Windows runner
+3. The app is published to `gh-pages` and ClickOnce auto-updates existing installs
 
 ## Known Limitations
 
-- **Drag & Drop**: Does not work when running as administrator (Windows security limitation)
-- **UAC Required**: Creating symlinks requires administrator privileges on Windows
-- **Platform**: Windows 10/11 only (uses .NET 8 Windows-specific APIs)
+- **Drag and drop**: Works in the normal (unelevated) app. It does not work after restarting as administrator, because Windows blocks drops from a lower-privilege Explorer.
+- **Platform**: Windows 10/11 only.
 
 ## Localization
 
-UI strings are managed through resource files:
-- [Symlinker/Properties/Resources.Designer.cs](Symlinker/Properties/Resources.Designer.cs)
-- [Symlinker/MainWindow.resx](Symlinker/MainWindow.resx)
-
-When modifying UI text, update the resource files rather than hardcoding strings.
+- Every UI string lives in `Properties/Resources.resx` and must also be added to all 8 translations (de, es, fr, hi, it, ja, pt, zh).
+- `Resources.Designer.cs` is not regenerated by `dotnet build`. When adding a string, add its typed property by hand in the same generated style.
+- The window is a fixed 560x280, so check long translations (German, Italian, French) for overflow in pills, buttons and dialogs.

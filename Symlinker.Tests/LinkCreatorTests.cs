@@ -187,7 +187,7 @@ namespace Symlinker.Tests
         public async Task Create_TreatsAnExistingLinkAsReplaceable_NotMovable()
         {
             temp.Dir("links");
-            Directory.CreateSymbolicLink(temp.PathOf("links", "name"), temp.Dir("old-target"));
+            temp.Junction(temp.PathOf("links", "name"), temp.Dir("old-target"));
             var target = temp.Dir("empty-target");
             dialogs.Answer = false;
 

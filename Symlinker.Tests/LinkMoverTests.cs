@@ -5,7 +5,8 @@ namespace Symlinker.Tests
     using System.Threading;
 
     /// <summary>
-    /// Runs against the real file system. Symbolic links need Developer Mode or an elevated prompt.
+    /// Runs against the real file system. Folder links are junctions, which need no special rights;
+    /// tests with symbolic links need Developer Mode or an elevated prompt and are skipped without them.
     /// </summary>
     public sealed class LinkMoverTests : IDisposable
     {
@@ -25,8 +26,15 @@ namespace Symlinker.Tests
         }
 
         [Fact]
+        public void IsLink_IsTrue_ForJunctions()
+        {
+            Assert.True(LinkMover.IsLink(temp.Junction(temp.PathOf("folder-link"), temp.Dir("folder"))));
+        }
+
+        [Fact]
         public void IsLink_IsTrue_ForSymbolicLinks()
         {
+            SymlinkSupport.Require();
             var folderLink = Directory.CreateSymbolicLink(temp.PathOf("folder-link"), temp.Dir("folder"));
             var fileLink = File.CreateSymbolicLink(temp.PathOf("file-link"), temp.File("file.txt"));
 
@@ -89,7 +97,7 @@ namespace Symlinker.Tests
             var hidden = temp.File(@"source\nested\hidden.txt", "123");
             File.SetAttributes(hidden, FileAttributes.Hidden);
             temp.File(@"elsewhere\big.txt", new string('x', 1000));
-            Directory.CreateSymbolicLink(temp.PathOf("source", "link"), temp.PathOf("elsewhere"));
+            temp.Junction(temp.PathOf("source", "link"), temp.PathOf("elsewhere"));
 
             Assert.Equal(5, LinkMover.GetTotalBytes(new FileInfo(file)));
             Assert.Equal(8, LinkMover.GetTotalBytes(new DirectoryInfo(temp.PathOf("source"))));
@@ -126,17 +134,12 @@ namespace Symlinker.Tests
         }
 
         [Fact]
-        public void Copy_Folder_CopiesEverythingAndRecreatesLinks()
+        public void Copy_Folder_CopiesEverything()
         {
-            var linkedFolder = temp.Dir("linked-folder");
-            var linkedFile = temp.File("linked.txt");
-
             temp.File(@"source\a.txt", "aaa");
             var hidden = temp.File(@"source\nested\hidden.txt", "bb");
             File.SetAttributes(hidden, FileAttributes.Hidden);
             temp.Dir(@"source\empty");
-            Directory.CreateSymbolicLink(temp.PathOf("source", "folder-link"), linkedFolder);
-            File.CreateSymbolicLink(temp.PathOf("source", "file-link.txt"), linkedFile);
 
             var source = new DirectoryInfo(temp.PathOf("source"));
             source.Attributes |= FileAttributes.ReadOnly;
@@ -151,12 +154,28 @@ namespace Symlinker.Tests
             Assert.Equal("bb", File.ReadAllText(temp.PathOf("copy", "nested", "hidden.txt")));
             Assert.True(File.GetAttributes(temp.PathOf("copy", "nested", "hidden.txt")).HasFlag(FileAttributes.Hidden));
             Assert.True(Directory.Exists(temp.PathOf("copy", "empty")));
-            Assert.Equal(linkedFolder, new DirectoryInfo(temp.PathOf("copy", "folder-link")).LinkTarget);
-            Assert.Equal(linkedFile, new FileInfo(temp.PathOf("copy", "file-link.txt")).LinkTarget);
             Assert.Equal(5, copied);
             Assert.Equal(OldTime, copy.CreationTimeUtc);
             Assert.Equal(OldTime, copy.LastWriteTimeUtc);
             Assert.True(copy.Attributes.HasFlag(FileAttributes.ReadOnly));
+        }
+
+        [Fact]
+        public void Copy_Folder_RecreatesNestedLinks()
+        {
+            SymlinkSupport.Require();
+            var linkedFolder = temp.Dir("linked-folder");
+            var linkedFile = temp.File("linked.txt");
+            temp.Dir("source");
+            temp.Junction(temp.PathOf("source", "junction"), linkedFolder);
+            Directory.CreateSymbolicLink(temp.PathOf("source", "folder-link"), linkedFolder);
+            File.CreateSymbolicLink(temp.PathOf("source", "file-link.txt"), linkedFile);
+
+            LinkMover.Copy(new DirectoryInfo(temp.PathOf("source")), temp.PathOf("copy"), _ => { }, CancellationToken.None);
+
+            Assert.Equal(linkedFolder, new DirectoryInfo(temp.PathOf("copy", "junction")).LinkTarget);
+            Assert.Equal(linkedFolder, new DirectoryInfo(temp.PathOf("copy", "folder-link")).LinkTarget);
+            Assert.Equal(linkedFile, new FileInfo(temp.PathOf("copy", "file-link.txt")).LinkTarget);
         }
 
         [Fact]
@@ -195,7 +214,7 @@ namespace Symlinker.Tests
             var target = temp.Dir("target");
             temp.File(@"target\keep.txt");
             var link = temp.PathOf("link");
-            Directory.CreateSymbolicLink(link, target);
+            temp.Junction(link, target);
 
             LinkMover.Delete(link);
 
@@ -204,19 +223,17 @@ namespace Symlinker.Tests
         }
 
         [Fact]
-        public void Delete_RemovesReadOnlyContentButNotLinkedFiles()
+        public void Delete_RemovesReadOnlyContentButNotLinkedFolders()
         {
             var linkedFolder = temp.Dir("linked-folder");
             var kept = temp.File(@"linked-folder\keep.txt");
-            var linkedFile = temp.File("linked.txt");
 
             var readOnly = temp.File(@"folder\nested\read-only.txt");
             File.SetAttributes(readOnly, FileAttributes.ReadOnly);
             temp.File(@"folder\plain.txt");
             var readOnlyFolder = new DirectoryInfo(temp.Dir(@"folder\read-only-folder"));
             readOnlyFolder.Attributes |= FileAttributes.ReadOnly;
-            Directory.CreateSymbolicLink(temp.PathOf("folder", "folder-link"), linkedFolder);
-            File.CreateSymbolicLink(temp.PathOf("folder", "file-link.txt"), linkedFile);
+            temp.Junction(temp.PathOf("folder", "folder-link"), linkedFolder);
             var folder = new DirectoryInfo(temp.PathOf("folder"));
             folder.Attributes |= FileAttributes.ReadOnly;
 
@@ -224,6 +241,19 @@ namespace Symlinker.Tests
 
             Assert.False(Directory.Exists(folder.FullName));
             Assert.True(File.Exists(kept));
+        }
+
+        [Fact]
+        public void Delete_KeepsFilesBehindNestedFileLinks()
+        {
+            SymlinkSupport.Require();
+            var linkedFile = temp.File("linked.txt");
+            temp.Dir("folder");
+            File.CreateSymbolicLink(temp.PathOf("folder", "file-link.txt"), linkedFile);
+
+            LinkMover.Delete(temp.PathOf("folder"));
+
+            Assert.False(Directory.Exists(temp.PathOf("folder")));
             Assert.True(File.Exists(linkedFile));
         }
     }

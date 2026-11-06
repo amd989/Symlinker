@@ -3,6 +3,7 @@ namespace Symlinker.Tests
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
@@ -28,6 +29,23 @@ namespace Symlinker.Tests
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             System.IO.File.WriteAllText(path, content);
             return path;
+        }
+
+        /// <summary>Creates a junction (a folder link that never needs administrator rights).</summary>
+        public DirectoryInfo Junction(string linkPath, string target)
+        {
+            using var process = Process.Start(new ProcessStartInfo("cmd", $"/c mklink /J \"{linkPath}\" \"{target}\"")
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true,
+            });
+            process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+            if (process.ExitCode != 0)
+                throw new IOException($"mklink /J failed for {linkPath}");
+
+            return new DirectoryInfo(linkPath);
         }
 
         public void Dispose()
@@ -56,6 +74,34 @@ namespace Symlinker.Tests
                     ClearReadOnly(subdirectory);
             }
         }
+    }
+
+    /// <summary>
+    /// Whether this process may create symbolic links (Developer Mode or elevation).
+    /// Tests that need them are skipped otherwise, which also drops coverage below the gate.
+    /// </summary>
+    internal static class SymlinkSupport
+    {
+        public const string SkipReason = "Symbolic links need Developer Mode or an elevated prompt.";
+
+        private static readonly Lazy<bool> Probe = new(() =>
+        {
+            var path = Path.Combine(Path.GetTempPath(), "symlinker-tests-probe-" + Guid.NewGuid().ToString("N"));
+            try
+            {
+                File.CreateSymbolicLink(path, path + "-target");
+                File.Delete(path);
+                return true;
+            }
+            catch (IOException)
+            {
+                return false;
+            }
+        });
+
+        public static bool Available => Probe.Value;
+
+        public static void Require() => Assert.SkipUnless(Available, SkipReason);
     }
 
     /// <summary>Records dialogs instead of showing them, and answers questions with <see cref="Answer"/>.</summary>

@@ -44,6 +44,26 @@ dotnet test --project Symlinker.Tests
 
 - `./release.ps1` builds and publishes the ClickOnce installer to the `gh-pages` branch (`-OnlyBuild` skips deployment). It reads the Git tag for the version (`v1.2.3` becomes `1.2.3.0`).
 - `./build-portable.ps1` builds the portable ZIP used for Scoop.
+- `./build-msix.ps1` builds the Microsoft Store package (see below).
+
+### Publishing (Microsoft Store / MSIX)
+
+```powershell
+# Builds Symlinker/bin/msix/Symlinker-<version>.msixbundle (x64 + arm64, self-contained, unsigned).
+# Version defaults to the latest Git tag; the Store needs a higher version on every upload.
+./build-msix.ps1
+
+# Also install this PC's build for a test run (Developer Mode)
+./build-msix.ps1 -Install
+
+# Also run the Windows App Certification Kit (administrator shell)
+./build-msix.ps1 -Wack
+```
+
+- Upload the `.msixbundle` in Partner Center > Symlinker > the submission > Packages. Store ID `9P8H93Z0TGK4`.
+- Manifest template and tile assets live in `packaging/msix/`. Identity values there must match Partner Center.
+- `-p:MsixBuild=true` swaps in `Properties/app.msix.manifest` (`requireAdministrator`), since the packaged app cannot restart itself with `runas`. So the Store build always runs as administrator and never shows the restart prompt. The script fails if the built exe doesn't ask for admin.
+- The manifest disables file/registry write virtualization so links created under AppData land in the real location.
 
 ## Architecture
 
@@ -120,7 +140,8 @@ Symlinker/
 │   │   ├── Resources.resx           # English strings
 │   │   ├── Resources.<lang>.resx    # de, es, fr, hi, it, ja, pt, zh
 │   │   ├── Resources.Designer.cs    # Typed string accessors
-│   │   └── app.manifest             # asInvoker, PerMonitorV2 DPI
+│   │   ├── app.manifest             # asInvoker, PerMonitorV2 DPI
+│   │   └── app.msix.manifest        # Store build: requireAdministrator
 │   ├── icon.ico
 │   └── Symlinker.csproj
 ├── Symlinker.Tests/            # xUnit tests, 100% coverage gate
@@ -129,6 +150,8 @@ Symlinker/
 ├── global.json                 # Opts dotnet test into Microsoft.Testing.Platform
 ├── release.ps1                 # ClickOnce build/publish
 ├── build-portable.ps1          # Portable ZIP for Scoop
+├── build-msix.ps1              # Microsoft Store MSIX bundle
+├── packaging/msix/             # Store manifest template and tile assets
 └── .github/workflows/          # ci.yml, release.yml
 ```
 

@@ -79,18 +79,6 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>请填写所有必填字段。</value>
   </data>
-  <data name="ButtonNotNow" xml:space="preserve">
-    <value>以后再说</value>
-  </data>
-  <data name="ButtonRestartAsAdmin" xml:space="preserve">
-    <value>以管理员身份重新启动</value>
-  </data>
-  <data name="DialogElevationTitle" xml:space="preserve">
-    <value>需要管理员权限</value>
-  </data>
-  <data name="DialogElevation" xml:space="preserve">
-    <value>创建符号链接需要管理员权限，除非已打开开发人员模式。以管理员身份重新启动吗？已输入的内容会保留。</value>
-  </data>
   <data name="ErrorLinkNameMissing" xml:space="preserve">
     <value>请输入链接名称。</value>
   </data>
@@ -131,7 +119,10 @@
     <value>浏览目标文件</value>
   </data>
   <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
-    <value>创建符号链接需要管理员权限或开发人员模式。</value>
+    <value>创建符号链接需要管理员权限或开发人员模式。创建链接时 Windows 会请求权限。</value>
+  </data>
+  <data name="ElevationHelperFailed" xml:space="preserve">
+    <value>无法获取创建链接所需的管理员权限。</value>
   </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>找不到创建链接所需的命令行工具。</value>

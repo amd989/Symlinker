@@ -79,18 +79,6 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>Compilare tutti i campi obbligatori.</value>
   </data>
-  <data name="ButtonNotNow" xml:space="preserve">
-    <value>Non ora</value>
-  </data>
-  <data name="ButtonRestartAsAdmin" xml:space="preserve">
-    <value>Riavvia come amministratore</value>
-  </data>
-  <data name="DialogElevationTitle" xml:space="preserve">
-    <value>Servono i diritti di amministratore</value>
-  </data>
-  <data name="DialogElevation" xml:space="preserve">
-    <value>I collegamenti simbolici richiedono i diritti di amministratore, a meno che la Modalità sviluppatore non sia attiva. Riavviare come amministratore? I dati inseriti verranno mantenuti.</value>
-  </data>
   <data name="ErrorLinkNameMissing" xml:space="preserve">
     <value>Inserire un nome per il collegamento.</value>
   </data>
@@ -131,7 +119,10 @@
     <value>Sfoglia per il file di destinazione</value>
   </data>
   <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
-    <value>I collegamenti simbolici richiedono i diritti di amministratore o la Modalità sviluppatore.</value>
+    <value>I collegamenti simbolici richiedono i diritti di amministratore o la Modalità sviluppatore. Windows chiederà l'autorizzazione quando crei il collegamento.</value>
+  </data>
+  <data name="ElevationHelperFailed" xml:space="preserve">
+    <value>Impossibile ottenere i diritti di amministratore per creare il collegamento.</value>
   </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>Impossibile trovare lo strumento da riga di comando necessario per creare i collegamenti.</value>

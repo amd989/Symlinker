@@ -79,18 +79,6 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>すべての必須フィールドに入力してください。</value>
   </data>
-  <data name="ButtonNotNow" xml:space="preserve">
-    <value>後で</value>
-  </data>
-  <data name="ButtonRestartAsAdmin" xml:space="preserve">
-    <value>管理者として再起動</value>
-  </data>
-  <data name="DialogElevationTitle" xml:space="preserve">
-    <value>管理者権限が必要です</value>
-  </data>
-  <data name="DialogElevation" xml:space="preserve">
-    <value>シンボリックリンクには管理者権限が必要です (開発者モードがオンの場合を除く)。管理者として再起動しますか? 入力内容は保持されます。</value>
-  </data>
   <data name="ErrorLinkNameMissing" xml:space="preserve">
     <value>リンクの名前を入力してください。</value>
   </data>
@@ -131,7 +119,10 @@
     <value>ターゲットファイルを参照</value>
   </data>
   <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
-    <value>シンボリックリンクには管理者権限または開発者モードが必要です。</value>
+    <value>シンボリックリンクには管理者権限または開発者モードが必要です。リンクの作成時に Windows が許可を求めます。</value>
+  </data>
+  <data name="ElevationHelperFailed" xml:space="preserve">
+    <value>リンクを作成するための管理者権限を取得できませんでした。</value>
   </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>リンクの作成に必要なコマンドラインツールが見つかりません。</value>

@@ -79,18 +79,6 @@
   <data name="FillBlanks" xml:space="preserve">
     <value>Veuillez remplir tous les champs obligatoires.</value>
   </data>
-  <data name="ButtonNotNow" xml:space="preserve">
-    <value>Pas maintenant</value>
-  </data>
-  <data name="ButtonRestartAsAdmin" xml:space="preserve">
-    <value>Relancer en administrateur</value>
-  </data>
-  <data name="DialogElevationTitle" xml:space="preserve">
-    <value>Droits d'administrateur requis</value>
-  </data>
-  <data name="DialogElevation" xml:space="preserve">
-    <value>Les liens symboliques nécessitent des droits d'administrateur, sauf si le mode développeur est activé. Redémarrer en tant qu'administrateur ? Vos saisies seront conservées.</value>
-  </data>
   <data name="ErrorLinkNameMissing" xml:space="preserve">
     <value>Saisissez un nom pour le lien.</value>
   </data>
@@ -131,7 +119,10 @@
     <value>Parcourir pour choisir le fichier cible</value>
   </data>
   <data name="NoticeSymlinkNeedsAdmin" xml:space="preserve">
-    <value>Les liens symboliques nécessitent des droits d'administrateur ou le mode développeur.</value>
+    <value>Les liens symboliques nécessitent des droits d'administrateur ou le mode développeur. Windows demandera l'autorisation lors de la création du lien.</value>
+  </data>
+  <data name="ElevationHelperFailed" xml:space="preserve">
+    <value>Impossible d'obtenir les droits d'administrateur pour créer le lien.</value>
   </data>
   <data name="CmdNotFound" xml:space="preserve">
     <value>Impossible de trouver l'outil en ligne de commande nécessaire à la création de liens.</value>

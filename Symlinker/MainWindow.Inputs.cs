@@ -31,7 +31,7 @@ namespace Symlinker
         public static void SetHasError(DependencyObject element, bool value) => element.SetValue(HasErrorProperty, value);
     }
 
-    /// <summary>Input checks, inline errors, launch options and the administrator restart.</summary>
+    /// <summary>Input checks, inline errors, launch options and administrator rights for symbolic links.</summary>
     public partial class MainWindow
     {
         private const string ErrorBrushKey = "Symlinker.Brushes.Error";
@@ -46,9 +46,12 @@ namespace Symlinker
 
         private LaunchOptions launchOptions;
 
-        // Whether creating a symbolic link would need a restart as administrator
+        // Whether creating a symbolic link needs administrator rights (no admin, no Developer Mode)
         private bool symlinksNeedAdmin;
         private bool checkingSymlinkAccess;
+
+        // Administrator helper, started on the first symbolic link that needs it and kept until the window closes
+        private ElevatedLinker elevatedLinker;
 
         private void InitializeInputs()
         {
@@ -77,6 +80,9 @@ namespace Symlinker
                 if (symlinksNeedAdmin)
                     RefreshSymlinkAccess();
             };
+
+            // The administrator helper stays up for the whole session; closing the window ends it
+            Closed += (s, e) => StopElevatedLinker();
         }
 
         private async void RefreshSymlinkAccess()
@@ -103,21 +109,25 @@ namespace Symlinker
             UpdateAdminNotice();
         }
 
-        /// <summary>Shows the UAC shield and the footer notice while a symbolic link would need administrator rights.</summary>
+        /// <summary>Whether the selected link is a symbolic link that needs administrator rights.</summary>
+        private bool LinkNeedsAdmin => symlinksNeedAdmin && symLinkRadio?.IsChecked == true;
+
+        /// <summary>
+        /// Shows the UAC shield and the footer notice while creating the link would show a UAC
+        /// prompt. Once the user has approved it for this session, neither is needed.
+        /// </summary>
         private void UpdateAdminNotice()
         {
             if (adminPanel == null || createLinkShield == null || symLinkRadio == null)
                 return;
 
-            var needsAdmin = symlinksNeedAdmin && symLinkRadio.IsChecked == true;
-            createLinkShield.Visibility = needsAdmin && createLinkShield.Source != null ? Visibility.Visible : Visibility.Collapsed;
+            var wouldPrompt = LinkNeedsAdmin && elevatedLinker?.IsAlive != true;
+            createLinkShield.Visibility = wouldPrompt && createLinkShield.Source != null ? Visibility.Visible : Visibility.Collapsed;
             adminNoticeShield.Visibility = adminNoticeShield.Source != null ? Visibility.Visible : Visibility.Collapsed;
 
             // Field errors take the same spot and matter more
-            adminPanel.Visibility = needsAdmin && inputErrors.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            adminPanel.Visibility = wouldPrompt && inputErrors.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
-
-        private async void RestartAsAdmin_Click(object sender, RoutedEventArgs e) => await RestartAsAdminAsync();
 
         private void OnThemeChanged(object sender, ThemeChangedEventArgs e) => UpdateThemeBrushes();
 
@@ -170,7 +180,7 @@ namespace Symlinker
             return (Math.Max(la, lb) + 0.05) / (Math.Min(la, lb) + 0.05);
         }
 
-        /// <summary>Fills the form from the command line, e.g. after restarting as administrator.</summary>
+        /// <summary>Fills the form from the command line.</summary>
         private void ApplyLaunchOptions()
         {
             var options = launchOptions;
@@ -200,63 +210,56 @@ namespace Symlinker
                 linkNameTextBox.Text = options.LinkName;
         }
 
-        private LaunchOptions GetCurrentOptions() => new()
-        {
-            Mode = isFolder ? "folder" : "file",
-            LinkType = hardLinkRadio.IsChecked == true ? "hard" : junctionRadio.IsChecked == true ? "junction" : "symbolic",
-            LinkLocation = linkLocationTextBox.Text,
-            LinkName = linkNameTextBox.Text,
-            Target = destinationLocationTextBox.Text,
-        };
-
         /// <summary>
-        /// Symbolic links need administrator rights unless Developer Mode is on. Checked before
-        /// anything runs, so nothing on disk changes when the link can't be created anyway.
-        /// Returns false when link creation should stop here.
+        /// Checks again whether a symbolic link would need administrator rights, since Developer
+        /// Mode may have been turned on since the window opened.
         /// </summary>
-        private async Task<bool> EnsureCanCreateLinkAsync()
+        private void RefreshSymlinkAccessNow()
         {
-            if (hardLinkRadio.IsChecked == true || junctionRadio.IsChecked == true)
-                return true;
+            if (symLinkRadio.IsChecked != true)
+                return;
 
-            // Check again: Developer Mode may have been turned on since the window opened
             symlinksNeedAdmin = !Elevation.CanCreateSymbolicLinks();
             UpdateAdminNotice();
-            if (!symlinksNeedAdmin)
-                return true;
-
-            var settings = new MetroDialogSettings
-            {
-                AnimateShow = false,
-                AnimateHide = false,
-                AffirmativeButtonText = Res.ButtonRestartAsAdmin,
-                NegativeButtonText = Res.ButtonNotNow,
-                DefaultButtonFocus = MessageDialogResult.Affirmative,
-
-                // Smaller title so long translations fit the short window without scrolling
-                DialogTitleFontSize = 20,
-            };
-
-            var answer = await this.ShowMessageAsync(Res.DialogElevationTitle, Res.DialogElevation, MessageDialogStyle.AffirmativeAndNegative, settings);
-            if (answer == MessageDialogResult.Affirmative)
-                await RestartAsAdminAsync();
-
-            return false;
         }
 
-        /// <summary>Restarts as administrator with the current form values. This window closes if the user accepts the UAC prompt.</summary>
-        private async Task RestartAsAdminAsync()
+        /// <summary>
+        /// Starts the administrator helper if this link needs it and it isn't running yet. That
+        /// shows one UAC prompt; the helper then stays up until the window closes, so later links
+        /// don't ask again. Call it before anything on disk changes, so a declined prompt leaves
+        /// everything as it was. Returns false when link creation should stop: the user canceled
+        /// the prompt (nothing is shown then) or the helper couldn't start (an error is shown).
+        /// </summary>
+        private async Task<bool> ElevateIfNeededAsync()
         {
+            if (!LinkNeedsAdmin)
+                return true;
+
+            if (elevatedLinker?.IsAlive == true)
+                return true;
+
+            // The helper went away (e.g. ended from Task Manager); start a new one
+            StopElevatedLinker();
+
             try
             {
-                // The new window opens with the same values; this one closes
-                if (Elevation.RestartElevated(GetCurrentOptions()))
-                    Close();
+                elevatedLinker = await ElevatedLinker.StartAsync();
             }
             catch (Exception exception)
             {
                 await this.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.MessageBoxExceptionOcurred + "\n" + exception.Message, settings: FastDialog);
+                return false;
             }
+
+            UpdateAdminNotice();
+            return elevatedLinker != null;
+        }
+
+        /// <summary>Closes the administrator helper, if one is running.</summary>
+        private void StopElevatedLinker()
+        {
+            elevatedLinker?.Dispose();
+            elevatedLinker = null;
         }
 
         /// <summary>Checks every field, marks the bad ones and shows what's wrong. Returns true when all are fine.</summary>

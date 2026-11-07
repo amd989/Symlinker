@@ -8,10 +8,25 @@ Everything Partner Center needs besides the package. Store ID `9P8H93Z0TGK4`.
 - `listing-template.csv`: the empty template from Partner Center > Store listings > Export listings. The script fills it in.
 - `ScreenshotTool/`: renders the real main window in each language at 2.5x, with a headline, on a 1920x1080 image.
 - `make-listings.ps1`: builds the screenshots and the CSV files into `Symlinker/bin/store-listing`.
+- `set-release-notes.ps1`: sets "What's new" on the draft Store submission from `listings.json`. The release workflow runs it.
+
+## Releasing to the Store
+
+Once the repository variable `STORE_AUTO_PUBLISH` is `true`, pushing a `v*` tag publishes to the Store (the `store` job in `release.yml`):
+
+1. `msstore publish --noCommit` makes a draft from the last published submission and swaps in the new bundle. Listings, screenshots, pricing and options carry over.
+2. `set-release-notes.ps1` sets "What's new" in every language from `listings.json`, but only when `common.ReleaseNotesVersion` matches the tag. Otherwise it clears "What's new" and the job shows a warning.
+3. `msstore submission publish` sends it to certification. Partner Center emails the result.
+
+So before tagging, write the new `ReleaseNotes` in every language and set `ReleaseNotesVersion`. Don't tag while an earlier submission is still in certification.
+
+To set "What's new" on a draft by hand: `msstore reconfigure ...`, then `./packaging/msix/store/set-release-notes.ps1 -Version <version>`.
 
 ## Updating the listing
 
-1. Edit `listings.json`. Every submission needs new "What's new" text (`ReleaseNotes`) in every language.
+Text other than "What's new", and screenshots, only change by hand:
+
+1. Edit `listings.json`.
 2. Run `./packaging/msix/store/make-listings.ps1`.
 3. In Partner Center, open the submission, then Store listings > Import listings > Upload .csv and pick `listingData-text-only.csv`.
 4. Screenshots stay from the last submission. To replace them, upload `<language>/store1-3.png` on each language's listing page.

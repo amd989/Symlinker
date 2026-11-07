@@ -1,5 +1,6 @@
 {
   "common": {
+    "ReleaseNotesVersion": "4.3.0",
     "Title": "Symlinker - Symlink Creator",
     "DevStudio": "Alejandro Mora",
     "CopyrightTrademarkInformation": "© 2026 Alejandro Mora",

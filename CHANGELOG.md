@@ -1,6 +1,10 @@
-## What's Changed
+## What's Changed in 4.3.0
+* feat: 📦 add Microsoft Store (MSIX) package
+* docs: update changelog.md
 * test: add xUnit test project with 100% coverage gate
 * feat: elevate only the link step instead of restarting as admin
+
+**Full Changelog**: https://github.com/amd989/Symlinker/compare/v4.2.0...v4.3.0
 
 ## What's Changed in 4.2.0
 * fix: address main window UI/UX review findings

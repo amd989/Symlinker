@@ -94,6 +94,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Partner Center signs Store packages, so this bundle is uploaded unsigned.
+      - name: Build MSIX bundle for Microsoft Store
+        shell: pwsh
+        run: ./build-msix.ps1 -Version ${{ steps.version.outputs.version }}
+
+      - name: Upload MSIX bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: msix-${{ steps.version.outputs.version }}
+          path: Symlinker/bin/msix/*.msixbundle
+          if-no-files-found: error
+
       - name: Build ClickOnce package (unsigned)
         shell: pwsh
         run: ./release.ps1 -OnlyBuild

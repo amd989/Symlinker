@@ -44,6 +44,31 @@ dotnet test --project Symlinker.Tests
 
 - `./release.ps1` builds and publishes the ClickOnce installer to the `gh-pages` branch (`-OnlyBuild` skips deployment). It reads the Git tag for the version (`v1.2.3` becomes `1.2.3.0`).
 - `./build-portable.ps1` builds the portable ZIP used for Scoop.
+- `./build-msix.ps1` builds the Microsoft Store package (see below).
+
+### Publishing (Microsoft Store / MSIX)
+
+```powershell
+# Builds Symlinker/bin/msix/Symlinker-<version>.msixbundle (x64 + arm64, self-contained, unsigned).
+# Version defaults to the latest Git tag; the Store needs a higher version on every upload.
+./build-msix.ps1
+
+# Also install this PC's build for a test run (Developer Mode)
+./build-msix.ps1 -Install
+
+# Also sign a test copy, install it and run the Windows App Certification Kit (administrator shell).
+# Works without Developer Mode, so it is the way to test the elevated link helper in the package.
+./build-msix.ps1 -Wack
+
+# Store listing: text and screenshots for all 9 languages (see packaging/msix/store/README.md)
+./packaging/msix/store/make-listings.ps1
+```
+
+- Upload the `.msixbundle` in Partner Center > Symlinker > the submission > Packages. Store ID `9P8H93Z0TGK4`.
+- Manifest template and tile assets live in `packaging/msix/`. Identity values there must match Partner Center.
+- `Properties/DisplayName` must be a name reserved in Partner Center (Manage app names). "Symlinker" alone is taken, so it is "Symlinker - Symlink Creator". The Start menu name (`VisualElements DisplayName`) stays "Symlinker".
+- The Store build behaves like the others: the window starts unelevated and only the link helper elevates. The `allowElevation` capability lets it show the UAC prompt. The script fails if the built exe asks for admin at launch.
+- The manifest disables file/registry write virtualization so links created under AppData land in the real location.
 
 ## Architecture
 
@@ -129,6 +154,9 @@ Symlinker/
 ├── global.json                 # Opts dotnet test into Microsoft.Testing.Platform
 ├── release.ps1                 # ClickOnce build/publish
 ├── build-portable.ps1          # Portable ZIP for Scoop
+├── build-msix.ps1              # Microsoft Store MSIX bundle
+├── packaging/msix/             # Store manifest template and tile assets
+│   └── store/                  # Store listing text, screenshot tool, import script
 └── .github/workflows/          # ci.yml, release.yml
 ```
 

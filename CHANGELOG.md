@@ -1,5 +1,23 @@
+## What's Changed
+* test: add xUnit test project with 100% coverage gate
+* feat: elevate only the link step instead of restarting as admin
+
+## What's Changed in 4.2.0
+* fix: address main window UI/UX review findings
+* feat: move existing files to the target when creating a link
+* feat: auto-fill link name and open pickers at current path
+* fix: restore window dragging on .NET 10
+
+**Full Changelog**: https://github.com/amd989/Symlinker/compare/v4.1.0...v4.2.0
+
+## What's Changed in 4.1.0
+* feat: ⬆️ upgrade to .net10
+* docs: update changelog.md
+
+**Full Changelog**: https://github.com/amd989/Symlinker/compare/v4.0.0...v4.1.0
+
 ## What's Changed in 4.0.0
-* feat: 🌐 add support for new languages by @amd989
+* feat: :globe_with_meridians: add support for new languages by @amd989
 * feat: 💄 modernize the ux by @amd989 in [#30](https://github.com/amd989/Symlinker/pull/30)
 * docs: 📝 update readme.md by @amd989
 

@@ -1,0 +1,278 @@
+{
+  "common": {
+    "Title": "Symlinker - Symlink Creator",
+    "DevStudio": "Alejandro Mora",
+    "CopyrightTrademarkInformation": "© 2026 Alejandro Mora",
+    "AdditionalLicenseTerms": "MIT License: https://github.com/amd989/Symlinker/blob/master/LICENSE"
+  },
+  "en-us": {
+    "ShortDescription": "Create symbolic links, hard links and directory junctions on Windows with a few clicks, no command line needed.",
+    "Description": "Symlinker is a simple, free tool for creating symbolic links, hard links and directory junctions on Windows, without typing mklink commands.\n\nPick whether you are linking a folder or a file, choose the kind of link, then fill in where the link should go, its name, and what it points to. Symlinker checks your input as you go, tells you exactly what is wrong, and creates the link with one click.\n\nLink types:\n- Symbolic link: works for files and folders, across drives and network paths.\n- Directory junction: a folder link that most programs treat like a real folder.\n- Hard link: a second name for the same file on the same drive.\n\nHandy for moving game libraries, app data or large folders to another drive while keeping the original path working, sharing one config file between programs, or organizing projects without copying files.\n\nIf something already exists where the link should go, Symlinker can move it to the target first and put the link in its place.\n\nWindows needs administrator rights to create symbolic links unless Developer Mode is on. Symlinker asks for them only when you create one, with the standard Windows prompt, and uses them only to run mklink. Junctions and hard links never need them.\n\nSymlinker is open source (MIT license), has no ads, and collects no data. It has been around since 2009 and has been rebuilt with a modern look that follows your Windows light or dark theme and accent color.",
+    "ReleaseNotes": "- Asks for administrator rights only when a symbolic link needs them, not when the app starts\n- Drag and drop from File Explorer now works in the Store version\n- Declining the permission prompt leaves everything as it was",
+    "Features": [
+      "Create symbolic links, hard links and directory junctions",
+      "Link folders or files, across drives and network paths",
+      "Drag folders and files in from File Explorer",
+      "Fills in the link name automatically from the target",
+      "Moves an existing folder or file to the target before linking",
+      "Checks your input and explains exactly what to fix",
+      "Follows your Windows light or dark theme and accent color",
+      "Available in English, German, Spanish, French, Hindi, Italian, Japanese, Portuguese and Chinese",
+      "Free and open source, with no ads and no data collection"
+    ],
+    "SearchTerms": [
+      "symlink",
+      "symbolic link",
+      "mklink",
+      "junction",
+      "hard link",
+      "link folder",
+      "move folder to another drive"
+    ],
+    "Captions": [
+      "Move big folders to another drive, keep the old path working",
+      "Share one file between apps with a symbolic link",
+      "Symbolic links, junctions and hard links, no command line"
+    ]
+  },
+  "de": {
+    "ShortDescription": "Symbolische Links, Hardlinks und Verzeichnisverknüpfungen unter Windows mit wenigen Klicks erstellen, ganz ohne Kommandozeile.",
+    "Description": "Symlinker ist ein einfaches, kostenloses Tool zum Erstellen von symbolischen Links, Hardlinks und Verzeichnisverknüpfungen (Junctions) unter Windows, ohne mklink-Befehle eintippen zu müssen.\n\nWählen Sie, ob Sie einen Ordner oder eine Datei verknüpfen, wählen Sie die Art des Links und geben Sie dann an, wo der Link liegen soll, wie er heißt und worauf er zeigt. Symlinker prüft Ihre Eingaben laufend, sagt Ihnen genau, was nicht stimmt, und erstellt den Link mit einem Klick.\n\nLink-Typen:\n- Symbolischer Link: für Dateien und Ordner, auch über Laufwerke und Netzwerkpfade hinweg.\n- Verzeichnisverknüpfung (Junction): ein Ordner-Link, den die meisten Programme wie einen echten Ordner behandeln.\n- Hardlink: ein zweiter Name für dieselbe Datei auf demselben Laufwerk.\n\nPraktisch, um Spielebibliotheken, App-Daten oder große Ordner auf ein anderes Laufwerk zu verschieben, während der ursprüngliche Pfad weiter funktioniert, um eine Konfigurationsdatei zwischen Programmen zu teilen oder um Projekte zu organisieren, ohne Dateien zu kopieren.\n\nWenn am Speicherort des Links bereits etwas vorhanden ist, kann Symlinker es zuerst zum Ziel verschieben und den Link an seine Stelle setzen.\n\nWindows benötigt Administratorrechte, um symbolische Links zu erstellen, sofern der Entwicklermodus nicht aktiviert ist. Symlinker fragt erst danach, wenn Sie einen erstellen, über die normale Windows-Abfrage, und verwendet die Rechte nur zum Ausführen von mklink. Verzeichnisverknüpfungen und Hardlinks brauchen sie nie.\n\nSymlinker ist Open Source (MIT-Lizenz), werbefrei und sammelt keine Daten. Das Programm gibt es seit 2009, und es wurde mit einem modernen Design neu aufgebaut, das dem hellen oder dunklen Windows-Design und Ihrer Akzentfarbe folgt.",
+    "ReleaseNotes": "- Fragt nur noch nach Administratorrechten, wenn ein symbolischer Link sie braucht, nicht mehr beim Start\n- Drag & Drop aus dem Datei-Explorer funktioniert jetzt auch in der Store-Version\n- Wenn Sie die Abfrage ablehnen, bleibt alles unverändert",
+    "Features": [
+      "Symbolische Links, Hardlinks und Verzeichnisverknüpfungen erstellen",
+      "Ordner oder Dateien verknüpfen, auch über Laufwerke und Netzwerkpfade hinweg",
+      "Ordner und Dateien per Drag & Drop aus dem Datei-Explorer übernehmen",
+      "Übernimmt den Linknamen automatisch aus dem Ziel",
+      "Verschiebt einen vorhandenen Ordner oder eine Datei vor dem Verknüpfen zum Ziel",
+      "Prüft Ihre Eingaben und erklärt genau, was zu korrigieren ist",
+      "Folgt dem hellen oder dunklen Windows-Design und Ihrer Akzentfarbe",
+      "Verfügbar auf Deutsch, Englisch, Spanisch, Französisch, Hindi, Italienisch, Japanisch, Portugiesisch und Chinesisch",
+      "Kostenlos und Open Source, ohne Werbung und ohne Datensammlung"
+    ],
+    "SearchTerms": [
+      "symlink",
+      "symbolischer Link",
+      "mklink",
+      "Junction",
+      "Hardlink",
+      "Ordner verknüpfen",
+      "Ordner verschieben"
+    ],
+    "Captions": [
+      "Große Ordner auf ein anderes Laufwerk verschieben, der alte Pfad funktioniert weiter",
+      "Eine Datei per symbolischem Link zwischen Apps teilen",
+      "Symbolische Links, Junctions und Hardlinks ohne Kommandozeile"
+    ]
+  },
+  "es": {
+    "ShortDescription": "Crea enlaces simbólicos, enlaces duros y uniones de directorio en Windows con unos pocos clics, sin usar la línea de comandos.",
+    "Description": "Symlinker es una herramienta sencilla y gratuita para crear enlaces simbólicos, enlaces duros y uniones de directorio en Windows, sin escribir comandos mklink.\n\nElige si vas a enlazar una carpeta o un archivo, elige el tipo de enlace y luego indica dónde debe ir el enlace, su nombre y a qué apunta. Symlinker revisa lo que escribes sobre la marcha, te dice exactamente qué está mal y crea el enlace con un clic.\n\nTipos de enlace:\n- Enlace simbólico: funciona con archivos y carpetas, entre unidades y rutas de red.\n- Unión de directorio: un enlace de carpeta que la mayoría de los programas tratan como una carpeta real.\n- Enlace duro: un segundo nombre para el mismo archivo en la misma unidad.\n\nÚtil para mover bibliotecas de juegos, datos de aplicaciones o carpetas grandes a otra unidad sin que deje de funcionar la ruta original, compartir un archivo de configuración entre programas u organizar proyectos sin copiar archivos.\n\nSi ya existe algo donde debe ir el enlace, Symlinker puede moverlo primero al destino y poner el enlace en su lugar.\n\nWindows necesita permisos de administrador para crear enlaces simbólicos, salvo que el modo de desarrollador esté activado. Symlinker los pide solo cuando creas uno, con el aviso estándar de Windows, y solo los usa para ejecutar mklink. Las uniones y los enlaces duros nunca los necesitan.\n\nSymlinker es de código abierto (licencia MIT), no tiene anuncios y no recopila datos. Existe desde 2009 y se ha renovado con un diseño moderno que sigue el tema claro u oscuro de Windows y tu color de énfasis.",
+    "ReleaseNotes": "- Pide permisos de administrador solo cuando un enlace simbólico los necesita, no al iniciar la aplicación\n- Ahora se puede arrastrar y soltar desde el Explorador de archivos en la versión de Microsoft Store\n- Si rechazas el aviso de permisos, todo queda como estaba",
+    "Features": [
+      "Crea enlaces simbólicos, enlaces duros y uniones de directorio",
+      "Enlaza carpetas o archivos, entre unidades y rutas de red",
+      "Arrastra carpetas y archivos desde el Explorador de archivos",
+      "Rellena el nombre del enlace automáticamente a partir del destino",
+      "Mueve una carpeta o un archivo existente al destino antes de enlazarlo",
+      "Revisa lo que escribes y explica exactamente qué corregir",
+      "Sigue el tema claro u oscuro de Windows y tu color de énfasis",
+      "Disponible en español, inglés, alemán, francés, hindi, italiano, japonés, portugués y chino",
+      "Gratis y de código abierto, sin anuncios y sin recopilar datos"
+    ],
+    "SearchTerms": [
+      "symlink",
+      "enlace simbólico",
+      "mklink",
+      "unión",
+      "enlace duro",
+      "enlazar carpeta",
+      "mover carpeta"
+    ],
+    "Captions": [
+      "Mueve carpetas grandes a otra unidad y conserva la ruta original",
+      "Comparte un archivo entre aplicaciones con un enlace simbólico",
+      "Enlaces simbólicos, uniones y enlaces duros, sin línea de comandos"
+    ]
+  },
+  "fr": {
+    "ShortDescription": "Créez des liens symboliques, des liens physiques et des jonctions de répertoire sous Windows en quelques clics, sans ligne de commande.",
+    "Description": "Symlinker est un outil simple et gratuit pour créer des liens symboliques, des liens physiques et des jonctions de répertoire sous Windows, sans taper de commandes mklink.\n\nIndiquez si vous liez un dossier ou un fichier, choisissez le type de lien, puis renseignez l'emplacement du lien, son nom et sa cible. Symlinker vérifie votre saisie au fur et à mesure, vous dit exactement ce qui ne va pas et crée le lien en un clic.\n\nTypes de lien :\n- Lien symbolique : pour les fichiers et les dossiers, entre lecteurs et chemins réseau.\n- Jonction de répertoire : un lien de dossier que la plupart des programmes traitent comme un vrai dossier.\n- Lien physique : un deuxième nom pour le même fichier sur le même lecteur.\n\nPratique pour déplacer des bibliothèques de jeux, des données d'applications ou de gros dossiers vers un autre lecteur tout en gardant le chemin d'origine fonctionnel, pour partager un fichier de configuration entre plusieurs programmes ou pour organiser des projets sans copier de fichiers.\n\nSi quelque chose existe déjà à l'emplacement du lien, Symlinker peut d'abord le déplacer vers la cible puis mettre le lien à sa place.\n\nWindows exige les droits d'administrateur pour créer des liens symboliques, sauf si le mode développeur est activé. Symlinker ne les demande qu'au moment où vous en créez un, avec l'invite Windows habituelle, et ne les utilise que pour exécuter mklink. Les jonctions et les liens physiques n'en ont jamais besoin.\n\nSymlinker est open source (licence MIT), sans publicité et ne collecte aucune donnée. Il existe depuis 2009 et a été repensé avec une apparence moderne qui suit le thème clair ou sombre de Windows et votre couleur d'accentuation.",
+    "ReleaseNotes": "- Ne demande les droits d'administrateur que lorsqu'un lien symbolique en a besoin, et plus au démarrage\n- Le glisser-déposer depuis l'Explorateur de fichiers fonctionne désormais dans la version du Store\n- Si vous refusez l'invite d'autorisation, rien n'est modifié",
+    "Features": [
+      "Créez des liens symboliques, des liens physiques et des jonctions de répertoire",
+      "Liez des dossiers ou des fichiers, entre lecteurs et chemins réseau",
+      "Glissez des dossiers et des fichiers depuis l'Explorateur de fichiers",
+      "Remplit automatiquement le nom du lien à partir de la cible",
+      "Déplace un dossier ou un fichier existant vers la cible avant de créer le lien",
+      "Vérifie votre saisie et explique exactement quoi corriger",
+      "Suit le thème clair ou sombre de Windows et votre couleur d'accentuation",
+      "Disponible en français, anglais, allemand, espagnol, hindi, italien, japonais, portugais et chinois",
+      "Gratuit et open source, sans publicité ni collecte de données"
+    ],
+    "SearchTerms": [
+      "symlink",
+      "lien symbolique",
+      "mklink",
+      "jonction",
+      "lien physique",
+      "lier un dossier",
+      "déplacer un dossier"
+    ],
+    "Captions": [
+      "Déplacez de gros dossiers vers un autre lecteur, l'ancien chemin fonctionne toujours",
+      "Partagez un fichier entre applications avec un lien symbolique",
+      "Liens symboliques, jonctions et liens physiques, sans ligne de commande"
+    ]
+  },
+  "hi": {
+    "ShortDescription": "Windows पर कुछ ही क्लिक में सिम्बॉलिक लिंक, हार्ड लिंक और डायरेक्टरी जंक्शन बनाएं, कमांड लाइन की ज़रूरत नहीं।",
+    "Description": "Symlinker, Windows पर सिम्बॉलिक लिंक, हार्ड लिंक और डायरेक्टरी जंक्शन बनाने का एक आसान और मुफ़्त टूल है, जिसमें mklink कमांड टाइप करने की ज़रूरत नहीं पड़ती।\n\nचुनें कि आप फ़ोल्डर लिंक कर रहे हैं या फ़ाइल, लिंक का प्रकार चुनें, फिर बताएं कि लिंक कहाँ बने, उसका नाम क्या हो और वह किसकी ओर इशारा करे। Symlinker आपके इनपुट को साथ-साथ जाँचता है, साफ़ बताता है कि क्या ग़लत है, और एक क्लिक में लिंक बना देता है।\n\nलिंक के प्रकार:\n- सिम्बॉलिक लिंक: फ़ाइलों और फ़ोल्डरों के लिए, अलग-अलग ड्राइव और नेटवर्क पाथ पर भी।\n- डायरेक्टरी जंक्शन: फ़ोल्डर का लिंक, जिसे ज़्यादातर प्रोग्राम असली फ़ोल्डर की तरह मानते हैं।\n- हार्ड लिंक: उसी ड्राइव पर उसी फ़ाइल का दूसरा नाम।\n\nगेम लाइब्रेरी, ऐप डेटा या बड़े फ़ोल्डरों को दूसरी ड्राइव पर ले जाने के लिए उपयोगी, जबकि पुराना पाथ काम करता रहता है। एक कॉन्फ़िग फ़ाइल को कई प्रोग्रामों में साझा करने या फ़ाइलें कॉपी किए बिना प्रोजेक्ट व्यवस्थित करने के लिए भी।\n\nअगर लिंक की जगह पर पहले से कुछ मौजूद है, तो Symlinker उसे पहले लक्ष्य पर ले जा सकता है और उसकी जगह लिंक रख सकता है।\n\nजब तक डेवलपर मोड चालू न हो, Windows को सिम्बॉलिक लिंक बनाने के लिए एडमिनिस्ट्रेटर अधिकार चाहिए। Symlinker इन्हें सिर्फ़ तब माँगता है जब आप सिम्बॉलिक लिंक बनाते हैं, Windows के सामान्य संकेत के ज़रिए, और इनका उपयोग सिर्फ़ mklink चलाने के लिए करता है। जंक्शन और हार्ड लिंक को इनकी कभी ज़रूरत नहीं होती।\n\nSymlinker ओपन सोर्स (MIT लाइसेंस) है, इसमें कोई विज्ञापन नहीं है और यह कोई डेटा इकट्ठा नहीं करता। यह 2009 से उपलब्ध है और इसे एक आधुनिक रूप में दोबारा बनाया गया है जो Windows की लाइट या डार्क थीम और आपके एक्सेंट रंग के साथ चलता है।",
+    "ReleaseNotes": "- एडमिनिस्ट्रेटर अधिकार अब सिर्फ़ तब माँगे जाते हैं जब सिम्बॉलिक लिंक को उनकी ज़रूरत हो, ऐप शुरू होते समय नहीं\n- Store संस्करण में अब फ़ाइल एक्सप्लोरर से ड्रैग और ड्रॉप काम करता है\n- अनुमति संकेत को अस्वीकार करने पर सब कुछ पहले जैसा रहता है",
+    "Features": [
+      "सिम्बॉलिक लिंक, हार्ड लिंक और डायरेक्टरी जंक्शन बनाएं",
+      "फ़ोल्डर या फ़ाइलें लिंक करें, अलग-अलग ड्राइव और नेटवर्क पाथ पर भी",
+      "फ़ाइल एक्सप्लोरर से फ़ोल्डर और फ़ाइलें ड्रैग करके डालें",
+      "लिंक का नाम लक्ष्य से अपने आप भरता है",
+      "लिंक बनाने से पहले मौजूदा फ़ोल्डर या फ़ाइल को लक्ष्य पर ले जाता है",
+      "आपके इनपुट को जाँचता है और साफ़ बताता है कि क्या ठीक करना है",
+      "Windows की लाइट या डार्क थीम और आपके एक्सेंट रंग के साथ चलता है",
+      "हिंदी, अंग्रेज़ी, जर्मन, स्पेनिश, फ़्रेंच, इतालवी, जापानी, पुर्तगाली और चीनी में उपलब्ध",
+      "मुफ़्त और ओपन सोर्स, बिना विज्ञापन और बिना डेटा संग्रह"
+    ],
+    "SearchTerms": [
+      "symlink",
+      "सिम्बॉलिक लिंक",
+      "mklink",
+      "जंक्शन",
+      "हार्ड लिंक",
+      "फ़ोल्डर लिंक",
+      "symbolic link"
+    ],
+    "Captions": [
+      "बड़े फ़ोल्डर दूसरी ड्राइव पर ले जाएं, पुराना पाथ काम करता रहे",
+      "सिम्बॉलिक लिंक से एक फ़ाइल कई ऐप में साझा करें",
+      "सिम्बॉलिक लिंक, जंक्शन और हार्ड लिंक, बिना कमांड लाइन"
+    ]
+  },
+  "it": {
+    "ShortDescription": "Crea collegamenti simbolici, collegamenti fisici e giunzioni di directory su Windows con pochi clic, senza riga di comando.",
+    "Description": "Symlinker è uno strumento semplice e gratuito per creare collegamenti simbolici, collegamenti fisici e giunzioni di directory su Windows, senza digitare comandi mklink.\n\nScegli se stai collegando una cartella o un file, scegli il tipo di collegamento, poi indica dove deve trovarsi il collegamento, il suo nome e a cosa punta. Symlinker controlla i dati mentre li inserisci, ti dice esattamente cosa non va e crea il collegamento con un clic.\n\nTipi di collegamento:\n- Collegamento simbolico: per file e cartelle, anche tra unità diverse e percorsi di rete.\n- Giunzione di directory: un collegamento a una cartella che la maggior parte dei programmi tratta come una cartella vera.\n- Collegamento fisico: un secondo nome per lo stesso file sulla stessa unità.\n\nUtile per spostare librerie di giochi, dati delle app o cartelle grandi su un'altra unità mantenendo funzionante il percorso originale, per condividere un file di configurazione tra più programmi o per organizzare progetti senza copiare file.\n\nSe nella posizione del collegamento esiste già qualcosa, Symlinker può prima spostarlo nella destinazione e mettere il collegamento al suo posto.\n\nWindows richiede i diritti di amministratore per creare collegamenti simbolici, a meno che la modalità sviluppatore non sia attiva. Symlinker li chiede solo quando ne crei uno, con la normale richiesta di Windows, e li usa solo per eseguire mklink. Giunzioni e collegamenti fisici non ne hanno mai bisogno.\n\nSymlinker è open source (licenza MIT), senza pubblicità e non raccoglie dati. Esiste dal 2009 ed è stato ricostruito con un aspetto moderno che segue il tema chiaro o scuro di Windows e il tuo colore principale.",
+    "ReleaseNotes": "- Chiede i diritti di amministratore solo quando un collegamento simbolico ne ha bisogno, non più all'avvio\n- Il trascinamento da Esplora file ora funziona anche nella versione dello Store\n- Se rifiuti la richiesta di autorizzazione, non cambia nulla",
+    "Features": [
+      "Crea collegamenti simbolici, collegamenti fisici e giunzioni di directory",
+      "Collega cartelle o file, anche tra unità diverse e percorsi di rete",
+      "Trascina cartelle e file da Esplora file",
+      "Compila automaticamente il nome del collegamento dalla destinazione",
+      "Sposta una cartella o un file esistente nella destinazione prima di collegarlo",
+      "Controlla i dati inseriti e spiega esattamente cosa correggere",
+      "Segue il tema chiaro o scuro di Windows e il tuo colore principale",
+      "Disponibile in italiano, inglese, tedesco, spagnolo, francese, hindi, giapponese, portoghese e cinese",
+      "Gratuito e open source, senza pubblicità e senza raccolta di dati"
+    ],
+    "SearchTerms": [
+      "symlink",
+      "collegamento simbolico",
+      "mklink",
+      "giunzione",
+      "collegamento fisico",
+      "collegare cartella",
+      "spostare cartella"
+    ],
+    "Captions": [
+      "Sposta cartelle grandi su un'altra unità, il vecchio percorso continua a funzionare",
+      "Condividi un file tra app con un collegamento simbolico",
+      "Collegamenti simbolici, giunzioni e collegamenti fisici, senza riga di comando"
+    ]
+  },
+  "ja": {
+    "ShortDescription": "Windows でシンボリックリンク、ハードリンク、ディレクトリジャンクションを数クリックで作成。コマンドラインは不要です。",
+    "Description": "Symlinker は、Windows でシンボリックリンク、ハードリンク、ディレクトリジャンクションを作成するためのシンプルな無料ツールです。mklink コマンドを入力する必要はありません。\n\nフォルダーとファイルのどちらをリンクするかを選び、リンクの種類を選んでから、リンクを置く場所、リンクの名前、リンク先を入力します。Symlinker は入力内容をその場で確認し、問題があれば何が違うのかを具体的に示し、ワンクリックでリンクを作成します。\n\nリンクの種類:\n- シンボリックリンク: ファイルとフォルダーに対応し、別のドライブやネットワークパスにも使えます。\n- ディレクトリジャンクション: ほとんどのプログラムが通常のフォルダーとして扱うフォルダーリンクです。\n- ハードリンク: 同じドライブ上の同じファイルに付ける 2 つ目の名前です。\n\nゲームライブラリやアプリのデータ、大きなフォルダーを元のパスのまま別のドライブに移したいとき、1 つの設定ファイルを複数のプログラムで共有したいとき、ファイルをコピーせずにプロジェクトを整理したいときに便利です。\n\nリンクを置く場所にすでに何かがある場合、Symlinker はそれを先にリンク先へ移動し、その場所にリンクを作成できます。\n\n開発者モードがオフの場合、Windows ではシンボリックリンクの作成に管理者権限が必要です。Symlinker は、シンボリックリンクを作成するときにだけ Windows の標準の確認画面で管理者権限を求め、mklink の実行にのみ使用します。ジャンクションとハードリンクには管理者権限は不要です。\n\nSymlinker はオープンソース (MIT ライセンス) で、広告はなく、データも収集しません。2009 年から提供されており、Windows のライトテーマ/ダークテーマとアクセントカラーに合わせたモダンなデザインで作り直されました。",
+    "ReleaseNotes": "- 管理者権限は、アプリの起動時ではなく、シンボリックリンクに必要なときにだけ求めるようになりました\n- Store 版でもエクスプローラーからのドラッグ アンド ドロップが使えるようになりました\n- 権限の確認を拒否した場合は、何も変更されません",
+    "Features": [
+      "シンボリックリンク、ハードリンク、ディレクトリジャンクションを作成",
+      "フォルダーやファイルを、別のドライブやネットワークパスにもリンク",
+      "エクスプローラーからフォルダーやファイルをドラッグ アンド ドロップ",
+      "リンク先からリンク名を自動入力",
+      "リンクする前に既存のフォルダーやファイルをリンク先へ移動",
+      "入力内容を確認し、修正すべき点を具体的に表示",
+      "Windows のライトテーマ/ダークテーマとアクセントカラーに対応",
+      "日本語、英語、ドイツ語、スペイン語、フランス語、ヒンディー語、イタリア語、ポルトガル語、中国語に対応",
+      "無料のオープンソース。広告なし、データ収集なし"
+    ],
+    "SearchTerms": [
+      "symlink",
+      "シンボリックリンク",
+      "mklink",
+      "ジャンクション",
+      "ハードリンク",
+      "フォルダー リンク",
+      "フォルダー 移動"
+    ],
+    "Captions": [
+      "大きなフォルダーを別のドライブへ。元のパスはそのまま使えます",
+      "シンボリックリンクで 1 つのファイルを複数のアプリで共有",
+      "シンボリックリンク、ジャンクション、ハードリンクをコマンドなしで"
+    ]
+  },
+  "pt": {
+    "ShortDescription": "Crie links simbólicos, links físicos e junções de diretório no Windows com poucos cliques, sem usar a linha de comando.",
+    "Description": "O Symlinker é uma ferramenta simples e gratuita para criar links simbólicos, links físicos e junções de diretório no Windows, sem digitar comandos mklink.\n\nEscolha se vai vincular uma pasta ou um arquivo, escolha o tipo de link e depois informe onde o link deve ficar, o nome dele e para onde ele aponta. O Symlinker confere o que você digita enquanto você preenche, diz exatamente o que está errado e cria o link com um clique.\n\nTipos de link:\n- Link simbólico: funciona com arquivos e pastas, entre unidades e caminhos de rede.\n- Junção de diretório: um link de pasta que a maioria dos programas trata como uma pasta de verdade.\n- Link físico: um segundo nome para o mesmo arquivo na mesma unidade.\n\nÚtil para mover bibliotecas de jogos, dados de aplicativos ou pastas grandes para outra unidade mantendo o caminho original funcionando, compartilhar um arquivo de configuração entre programas ou organizar projetos sem copiar arquivos.\n\nSe já existir algo no local do link, o Symlinker pode primeiro movê-lo para o destino e colocar o link no lugar.\n\nO Windows exige direitos de administrador para criar links simbólicos, a menos que o modo de desenvolvedor esteja ativado. O Symlinker os solicita apenas quando você cria um, pelo aviso padrão do Windows, e os usa somente para executar o mklink. Junções e links físicos nunca precisam deles.\n\nO Symlinker é de código aberto (licença MIT), não tem anúncios e não coleta dados. Ele existe desde 2009 e foi refeito com um visual moderno que acompanha o tema claro ou escuro do Windows e a sua cor de destaque.",
+    "ReleaseNotes": "- Pede direitos de administrador apenas quando um link simbólico precisa deles, e não mais ao iniciar\n- Arrastar e soltar a partir do Explorador de Arquivos agora funciona na versão da Store\n- Se você recusar o aviso de permissão, nada é alterado",
+    "Features": [
+      "Crie links simbólicos, links físicos e junções de diretório",
+      "Vincule pastas ou arquivos, entre unidades e caminhos de rede",
+      "Arraste pastas e arquivos do Explorador de Arquivos",
+      "Preenche o nome do link automaticamente a partir do destino",
+      "Move uma pasta ou um arquivo existente para o destino antes de criar o link",
+      "Confere o que você digita e explica exatamente o que corrigir",
+      "Acompanha o tema claro ou escuro do Windows e a sua cor de destaque",
+      "Disponível em português, inglês, alemão, espanhol, francês, hindi, italiano, japonês e chinês",
+      "Gratuito e de código aberto, sem anúncios e sem coleta de dados"
+    ],
+    "SearchTerms": [
+      "symlink",
+      "link simbólico",
+      "mklink",
+      "junção",
+      "link físico",
+      "vincular pasta",
+      "mover pasta"
+    ],
+    "Captions": [
+      "Mova pastas grandes para outra unidade e mantenha o caminho antigo funcionando",
+      "Compartilhe um arquivo entre aplicativos com um link simbólico",
+      "Links simbólicos, junções e links físicos, sem linha de comando"
+    ]
+  },
+  "zh-hans": {
+    "ShortDescription": "在 Windows 上点几下即可创建符号链接、硬链接和目录联接，无需使用命令行。",
+    "Description": "Symlinker 是一款简单的免费工具，用于在 Windows 上创建符号链接、硬链接和目录联接，无需输入 mklink 命令。\n\n先选择要链接文件夹还是文件，再选择链接类型，然后填写链接的位置、名称以及它指向的目标。Symlinker 会在你输入时随时检查，准确告诉你哪里有问题，并一键创建链接。\n\n链接类型：\n- 符号链接：适用于文件和文件夹，可跨驱动器和网络路径。\n- 目录联接：一种文件夹链接，大多数程序会把它当作真正的文件夹。\n- 硬链接：同一驱动器上同一文件的第二个名称。\n\n适合把游戏库、应用数据或大文件夹移到另一个驱动器，同时保持原路径可用；也适合在多个程序之间共享同一个配置文件，或在不复制文件的情况下整理项目。\n\n如果链接位置上已经有内容，Symlinker 可以先把它移动到目标位置，再在原处放置链接。\n\n除非开启了开发者模式，否则 Windows 需要管理员权限才能创建符号链接。Symlinker 只在你创建符号链接时通过 Windows 标准提示请求该权限，并且只用它来运行 mklink。目录联接和硬链接从不需要管理员权限。\n\nSymlinker 是开源软件（MIT 许可证），没有广告，也不收集任何数据。它自 2009 年起提供，现已采用全新的现代外观重新打造，会跟随 Windows 的浅色或深色主题以及你的主题色。",
+    "ReleaseNotes": "- 只在创建符号链接需要时才请求管理员权限，不再在启动时请求\n- Store 版本现在支持从文件资源管理器拖放\n- 拒绝权限提示时，一切保持原样",
+    "Features": [
+      "创建符号链接、硬链接和目录联接",
+      "链接文件夹或文件，可跨驱动器和网络路径",
+      "从文件资源管理器拖入文件夹和文件",
+      "根据目标自动填写链接名称",
+      "创建链接前将现有文件夹或文件移动到目标位置",
+      "检查输入内容并准确说明需要修改的地方",
+      "跟随 Windows 浅色或深色主题以及你的主题色",
+      "支持中文、英语、德语、西班牙语、法语、印地语、意大利语、日语和葡萄牙语",
+      "免费开源，无广告，不收集数据"
+    ],
+    "SearchTerms": [
+      "symlink",
+      "符号链接",
+      "mklink",
+      "目录联接",
+      "硬链接",
+      "链接文件夹",
+      "移动文件夹"
+    ],
+    "Captions": [
+      "把大文件夹移到另一个驱动器，原路径照样可用",
+      "用符号链接在多个应用之间共享同一个文件",
+      "符号链接、目录联接和硬链接，无需命令行"
+    ]
+  }
+}

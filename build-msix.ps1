@@ -123,7 +123,6 @@ foreach ($arch in $Architectures) {
         --runtime "win-$arch" `
         --self-contained true `
         --output $layout `
-        -p:MsixBuild=true `
         -p:PublishSingleFile=false `
         -p:Version=$Version
     if ($LASTEXITCODE -ne 0) { Write-Error "Publish failed for $arch" }
@@ -137,11 +136,12 @@ foreach ($arch in $Architectures) {
         -replace '\$ARCH\$', $arch |
         Set-Content -Path (Join-Path $layout "AppxManifest.xml") -Encoding utf8
 
-    # The Store build has to ask for admin at launch; a packaged app can't relaunch itself.
+    # The window must start unelevated so drag and drop works. Only the link helper
+    # (Symlinker.exe --link-helper) elevates, through allowElevation.
     $exeManifest = Join-Path $outDir "$arch/Symlinker.exe.manifest"
     & $mt -nologo -inputresource:"$(Join-Path $layout 'Symlinker.exe');#1" -out:$exeManifest | Out-Null
-    if ($LASTEXITCODE -ne 0 -or -not (Select-String -Path $exeManifest -Pattern 'level="requireAdministrator"' -Quiet)) {
-        Write-Error "Symlinker.exe for $arch doesn't ask for admin. Was MsixBuild=true lost?"
+    if ($LASTEXITCODE -ne 0 -or -not (Select-String -Path $exeManifest -Pattern 'level="asInvoker"' -Quiet)) {
+        Write-Error "Symlinker.exe for $arch asks for admin at launch. The window must start unelevated."
     }
 
     $msix = Join-Path $bundleInput "Symlinker-$msixVersion-$arch.msix"

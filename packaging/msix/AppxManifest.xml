@@ -61,7 +61,7 @@
 
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
-    <!-- mklink needs admin rights for symbolic links. -->
+    <!-- Symbolic links need admin: the hidden link helper elevates with UAC. -->
     <rescap:Capability Name="allowElevation" />
     <!-- Required by the desktop6 virtualization opt-outs above. -->
     <rescap:Capability Name="unvirtualizedResources" />

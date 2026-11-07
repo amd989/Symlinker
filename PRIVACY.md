@@ -6,8 +6,9 @@ Symlinker does not collect, store on a server, share or sell any personal data.
 
 - **Links you create.** Symlinker creates links by running the Windows `mklink` command on your
   computer. The paths you type or drop into the app stay on your computer.
-- **Administrator rights.** The app asks for administrator rights because Windows requires them
-  to create symbolic links. It uses them only to run `mklink`.
+- **Administrator rights.** Windows requires administrator rights to create symbolic links unless
+  Developer Mode is on. The app asks for them only then, with the standard Windows prompt, and
+  uses them only to run `mklink`.
 - **Nothing saved.** The app does not keep settings, history or logs.
 - **Updates.** The Microsoft Store version is updated by the Microsoft Store, under
   [Microsoft's privacy statement](https://privacy.microsoft.com/privacystatement). The ClickOnce

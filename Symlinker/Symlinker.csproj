@@ -48,10 +48,6 @@
     <Authors>Symlinker</Authors>
     <Product>Symlinker</Product>
   </PropertyGroup>
-  <!-- Set by build-msix.ps1 for the Microsoft Store package. -->
-  <PropertyGroup Condition=" '$(MsixBuild)' == 'true' ">
-    <ApplicationManifest>Properties\app.msix.manifest</ApplicationManifest>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">

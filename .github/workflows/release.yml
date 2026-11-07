@@ -9,6 +9,8 @@ jobs:
     runs-on: windows-latest
     permissions:
       contents: write
+    outputs:
+      version: ${{ steps.version.outputs.version }}
 
     steps:
       - name: Checkout code
@@ -105,6 +107,8 @@ jobs:
           name: msix-${{ steps.version.outputs.version }}
           path: Symlinker/bin/msix/*.msixbundle
           if-no-files-found: error
+          # The store job uses it right away; a big unsigned bundle needn't stay for 90 days.
+          retention-days: 30
 
       - name: Build ClickOnce package (unsigned)
         shell: pwsh
@@ -135,3 +139,65 @@ jobs:
       - name: Deploy signed ClickOnce to gh-pages
         shell: pwsh
         run: ./release.ps1 -SignedArtifactDir "signed-clickonce"
+
+  store:
+    name: Publish to Microsoft Store
+    needs: release
+    # Off until the repository variable STORE_AUTO_PUBLISH is 'true'. Turn it on once the first
+    # submission is published: the Store CLI can't make a first submission, and a submission still
+    # in certification blocks a new one.
+    if: vars.STORE_AUTO_PUBLISH == 'true'
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    env:
+      STORE_APP_ID: 9P8H93Z0TGK4
+      VERSION: ${{ needs.release.outputs.version }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download MSIX bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: msix-${{ env.VERSION }}
+          path: msix
+
+      - name: Set up Microsoft Store CLI
+        uses: microsoft/microsoft-store-apppublisher@v1.4
+        with:
+          version: v0.4.4
+
+      - name: Sign in to Partner Center
+        shell: pwsh
+        env:
+          STORE_TENANT_ID: ${{ secrets.STORE_TENANT_ID }}
+          STORE_SELLER_ID: ${{ secrets.STORE_SELLER_ID }}
+          STORE_CLIENT_ID: ${{ secrets.STORE_CLIENT_ID }}
+          STORE_CLIENT_SECRET: ${{ secrets.STORE_CLIENT_SECRET }}
+        run: |
+          msstore reconfigure --tenantId $env:STORE_TENANT_ID --sellerId $env:STORE_SELLER_ID `
+            --clientId $env:STORE_CLIENT_ID --clientSecret $env:STORE_CLIENT_SECRET
+          if ($LASTEXITCODE -ne 0) { throw "msstore reconfigure failed ($LASTEXITCODE)." }
+
+      # Makes a new draft from the last published submission (listings, screenshots and options
+      # carry over) and replaces its package with this bundle.
+      - name: Upload bundle to a draft submission
+        shell: pwsh
+        run: |
+          $bundle = Get-ChildItem msix -Filter *.msixbundle | Select-Object -First 1
+          if (-not $bundle) { throw "No .msixbundle in the msix-$env:VERSION artifact." }
+          msstore publish $bundle.FullName --appId $env:STORE_APP_ID --noCommit --uploadTimeout 3600
+          if ($LASTEXITCODE -ne 0) { throw "msstore publish failed ($LASTEXITCODE)." }
+
+      - name: Set What's new from listings.json
+        shell: pwsh
+        run: ./packaging/msix/store/set-release-notes.ps1 -Version $env:VERSION -ProductId $env:STORE_APP_ID
+
+      - name: Submit for certification
+        shell: pwsh
+        run: |
+          msstore submission publish $env:STORE_APP_ID
+          if ($LASTEXITCODE -ne 0) { throw "msstore submission publish failed ($LASTEXITCODE)." }
+          msstore submission status $env:STORE_APP_ID

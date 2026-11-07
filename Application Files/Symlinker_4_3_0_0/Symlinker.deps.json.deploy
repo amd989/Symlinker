@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v10.0": {
-      "Symlinker/4.2.0.0": {
+      "Symlinker/4.3.0.0": {
         "dependencies": {
           "MahApps.Metro": "2.4.11",
           "MahApps.Metro.IconPacks.Material": "6.0.0"
@@ -98,7 +98,7 @@
     }
   },
   "libraries": {
-    "Symlinker/4.2.0.0": {
+    "Symlinker/4.3.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

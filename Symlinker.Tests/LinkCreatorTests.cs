@@ -356,6 +356,51 @@ namespace Symlinker.Tests
         }
 
         [Fact]
+        public async Task Move_IntoAppData_IsRefused_InTheStorePackage()
+        {
+            temp.File(@"links\name\data.txt");
+            creator.IsPackaged = () => true;
+            creator.AppDataFolder = temp.Dir("AppData");
+
+            await Create("name", temp.PathOf("AppData", "Local", "moved"));
+
+            Assert.Equal((Res.MessageBoxErrorTitle, Res.MoveIntoAppDataUnsupported), dialogs.Last);
+            Assert.Empty(dialogs.Questions);
+            Assert.Empty(runner.Prepared);
+            Assert.True(File.Exists(temp.PathOf("links", "name", "data.txt")));
+            Assert.False(Directory.Exists(temp.PathOf("AppData", "Local", "moved")));
+        }
+
+        [Fact]
+        public async Task Move_OutOfAppData_Works_InTheStorePackage()
+        {
+            temp.File(@"AppData\Local\name\data.txt");
+            var target = temp.PathOf("elsewhere");
+            creator.IsPackaged = () => true;
+            creator.AppDataFolder = temp.PathOf("AppData");
+
+            await Create("name", target, linkLocation: temp.PathOf("AppData", "Local"));
+
+            Assert.True(File.Exists(Path.Combine(target, "data.txt")));
+            Assert.Equal(Res.MessageBoxSuccessTitle, dialogs.Last.Title);
+        }
+
+        [Fact]
+        public async Task Move_IntoAppData_Works_OutsideTheStorePackage()
+        {
+            temp.File(@"links\name\data.txt");
+            creator.IsPackaged = () => false;
+            creator.AppDataFolder = temp.PathOf("AppData");
+            temp.Dir("AppData", "Local");
+            var target = temp.PathOf("AppData", "Local", "moved");
+
+            await Create("name", target);
+
+            Assert.True(File.Exists(Path.Combine(target, "data.txt")));
+            Assert.Equal(Res.MessageBoxSuccessTitle, dialogs.Last.Title);
+        }
+
+        [Fact]
         public async Task Move_IsRefused_WhenTheTargetIsInsideTheSource()
         {
             temp.File(@"links\name\data.txt");

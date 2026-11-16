@@ -276,4 +276,7 @@
   <data name="MoveTargetInsideSource" xml:space="preserve">
     <value>लक्ष्य, ले जाए जा रहे आइटम के अंदर नहीं हो सकता, और न ही इसका उल्टा।</value>
   </data>
+  <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
+    <value>Microsoft Store संस्करण फ़ाइलों को AppData फ़ोल्डर में नहीं ले जा सकता: Windows उन्हें एक निजी कॉपी में रखेगा जिसे सिर्फ़ Symlinker देख सकता है। AppData के बाहर कोई लक्ष्य चुनें, या फ़ाइलों को खुद वहाँ ले जाएं और फिर से लिंक बनाएं।</value>
+  </data>
 </root>

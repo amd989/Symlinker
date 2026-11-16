@@ -276,4 +276,7 @@
   <data name="MoveTargetInsideSource" xml:space="preserve">
     <value>ターゲットを移動対象の中に置くことはできません。その逆もできません。</value>
   </data>
+  <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
+    <value>Microsoft Store 版では、AppData フォルダーにファイルを移動できません。Windows がファイルを Symlinker だけが見えるプライベートなコピーに保存してしまうためです。AppData の外にあるターゲットを選ぶか、ファイルを自分で移動してからもう一度リンクを作成してください。</value>
+  </data>
 </root>

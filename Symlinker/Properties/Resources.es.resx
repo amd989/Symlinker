@@ -276,4 +276,7 @@ o modo carpeta (enlazar una carpeta a otra carpeta).</value>
   <data name="MoveTargetInsideSource" xml:space="preserve">
     <value>El destino no puede estar dentro del elemento que se mueve, ni al revés.</value>
   </data>
+  <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
+    <value>La versión de Microsoft Store no puede mover archivos a la carpeta AppData: Windows los guardaría en una copia privada que solo ve Symlinker. Elige un destino fuera de AppData, o mueve tú los archivos allí y vuelve a crear el enlace.</value>
+  </data>
 </root>

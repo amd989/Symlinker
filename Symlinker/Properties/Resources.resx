@@ -335,4 +335,7 @@ Move it to the target and leave a link in its place? Anything using the old path
   <data name="MoveTargetInsideSource" xml:space="preserve">
     <value>The target can't be inside the item being moved, or the other way around.</value>
   </data>
+  <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
+    <value>The Microsoft Store version can't move files into the AppData folder: Windows would keep them in a private copy that only Symlinker sees. Pick a target outside AppData, or move the files there yourself and create the link again.</value>
+  </data>
 </root>

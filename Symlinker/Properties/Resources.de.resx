@@ -276,4 +276,7 @@ Ins Ziel verschieben und an ihrer Stelle einen Link anlegen? Alles, was den alte
   <data name="MoveTargetInsideSource" xml:space="preserve">
     <value>Das Ziel darf nicht innerhalb des zu verschiebenden Elements liegen und umgekehrt.</value>
   </data>
+  <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
+    <value>Die Microsoft Store-Version kann keine Dateien in den AppData-Ordner verschieben: Windows würde sie in einer privaten Kopie ablegen, die nur Symlinker sieht. Wählen Sie ein Ziel außerhalb von AppData, oder verschieben Sie die Dateien selbst dorthin und erstellen Sie den Link erneut.</value>
+  </data>
 </root>

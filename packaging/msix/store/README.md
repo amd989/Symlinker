@@ -28,11 +28,9 @@ Upload folder with `listingData.csv` would do both at once, but it failed with a
 
 ```
 runFullTrust: Symlinker is a WPF desktop app packaged as a full-trust desktop app. It runs the Windows mklink command (cmd.exe) to create symbolic links, hard links and directory junctions at paths the user chooses, which is not possible from an AppContainer.
-
-allowElevation: Windows requires administrator rights to create symbolic links unless Developer Mode is on. The app itself runs unelevated. Only when the user creates a symbolic link that needs admin, it starts a hidden helper with the standard UAC prompt, and the helper only runs mklink on the paths the user entered. It makes no other system changes.
-
-unvirtualizedResources: Users create links in any folder they choose, including under AppData. With write virtualization on, links created there would silently land in the package's private folder instead of the real location the user picked, so the app turns off file and registry write virtualization.
 ```
+
+That is the only one. The first submission also asked for `allowElevation` and `unvirtualizedResources`, and both were denied. Neither is needed: the elevated link helper still gets its UAC prompt without `allowElevation`, and links made through `cmd.exe` land in the real `AppData` without `unvirtualizedResources`. `build-msix.ps1` fails if either comes back.
 
 ## Notes for certification (Additional Testing Information)
 

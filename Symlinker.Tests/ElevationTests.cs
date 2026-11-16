@@ -86,5 +86,11 @@ namespace Symlinker.Tests
         {
             Assert.Equal(SymlinkSupport.Available, Elevation.CanCreateSymbolicLinks());
         }
+
+        [Fact]
+        public void IsPackaged_IsFalse_OutsideAnMsixPackage()
+        {
+            Assert.False(Elevation.IsPackaged());
+        }
     }
 }

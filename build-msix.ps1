@@ -137,7 +137,7 @@ foreach ($arch in $Architectures) {
         Set-Content -Path (Join-Path $layout "AppxManifest.xml") -Encoding utf8
 
     # The window must start unelevated so drag and drop works. Only the link helper
-    # (Symlinker.exe --link-helper) elevates, through allowElevation.
+    # (Symlinker.exe --link-helper) elevates, with a UAC prompt.
     $exeManifest = Join-Path $outDir "$arch/Symlinker.exe.manifest"
     & $mt -nologo -inputresource:"$(Join-Path $layout 'Symlinker.exe');#1" -out:$exeManifest | Out-Null
     if ($LASTEXITCODE -ne 0 -or -not (Select-String -Path $exeManifest -Pattern 'level="asInvoker"' -Quiet)) {
@@ -164,10 +164,13 @@ foreach ($arch in $Architectures) {
     }
     $capabilities = @($built.Package.Capabilities.ChildNodes |
         Where-Object { $_.NodeType -eq 'Element' } | ForEach-Object { $_.GetAttribute('Name') })
-    foreach ($needed in 'runFullTrust', 'allowElevation', 'unvirtualizedResources') {
-        if ($capabilities -notcontains $needed) {
-            Write-Error "The package doesn't declare the $needed capability."
-        }
+    if ($capabilities -notcontains 'runFullTrust') {
+        Write-Error "The package doesn't declare the runFullTrust capability."
+    }
+    # The Store denied allowElevation and unvirtualizedResources, and the app works without them.
+    $extra = @($capabilities | Where-Object { $_ -ne 'runFullTrust' })
+    if ($extra) {
+        Write-Error "The package declares $($extra -join ', '). The Store only approved runFullTrust."
     }
     Write-Output "Packed $msix"
 }

@@ -88,6 +88,18 @@ namespace Symlinker
         /// </summary>
         public static bool CanCreateSymbolicLinks() => CanCreateSymbolicLinks(IsElevated, File.CreateSymbolicLink);
 
+        /// <summary>Whether this process runs from an MSIX package (the Microsoft Store version).</summary>
+        public static bool IsPackaged()
+        {
+            var length = 0;
+            return GetCurrentPackageFullName(ref length, null) != AppModelErrorNoPackage;
+        }
+
+        private const int AppModelErrorNoPackage = 15700;
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        private static extern int GetCurrentPackageFullName(ref int packageFullNameLength, char[] packageFullName);
+
         /// <summary>The check behind <see cref="CanCreateSymbolicLinks()"/>, with the link creation replaceable in tests.</summary>
         internal static bool CanCreateSymbolicLinks(bool isElevated, Func<string, string, FileSystemInfo> createSymbolicLink)
         {

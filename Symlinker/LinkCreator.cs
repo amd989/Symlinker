@@ -37,6 +37,13 @@ namespace Symlinker
         /// <summary>Minimum time between progress updates while copying.</summary>
         internal TimeSpan ProgressInterval { get; set; } = TimeSpan.FromMilliseconds(100);
 
+        /// <summary>Whether this copy runs from the Microsoft Store package.</summary>
+        internal Func<bool> IsPackaged { get; set; } = Elevation.IsPackaged;
+
+        /// <summary>The user's AppData folder (the parent of Local and Roaming).</summary>
+        internal string AppDataFolder { get; set; } =
+            Path.GetDirectoryName(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+
         public async Task CreateAsync(LinkInput request)
         {
             try
@@ -159,6 +166,15 @@ namespace Symlinker
 
         private async Task OfferMoveAsync(LinkInput request, FileSystemInfo existing, string linkPath, string target)
         {
+            // In the Store package, Windows keeps files this process creates under AppData in a
+            // private per-package copy: other apps can't see them and uninstalling deletes them.
+            // Links are fine (mklink runs in cmd.exe), but moved files would end up hidden there.
+            if (IsPackaged() && LinkMover.IsSameOrInside(target, AppDataFolder))
+            {
+                await dialogs.ShowMessageAsync(Res.MessageBoxErrorTitle, Res.MoveIntoAppDataUnsupported);
+                return;
+            }
+
             var message = string.Format(
                 CultureInfo.CurrentUICulture,
                 request.IsFolder ? Res.DialogMoveFolder : Res.DialogMoveFile,

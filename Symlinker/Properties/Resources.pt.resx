@@ -276,4 +276,7 @@ Movê-lo para o destino e deixar um link no lugar dele? Tudo que usa o caminho a
   <data name="MoveTargetInsideSource" xml:space="preserve">
     <value>O destino não pode estar dentro do item que está sendo movido, nem o contrário.</value>
   </data>
+  <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
+    <value>A versão da Microsoft Store não pode mover arquivos para a pasta AppData: o Windows os guardaria em uma cópia privada que só o Symlinker vê. Escolha um destino fora da AppData ou mova você mesmo os arquivos e crie o link novamente.</value>
+  </data>
 </root>

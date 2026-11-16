@@ -276,4 +276,7 @@ Spostarlo nella destinazione e lasciare un link al suo posto? Tutto ciò che usa
   <data name="MoveTargetInsideSource" xml:space="preserve">
     <value>La destinazione non può trovarsi all'interno dell'elemento da spostare, né viceversa.</value>
   </data>
+  <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
+    <value>La versione di Microsoft Store non può spostare file nella cartella AppData: Windows li terrebbe in una copia privata visibile solo a Symlinker. Scegli una destinazione fuori da AppData, oppure sposta tu i file e crea di nuovo il collegamento.</value>
+  </data>
 </root>

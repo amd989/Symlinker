@@ -11,8 +11,7 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  xmlns:desktop6="http://schemas.microsoft.com/appx/manifest/desktop/windows10/6"
-  IgnorableNamespaces="uap rescap desktop6">
+  IgnorableNamespaces="uap rescap">
 
   <Identity
     Name="AlejandroMoraDaz.Symlinker-SymlinkCreator"
@@ -25,9 +24,6 @@
     <DisplayName>Symlinker - Symlink Creator</DisplayName>
     <PublisherDisplayName>Alejandro MD</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
-    <!-- Links must land where the user points, not in the package's private AppData copy. -->
-    <desktop6:FileSystemWriteVirtualization>disabled</desktop6:FileSystemWriteVirtualization>
-    <desktop6:RegistryWriteVirtualization>disabled</desktop6:RegistryWriteVirtualization>
   </Properties>
 
   <Dependencies>
@@ -60,10 +56,11 @@
   </Applications>
 
   <Capabilities>
+    <!--
+      runFullTrust only. The Store denied allowElevation and unvirtualizedResources, and neither
+      is needed: the link helper elevates with UAC without allowElevation, and mklink runs in
+      cmd.exe, outside the package's AppData redirection.
+    -->
     <rescap:Capability Name="runFullTrust" />
-    <!-- Symbolic links need admin: the hidden link helper elevates with UAC. -->
-    <rescap:Capability Name="allowElevation" />
-    <!-- Required by the desktop6 virtualization opt-outs above. -->
-    <rescap:Capability Name="unvirtualizedResources" />
   </Capabilities>
 </Package>

@@ -679,5 +679,14 @@ namespace Symlinker.Properties {
                 return ResourceManager.GetString("MoveTargetInsideSource", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The Microsoft Store version can't move files into the AppData folder: Windows would keep them in a private copy that only Symlinker sees. Pick a target outside AppData, or move the files there yourself and create the link again..
+        /// </summary>
+        public static string MoveIntoAppDataUnsupported {
+            get {
+                return ResourceManager.GetString("MoveIntoAppDataUnsupported", resourceCulture);
+            }
+        }
     }
 }

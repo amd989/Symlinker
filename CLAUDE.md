@@ -67,8 +67,8 @@ dotnet test --project Symlinker.Tests
 - Upload the `.msixbundle` in Partner Center > Symlinker > the submission > Packages. Store ID `9P8H93Z0TGK4`.
 - Manifest template and tile assets live in `packaging/msix/`. Identity values there must match Partner Center.
 - `Properties/DisplayName` must be a name reserved in Partner Center (Manage app names). "Symlinker" alone is taken, so it is "Symlinker - Symlink Creator". The Start menu name (`VisualElements DisplayName`) stays "Symlinker".
-- The Store build behaves like the others: the window starts unelevated and only the link helper elevates. The `allowElevation` capability lets it show the UAC prompt. The script fails if the built exe asks for admin at launch.
-- The manifest disables file/registry write virtualization so links created under AppData land in the real location.
+- The Store build behaves like the others: the window starts unelevated and only the link helper elevates, with a UAC prompt. The script fails if the built exe asks for admin at launch.
+- The only capability is `runFullTrust`. The Store denied `allowElevation` and `unvirtualizedResources`, and neither is needed (tested with Developer Mode off): the helper's `runas` launch works without `allowElevation`, and mklink runs in `cmd.exe`, a child process that writes to the real `AppData`. Only new files and folders that Symlinker's own process creates under `AppData` go to the package's private copy (renames and deletes of existing items are fine). So in the Store package, `LinkCreator` refuses to move files into `AppData` (`MoveIntoAppDataUnsupported`); moving out of it works. The script fails if the package declares any other capability.
 
 ## Architecture
 
@@ -171,6 +171,7 @@ Releases are automated via GitHub Actions:
 ## Known Limitations
 
 - **Drag and drop**: Works because the window always runs unelevated. It does not work if the user starts Symlinker as administrator themselves, because Windows blocks drops from a lower-privilege Explorer.
+- **Store version, moving into AppData**: the Microsoft Store version can't move existing files into a target under `AppData` (see "Publishing (Microsoft Store / MSIX)"). Linking there without moving works.
 - **Platform**: Windows 10/11 only.
 
 ## Localization

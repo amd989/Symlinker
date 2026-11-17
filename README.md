@@ -1,5 +1,5 @@
 
-# Symlinker [![Release](https://github.com/amd989/Symlinker/actions/workflows/release.yml/badge.svg)](https://github.com/amd989/Symlinker/actions/workflows/release.yml)
+# Symlinker [![Release](https://github.com/amd989/Symlinker/actions/workflows/release.yml/badge.svg)](https://github.com/amd989/Symlinker/actions/workflows/release.yml) [![Latest version](https://img.shields.io/github/v/release/amd989/Symlinker?label=version)](https://github.com/amd989/Symlinker/releases/latest)
 
 ![Screenshot](docs/window.png)
 
@@ -7,9 +7,17 @@ A simple Windows GUI for creating symbolic links, hard links, and directory junc
 
 ## Installation
 
+### Microsoft Store
+
+<a href="https://apps.microsoft.com/detail/9P8H93Z0TGK4"><img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200" alt="Get it from Microsoft" /></a>
+
+Installs and updates through the Store.
+
+### Direct download
+
 [Download ClickOnce Installer (Supports auto updates)](https://l.alejandro.md/symlinker_clickonce)
 
-[Download Standalone Executable](https://l.alejandro.md/symlinker_executable)
+[Download Standalone Executable](https://github.com/amd989/Symlinker/releases/latest) (portable ZIP from the latest release)
 
 ### Scoop
 
@@ -24,7 +32,7 @@ scoop install extras/symlinker
 - Supports both file and folder link types
 - Drag and drop paths directly into the application
 - Automatic UAC elevation (administrator privileges required for symlink creation)
-- ClickOnce deployment with automatic updates
+- Automatic updates through the Microsoft Store or ClickOnce
 - Light and dark mode support — syncs with your Windows theme and accent color
 - Signed releases for verified authenticity
 

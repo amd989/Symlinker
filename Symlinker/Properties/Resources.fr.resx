@@ -279,4 +279,38 @@ Le déplacer vers la cible et laisser un lien à sa place ? Tout ce qui utilise 
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>La version Microsoft Store ne peut pas déplacer de fichiers dans le dossier AppData : Windows les garderait dans une copie privée que seul Symlinker voit. Choisissez une cible en dehors d'AppData, ou déplacez vous-même les fichiers puis recréez le lien.</value>
   </data>
+  <!-- Batch links (#6) -->
+  <data name="ButtonAddAnother" xml:space="preserve">
+    <value>Ajouter un autre</value>
+  </data>
+  <data name="TooltipAddAnother" xml:space="preserve">
+    <value>Ajouter un autre lien à créer en une seule fois</value>
+  </data>
+  <data name="ButtonCreateLinks" xml:space="preserve">
+    <value>Créer {0} liens</value>
+  </data>
+  <data name="TooltipRemoveLink" xml:space="preserve">
+    <value>Retirer ce lien de la liste</value>
+  </data>
+  <data name="ListLinksLabel" xml:space="preserve">
+    <value>Liens à créer</value>
+  </data>
+  <data name="ErrorDuplicateLinkPath" xml:space="preserve">
+    <value>Un autre lien de la liste porte le même nom dans le même dossier.</value>
+  </data>
+  <data name="ErrorBatchRows" xml:space="preserve">
+    <value>Corrigez les liens signalés dans la liste.</value>
+  </data>
+  <data name="BatchSummaryPartialTitle" xml:space="preserve">
+    <value>Tous les liens n'ont pas été créés</value>
+  </data>
+  <data name="BatchSummaryCount" xml:space="preserve">
+    <value>{0} liens créés sur {1}.</value>
+  </data>
+  <data name="BatchSummaryCreated" xml:space="preserve">
+    <value>Créés :</value>
+  </data>
+  <data name="BatchSummaryNotCreated" xml:space="preserve">
+    <value>Non créés :</value>
+  </data>
 </root>

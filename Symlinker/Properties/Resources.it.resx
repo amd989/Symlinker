@@ -279,4 +279,38 @@ Spostarlo nella destinazione e lasciare un link al suo posto? Tutto ciò che usa
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>La versione di Microsoft Store non può spostare file nella cartella AppData: Windows li terrebbe in una copia privata visibile solo a Symlinker. Scegli una destinazione fuori da AppData, oppure sposta tu i file e crea di nuovo il collegamento.</value>
   </data>
+  <!-- Batch links (#6) -->
+  <data name="ButtonAddAnother" xml:space="preserve">
+    <value>Aggiungi un altro</value>
+  </data>
+  <data name="TooltipAddAnother" xml:space="preserve">
+    <value>Aggiungi un altro collegamento da creare nello stesso passaggio</value>
+  </data>
+  <data name="ButtonCreateLinks" xml:space="preserve">
+    <value>Crea {0} collegamenti</value>
+  </data>
+  <data name="TooltipRemoveLink" xml:space="preserve">
+    <value>Rimuovi questo collegamento dall'elenco</value>
+  </data>
+  <data name="ListLinksLabel" xml:space="preserve">
+    <value>Collegamenti da creare</value>
+  </data>
+  <data name="ErrorDuplicateLinkPath" xml:space="preserve">
+    <value>Un altro collegamento nell'elenco ha lo stesso nome nella stessa cartella.</value>
+  </data>
+  <data name="ErrorBatchRows" xml:space="preserve">
+    <value>Correggi i collegamenti segnati nell'elenco.</value>
+  </data>
+  <data name="BatchSummaryPartialTitle" xml:space="preserve">
+    <value>Non tutti i collegamenti sono stati creati</value>
+  </data>
+  <data name="BatchSummaryCount" xml:space="preserve">
+    <value>Creati {0} collegamenti su {1}.</value>
+  </data>
+  <data name="BatchSummaryCreated" xml:space="preserve">
+    <value>Creati:</value>
+  </data>
+  <data name="BatchSummaryNotCreated" xml:space="preserve">
+    <value>Non creati:</value>
+  </data>
 </root>

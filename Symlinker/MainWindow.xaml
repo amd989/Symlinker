@@ -31,6 +31,8 @@
         <!-- WinUI 3 corner radius -->
         <CornerRadius x:Key="ControlRadius">10</CornerRadius>
 
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+
         <!-- Replaced at runtime to match the theme and accent color -->
         <SolidColorBrush x:Key="Symlinker.Brushes.Error" Color="#C42B1C"/>
         <SolidColorBrush x:Key="Symlinker.Brushes.OnAccent" Color="White"/>
@@ -230,6 +232,106 @@
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
         </Style>
 
+        <!-- One link in the batch list: link path, arrow, target, remove. The name parts never get cut off. -->
+        <Style x:Key="LinkRowItem" TargetType="ListBoxItem">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusRing}"/>
+            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
+            <Setter Property="AutomationProperties.Name" Value="{Binding LinkPath}"/>
+            <Setter Property="AutomationProperties.HelpText" Value="{Binding ErrorText}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="bg" Height="28" Margin="0,0,0,2" Padding="8,0,2,0"
+                                CornerRadius="8" Background="Transparent">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bg" Property="Background"
+                                        Value="{DynamicResource MahApps.Brushes.Gray9}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="bg" Property="Background"
+                                        Value="{DynamicResource MahApps.Brushes.Accent4}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <DataTemplate x:Key="LinkRowTemplate" DataType="local:LinkRow">
+            <Grid TextBlock.FontFamily="Segoe UI" TextBlock.FontSize="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <iconPacks:PackIconMaterial Kind="AlertOutline" Width="13" Height="13"
+                                            Margin="0,0,6,0" VerticalAlignment="Center"
+                                            Foreground="{DynamicResource Symlinker.Brushes.Error}"
+                                            Background="Transparent"
+                                            ToolTip="{Binding ErrorText}"
+                                            Visibility="{Binding HasError, Converter={StaticResource BoolToVisibility}}"/>
+
+                <!-- Link: dimmed folder, then the name (always shown) -->
+                <Grid Grid.Column="1" HorizontalAlignment="Left" ToolTip="{Binding LinkPath}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding LinkFolder}" TextTrimming="CharacterEllipsis"
+                               Foreground="{DynamicResource MahApps.Brushes.Gray1}"/>
+                    <TextBlock x:Name="linkName" Grid.Column="1" Text="{Binding LinkName}"
+                               FontWeight="SemiBold" MaxWidth="150" TextTrimming="CharacterEllipsis"/>
+                </Grid>
+
+                <TextBlock Grid.Column="2" Text="&#x2192;" Margin="8,0"
+                           Foreground="{DynamicResource MahApps.Brushes.Gray2}"/>
+
+                <!-- Target: dimmed folder, then the name (always shown) -->
+                <Grid Grid.Column="3" HorizontalAlignment="Left" ToolTip="{Binding Target}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding TargetFolder}" TextTrimming="CharacterEllipsis"
+                               Foreground="{DynamicResource MahApps.Brushes.Gray1}"/>
+                    <TextBlock x:Name="targetName" Grid.Column="1" Text="{Binding TargetName}"
+                               MaxWidth="150" TextTrimming="CharacterEllipsis"/>
+                </Grid>
+
+                <Button Grid.Column="4" Style="{StaticResource GhostBtn}" Click="RemoveRow_Click"
+                        Margin="6,0,0,0" Focusable="False"
+                        ToolTip="{x:Static p:Resources.TooltipRemoveLink}"
+                        AutomationProperties.Name="{x:Static p:Resources.TooltipRemoveLink}">
+                    <Border Width="22" Height="22" CornerRadius="6" Background="Transparent">
+                        <iconPacks:PackIconMaterial Kind="Close" Width="10" Height="10"
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                    Foreground="{DynamicResource MahApps.Brushes.Gray1}"/>
+                    </Border>
+                </Button>
+            </Grid>
+            <DataTemplate.Triggers>
+                <!-- Empty name or target: show what's missing instead of a blank -->
+                <DataTrigger Binding="{Binding LinkName}" Value="">
+                    <Setter TargetName="linkName" Property="Text" Value="{x:Static p:Resources.PlaceholderLinkName}"/>
+                    <Setter TargetName="linkName" Property="FontStyle" Value="Italic"/>
+                    <Setter TargetName="linkName" Property="FontWeight" Value="Normal"/>
+                    <Setter TargetName="linkName" Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray2}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Target}" Value="">
+                    <Setter TargetName="targetName" Property="Text" Value="{x:Static p:Resources.PlaceholderTargetPath}"/>
+                    <Setter TargetName="targetName" Property="FontStyle" Value="Italic"/>
+                    <Setter TargetName="targetName" Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray2}"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
         <!-- Footer icon button (about) -->
         <Style x:Key="RoundedFlatButton" TargetType="Button">
             <Setter Property="Cursor" Value="Hand"/>
@@ -266,6 +368,7 @@
         <Grid Grid.Row="0" Margin="16,2,16,2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
@@ -484,6 +587,18 @@
                     <TextBlock Text="{x:Static p:Resources.PillJunction}" FontSize="12" FontFamily="Segoe UI"/>
                 </RadioButton>
             </WrapPanel>
+
+            <!-- BATCH LIST: every link to create; the cards above edit the selected one. Hidden for a single link. -->
+            <ListBox x:Name="linkList" Grid.Row="2" Margin="0,4,0,4"
+                     Visibility="Collapsed"
+                     Background="Transparent" BorderThickness="0" Padding="0"
+                     ItemContainerStyle="{StaticResource LinkRowItem}"
+                     ItemTemplate="{StaticResource LinkRowTemplate}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     SelectionMode="Single"
+                     SelectionChanged="LinkList_SelectionChanged"
+                     KeyDown="LinkList_KeyDown"
+                     AutomationProperties.Name="{x:Static p:Resources.ListLinksLabel}"/>
         </Grid>
 
         <!-- FOOTER BAND -->
@@ -499,13 +614,28 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Click="AboutButton_Click"
-                        Style="{StaticResource RoundedFlatButton}"
-                        ToolTip="{x:Static p:Resources.TooltipAbout}"
-                        AutomationProperties.Name="{x:Static p:Resources.TooltipAbout}"
-                        VerticalAlignment="Center">
-                    <iconPacks:PackIconMaterial Kind="InformationOutline" Width="18" Height="18"/>
-                </Button>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Click="AboutButton_Click"
+                            Style="{StaticResource RoundedFlatButton}"
+                            ToolTip="{x:Static p:Resources.TooltipAbout}"
+                            AutomationProperties.Name="{x:Static p:Resources.TooltipAbout}"
+                            VerticalAlignment="Center">
+                        <iconPacks:PackIconMaterial Kind="InformationOutline" Width="18" Height="18"/>
+                    </Button>
+
+                    <!-- Turns the form into a list of links created in one step -->
+                    <Button x:Name="addAnotherButton" Click="AddAnother_Click"
+                            Style="{StaticResource RoundedFlatButton}"
+                            ToolTip="{x:Static p:Resources.TooltipAddAnother}"
+                            Margin="8,0,0,0" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Height="18">
+                            <iconPacks:PackIconMaterial Kind="Plus" Width="12" Height="12"
+                                                        VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBlock Text="{x:Static p:Resources.ButtonAddAnother}" FontSize="12" FontFamily="Segoe UI"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
 
                 <!-- Inline error for the field marked in red -->
                 <Grid x:Name="errorPanel" Grid.Column="1" Margin="12,0" VerticalAlignment="Center"
@@ -550,7 +680,7 @@
                         <Image x:Name="createLinkShield" Width="16" Height="16"
                                VerticalAlignment="Center" Margin="0,0,6,0"
                                Visibility="Collapsed"/>
-                        <TextBlock Text="{x:Static p:Resources.ButtonCreateLink}" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="createLinkText" Text="{x:Static p:Resources.ButtonCreateLink}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
             </Grid>

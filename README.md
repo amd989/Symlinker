@@ -31,6 +31,7 @@ scoop install extras/symlinker
 - Create **symbolic links**, **hard links**, and **directory junctions** with a few clicks
 - Supports both file and folder link types
 - Drag and drop paths directly into the application
+- Create several links in one step: **Add another** turns the form into a list, and picking or dropping several targets at once adds a link for each
 - Automatic UAC elevation (administrator privileges required for symlink creation)
 - Automatic updates through the Microsoft Store or ClickOnce
 - Light and dark mode support — syncs with your Windows theme and accent color

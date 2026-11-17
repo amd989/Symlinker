@@ -279,4 +279,38 @@ Ins Ziel verschieben und an ihrer Stelle einen Link anlegen? Alles, was den alte
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>Die Microsoft Store-Version kann keine Dateien in den AppData-Ordner verschieben: Windows würde sie in einer privaten Kopie ablegen, die nur Symlinker sieht. Wählen Sie ein Ziel außerhalb von AppData, oder verschieben Sie die Dateien selbst dorthin und erstellen Sie den Link erneut.</value>
   </data>
+  <!-- Batch links (#6) -->
+  <data name="ButtonAddAnother" xml:space="preserve">
+    <value>Weitere hinzufügen</value>
+  </data>
+  <data name="TooltipAddAnother" xml:space="preserve">
+    <value>Einen weiteren Link hinzufügen, der im selben Schritt erstellt wird</value>
+  </data>
+  <data name="ButtonCreateLinks" xml:space="preserve">
+    <value>{0} Links erstellen</value>
+  </data>
+  <data name="TooltipRemoveLink" xml:space="preserve">
+    <value>Diesen Link aus der Liste entfernen</value>
+  </data>
+  <data name="ListLinksLabel" xml:space="preserve">
+    <value>Zu erstellende Links</value>
+  </data>
+  <data name="ErrorDuplicateLinkPath" xml:space="preserve">
+    <value>Ein anderer Link in der Liste hat denselben Namen im selben Ordner.</value>
+  </data>
+  <data name="ErrorBatchRows" xml:space="preserve">
+    <value>Korrigieren Sie die markierten Links.</value>
+  </data>
+  <data name="BatchSummaryPartialTitle" xml:space="preserve">
+    <value>Nicht alle Links wurden erstellt</value>
+  </data>
+  <data name="BatchSummaryCount" xml:space="preserve">
+    <value>{0} von {1} Links erstellt.</value>
+  </data>
+  <data name="BatchSummaryCreated" xml:space="preserve">
+    <value>Erstellt:</value>
+  </data>
+  <data name="BatchSummaryNotCreated" xml:space="preserve">
+    <value>Nicht erstellt:</value>
+  </data>
 </root>

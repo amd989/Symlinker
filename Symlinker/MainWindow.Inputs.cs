@@ -42,9 +42,6 @@ namespace Symlinker
         private static readonly Color ErrorColorLight = Color.FromRgb(0xC4, 0x2B, 0x1C);
         private static readonly Color ErrorColorDark = Color.FromRgb(0xFF, 0x99, 0xA4);
 
-        // Fields with a problem, in the order they appear on screen, with the message for each
-        private readonly List<KeyValuePair<TextBox, string>> inputErrors = new();
-
         private LaunchOptions launchOptions;
 
         // Whether creating a symbolic link needs administrator rights (no admin, no Developer Mode)
@@ -121,7 +118,7 @@ namespace Symlinker
             adminNoticeShield.Visibility = adminNoticeShield.Source != null ? Visibility.Visible : Visibility.Collapsed;
 
             // Field errors take the same spot and matter more
-            adminPanel.Visibility = wouldPrompt && inputErrors.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            adminPanel.Visibility = wouldPrompt && FooterError == null ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void OnThemeChanged(object sender, ThemeChangedEventArgs e) => UpdateThemeBrushes();
@@ -186,63 +183,87 @@ namespace Symlinker
             UpdateAdminNotice();
         }
 
-        /// <summary>Checks every field, marks the bad ones and shows what's wrong. Returns true when all are fine.</summary>
+        /// <summary>
+        /// Checks every link, marks the bad fields and shows what's wrong. In a batch, the first row
+        /// with a problem is selected so its fields show in the cards. Returns true when all are fine.
+        /// </summary>
         private bool ValidateInputs()
         {
-            inputErrors.Clear();
-
-            var boxes = new Dictionary<InputField, TextBox>
+            var valid = batch.Validate(isFolder);
+            if (!valid)
             {
-                [InputField.LinkName] = linkNameTextBox,
-                [InputField.LinkLocation] = linkLocationTextBox,
-                [InputField.Target] = destinationLocationTextBox,
-            };
+                var row = batch.Rows.First(r => r.HasError);
+                if (row != batch.Selected)
+                {
+                    batch.Selected = row;
+                    UpdateBatchView();
+                    LoadRow(row);
+                }
 
-            foreach (var (field, message) in InputValidator.Validate(linkNameTextBox.Text, linkLocationTextBox.Text, destinationLocationTextBox.Text, isFolder))
-                AddInputError(boxes[field], message);
+                BoxFor(row.Errors[0].Field).Focus();
+            }
 
             ShowInputErrors();
-            if (inputErrors.Count != 0)
-                inputErrors[0].Key.Focus();
-
-            return inputErrors.Count == 0;
+            return valid;
         }
 
-        private void AddInputError(TextBox box, string message) => inputErrors.Add(new KeyValuePair<TextBox, string>(box, message));
+        private TextBox BoxFor(InputField field) => field switch
+        {
+            InputField.LinkName => linkNameTextBox,
+            InputField.LinkLocation => linkLocationTextBox,
+            _ => destinationLocationTextBox,
+        };
 
         private void ClearInputErrors()
         {
-            inputErrors.Clear();
+            batch.ClearErrors();
             ShowInputErrors();
         }
 
         private void InputTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Editing a field clears its error
-            var removed = inputErrors.RemoveAll(error => error.Key == sender);
-            if (removed != 0)
-                ShowInputErrors();
+            // Editing a field clears its error; filling the cards from a row doesn't
+            if (loadingRow || !batch.Selected.HasError)
+                return;
+
+            var field = sender == linkNameTextBox ? InputField.LinkName
+                : sender == linkLocationTextBox ? InputField.LinkLocation
+                : InputField.Target;
+            batch.Selected.ClearError(field);
+            ShowInputErrors();
         }
+
+        /// <summary>
+        /// The message for the footer: the selected link's first problem, or (in a batch) a pointer to
+        /// the rows marked in the list. Null when nothing is wrong.
+        /// </summary>
+        private string FooterError =>
+            batch.Selected.ErrorText ?? (batch.IsBatch && batch.Rows.Any(row => row.HasError) ? Res.ErrorBatchRows : null);
 
         private void ShowInputErrors()
         {
+            var errors = batch.Selected.Errors;
             foreach (var box in new[] { linkNameTextBox, linkLocationTextBox, destinationLocationTextBox })
             {
-                var message = inputErrors.Where(error => error.Key == box).Select(error => error.Value).FirstOrDefault();
+                var message = errors.Where(error => BoxFor(error.Field) == box).Select(error => error.Message).FirstOrDefault();
                 InputError.SetHasError(box, message != null);
                 AutomationProperties.SetHelpText(box, message ?? string.Empty);
             }
 
             UpdateAdminNotice();
 
-            if (inputErrors.Count == 0)
+            var footer = FooterError;
+            if (footer == null)
             {
                 errorPanel.Visibility = Visibility.Collapsed;
                 errorText.Text = string.Empty;
                 return;
             }
 
-            errorText.Text = inputErrors[0].Value;
+            if (errorText.Text == footer && errorPanel.Visibility == Visibility.Visible)
+                return;
+
+            errorText.Text = footer;
             errorPanel.Visibility = Visibility.Visible;
 
             // Let screen readers announce the new message

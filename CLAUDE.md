@@ -78,18 +78,19 @@ The window is view glue. Logic lives in plain classes that the tests drive with 
 
 1. **Program.cs**: Entry point. Parses command-line options (`LaunchOptions`) and opens the main window. It does not elevate. With `--link-helper` it runs the hidden elevated helper instead (see "Administrator rights").
 2. **App.xaml / App.xaml.cs**: Loads MahApps.Metro styles and syncs the theme (light/dark and accent color) with Windows.
-3. **MainWindow.xaml**: The whole UI. Two cards (link location, target), pill toggles for folder/file mode and link type, and a footer with the About button, an inline error line and the Create link button. Styles live in `Window.Resources`.
-4. **MainWindow.xaml.cs**: Mode switching, link name auto-fill, file pickers, drag and drop. Hands link creation to `LinkCreator`.
+3. **MainWindow.xaml**: The whole UI. Two cards (link location, target), pill toggles for folder/file mode and link type, the batch list (hidden for a single link), and a footer with the About and Add another buttons, an inline error line and the Create link button. Styles live in `Window.Resources`.
+4. **MainWindow.xaml.cs**: Mode switching, file pickers, drag and drop, and the batch list. The cards edit `LinkBatch.Selected`. Hands link creation to `LinkCreator`.
 5. **MainWindow.Inputs.cs**: Inline errors (`InputError.HasError` attached property plus the footer message), theme-dependent brushes, restoring launch options, and the up-front admin notice.
 6. **Elevation.cs**: `LaunchOptions` (command-line parsing) and `Elevation` (admin check, symbolic link privilege probe, the UAC shield icon).
-7. **LinkCreator.cs**: The link workflow: replace-existing prompts, and moving an existing file or folder to the target (rename on the same drive, copy with progress across drives, rollback on failure).
-8. **LinkRunner.cs**: `ILinkRunner`, which `LinkCreator` uses to create links. `LinkRunner` runs mklink unelevated, except symbolic links that need admin, which go through the elevated helper. `PrepareAsync()` starts the helper (one UAC prompt) before anything on disk changes.
-9. **LinkCommand.cs**: `LinkKind`, `LinkRequest`/`LinkResult` and `LinkCommand.RunAsync()`, which runs `cmd.exe /c mklink`. Used unelevated and by the elevated helper.
-10. **ElevatedLinker.cs**: Starts `Symlinker.exe --link-helper` as administrator and sends it link requests over a named pipe. `RunHelper()` is the helper's side.
-11. **LinkMover.cs**: File system helpers for moving: copy that keeps attributes and recreates nested links, delete that never follows links.
-12. **InputValidator.cs**: Field checks behind the inline errors, and `ColorContrast` for text on the accent color.
-13. **Dialogs.cs**: `IDialogService` / `IProgressDialog`, and `MetroDialogService`, which shows them in the window.
-14. **UiHelpers.cs**: Path name extraction, picker start folders, byte formatting, app version, `LinkNameAutoFill`.
+7. **LinkCreator.cs**: The link workflow, for one link (`CreateAsync`) or a batch (`CreateBatchAsync`): replace-existing prompts, and moving an existing file or folder to the target (rename on the same drive, copy with progress across drives, rollback on failure). Each link is planned first (`LinkPlan`: questions asked, nothing on disk changed), then carried out, giving a `LinkOutcome`.
+8. **LinkBatch.cs**: `LinkRow` (one link: location, name, target, its own name auto-fill and errors) and `LinkBatch` (the rows, the selected one, the shortcuts for adding rows, and batch validation including duplicate link paths).
+9. **LinkRunner.cs**: `ILinkRunner`, which `LinkCreator` uses to create links. `LinkRunner` runs mklink unelevated, except symbolic links that need admin, which go through the elevated helper. `PrepareAsync()` starts the helper (one UAC prompt) before anything on disk changes.
+10. **LinkCommand.cs**: `LinkKind`, `LinkRequest`/`LinkResult` and `LinkCommand.RunAsync()`, which runs `cmd.exe /c mklink`. Used unelevated and by the elevated helper.
+11. **ElevatedLinker.cs**: Starts `Symlinker.exe --link-helper` as administrator and sends it link requests over a named pipe. `RunHelper()` is the helper's side.
+12. **LinkMover.cs**: File system helpers for moving: copy that keeps attributes and recreates nested links, delete that never follows links.
+13. **InputValidator.cs**: Field checks behind the inline errors, and `ColorContrast` for text on the accent color.
+14. **Dialogs.cs**: `IDialogService` / `IProgressDialog`, and `MetroDialogService`, which shows them in the window.
+15. **UiHelpers.cs**: Path name extraction, picker start folders, byte formatting, app version, `LinkNameAutoFill`.
 
 ### Link Creation Flow
 
@@ -98,6 +99,16 @@ The window is view glue. Logic lives in plain classes that the tests drive with 
 3. Create link (or Enter, it is the default button) runs `ValidateInputs()`, which marks the fields `InputValidator` flags.
 4. `RefreshSymlinkAccessNow()` probes again whether a symbolic link needs administrator rights.
 5. `LinkCreator.CreateAsync()` handles an existing item at the link path (replace it, or move it to the target), then runs mklink and shows the result. `ILinkRunner.PrepareAsync()` is called before the first change on disk.
+
+### Several links at once (batch)
+
+- **Add another** (footer) adds a row and turns the form into a list. With one row the window looks and behaves exactly like a single link. Removing rows back down to one returns to that view.
+- The cards edit the selected row; the list shows every row on one line (`folder\name -> folder\target`, the names never cut off) with a remove button. Click a row to edit it, Delete removes it.
+- Shortcuts: a new row starts in the last row's link location, and its target picker opens next to the nearest target above it. Picking several targets (multi-select) or dropping several items on the target card fills the selected row and adds a row for each other one. Picking or dropping a link location also moves the rows that shared the old one (or had none).
+- One mode and link type (the pills) for the whole batch. In batch mode, switching mode keeps every target; ones that don't fit are flagged on Create.
+- Create validates every row (`LinkBatch.Validate`: `InputValidator` plus duplicate link paths), marks bad rows in the list and selects the first one. The footer shows the selected row's error, or a pointer to the marked rows.
+- `LinkCreator.CreateBatchAsync()` asks every replace/move question first (each prefixed with its link path), then calls `PrepareAsync()` once (at most one UAC prompt), then creates each link, continuing past failures. One summary dialog lists what was created and what wasn't, and why (declined questions count as skipped). Links in the batch's main folder are listed by name, others by full path.
+- After a batch with failures, the created rows are removed so only the rest are left to fix. When all were created, the list stays.
 
 ### Administrator rights
 
@@ -132,7 +143,8 @@ Symlinker/
 │   ├── MainWindow.xaml.cs       # Window glue
 │   ├── MainWindow.Inputs.cs     # Inline errors, admin notice
 │   ├── Elevation.cs             # LaunchOptions, symlink probe, UAC shield
-│   ├── LinkCreator.cs           # Link workflow
+│   ├── LinkCreator.cs           # Link workflow (single and batch)
+│   ├── LinkBatch.cs             # Batch rows, shortcuts, validation
 │   ├── LinkRunner.cs            # Unelevated or elevated mklink
 │   ├── LinkCommand.cs           # Runs mklink
 │   ├── ElevatedLinker.cs        # Elevated link helper over a named pipe
@@ -181,4 +193,4 @@ Before tagging, update `ReleaseNotes` in `listings.json` for every language and 
 
 - Every UI string lives in `Properties/Resources.resx` and must also be added to all 8 translations (de, es, fr, hi, it, ja, pt, zh).
 - `Resources.Designer.cs` is not regenerated by `dotnet build`. When adding a string, add its typed property by hand in the same generated style.
-- The window is a fixed 560x280, so check long translations (German, Italian, French) for overflow in pills, buttons and dialogs.
+- The window is 560x280 for a single link. In batch mode it grows by 30 px per row up to 5 rows, then the list scrolls (back to 280 when one row is left). Check long translations (German, Italian, French) for overflow in pills, buttons, the footer and dialogs.

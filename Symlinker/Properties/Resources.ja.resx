@@ -279,4 +279,38 @@
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>Microsoft Store 版では、AppData フォルダーにファイルを移動できません。Windows がファイルを Symlinker だけが見えるプライベートなコピーに保存してしまうためです。AppData の外にあるターゲットを選ぶか、ファイルを自分で移動してからもう一度リンクを作成してください。</value>
   </data>
+  <!-- Batch links (#6) -->
+  <data name="ButtonAddAnother" xml:space="preserve">
+    <value>さらに追加</value>
+  </data>
+  <data name="TooltipAddAnother" xml:space="preserve">
+    <value>同じ手順で作成するリンクをもう 1 つ追加します</value>
+  </data>
+  <data name="ButtonCreateLinks" xml:space="preserve">
+    <value>{0} 個のリンクを作成</value>
+  </data>
+  <data name="TooltipRemoveLink" xml:space="preserve">
+    <value>このリンクを一覧から削除</value>
+  </data>
+  <data name="ListLinksLabel" xml:space="preserve">
+    <value>作成するリンク</value>
+  </data>
+  <data name="ErrorDuplicateLinkPath" xml:space="preserve">
+    <value>一覧内の別のリンクが、同じフォルダーで同じ名前を使っています。</value>
+  </data>
+  <data name="ErrorBatchRows" xml:space="preserve">
+    <value>一覧で印の付いたリンクを修正してください。</value>
+  </data>
+  <data name="BatchSummaryPartialTitle" xml:space="preserve">
+    <value>一部のリンクを作成できませんでした</value>
+  </data>
+  <data name="BatchSummaryCount" xml:space="preserve">
+    <value>{1} 個中 {0} 個のリンクを作成しました。</value>
+  </data>
+  <data name="BatchSummaryCreated" xml:space="preserve">
+    <value>作成済み:</value>
+  </data>
+  <data name="BatchSummaryNotCreated" xml:space="preserve">
+    <value>未作成:</value>
+  </data>
 </root>

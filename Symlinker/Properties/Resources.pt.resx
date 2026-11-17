@@ -279,4 +279,20 @@ Movê-lo para o destino e deixar um link no lugar dele? Tudo que usa o caminho a
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>A versão da Microsoft Store não pode mover arquivos para a pasta AppData: o Windows os guardaria em uma cópia privada que só o Symlinker vê. Escolha um destino fora da AppData ou mova você mesmo os arquivos e crie o link novamente.</value>
   </data>
+  <data name="TooltipSettings" xml:space="preserve">
+    <value>Configurações</value>
+  </data>
+  <data name="MenuExplorerIntegration" xml:space="preserve">
+    <value>Mostrar no menu de contexto do Explorador</value>
+  </data>
+  <data name="ExplorerMenuLinkTo" xml:space="preserve">
+    <value>Criar link para isto</value>
+  </data>
+  <data name="ExplorerMenuLinkHere" xml:space="preserve">
+    <value>Criar link aqui</value>
+  </data>
+  <data name="ExplorerMenuFailed" xml:space="preserve">
+    <value>Não foi possível alterar o menu do Explorador.
+{0}</value>
+  </data>
 </root>

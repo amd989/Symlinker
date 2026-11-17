@@ -279,4 +279,20 @@
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>Microsoft Store 版本无法将文件移动到 AppData 文件夹：Windows 会把它们保存在只有 Symlinker 能看到的私有副本中。请选择 AppData 以外的目标，或者自己移动文件后再重新创建链接。</value>
   </data>
+  <data name="TooltipSettings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="MenuExplorerIntegration" xml:space="preserve">
+    <value>在资源管理器右键菜单中显示</value>
+  </data>
+  <data name="ExplorerMenuLinkTo" xml:space="preserve">
+    <value>创建指向此项的链接</value>
+  </data>
+  <data name="ExplorerMenuLinkHere" xml:space="preserve">
+    <value>在此处创建链接</value>
+  </data>
+  <data name="ExplorerMenuFailed" xml:space="preserve">
+    <value>无法更改资源管理器菜单。
+{0}</value>
+  </data>
 </root>

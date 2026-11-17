@@ -279,4 +279,20 @@ o modo carpeta (enlazar una carpeta a otra carpeta).</value>
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>La versión de Microsoft Store no puede mover archivos a la carpeta AppData: Windows los guardaría en una copia privada que solo ve Symlinker. Elige un destino fuera de AppData, o mueve tú los archivos allí y vuelve a crear el enlace.</value>
   </data>
+  <data name="TooltipSettings" xml:space="preserve">
+    <value>Configuración</value>
+  </data>
+  <data name="MenuExplorerIntegration" xml:space="preserve">
+    <value>Mostrar en el menú contextual del Explorador</value>
+  </data>
+  <data name="ExplorerMenuLinkTo" xml:space="preserve">
+    <value>Crear enlace a esto</value>
+  </data>
+  <data name="ExplorerMenuLinkHere" xml:space="preserve">
+    <value>Crear enlace aquí</value>
+  </data>
+  <data name="ExplorerMenuFailed" xml:space="preserve">
+    <value>No se pudo cambiar el menú del Explorador.
+{0}</value>
+  </data>
 </root>

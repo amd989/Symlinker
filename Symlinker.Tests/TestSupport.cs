@@ -226,4 +226,30 @@ namespace Symlinker.Tests
 
         public void Dispose() => Disposed = true;
     }
+
+    /// <summary>Splits a command line into arguments the way Windows does (CommandLineToArgvW).</summary>
+    internal static class CommandLine
+    {
+        public static string[] Split(string commandLine)
+        {
+            var argv = CommandLineToArgvW(commandLine, out var count);
+            try
+            {
+                var args = new string[count];
+                for (var i = 0; i < count; i++)
+                    args[i] = System.Runtime.InteropServices.Marshal.PtrToStringUni(System.Runtime.InteropServices.Marshal.ReadIntPtr(argv, i * IntPtr.Size));
+                return args;
+            }
+            finally
+            {
+                LocalFree(argv);
+            }
+        }
+
+        [System.Runtime.InteropServices.DllImport("shell32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+        private static extern IntPtr CommandLineToArgvW(string commandLine, out int count);
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        private static extern IntPtr LocalFree(IntPtr memory);
+    }
 }

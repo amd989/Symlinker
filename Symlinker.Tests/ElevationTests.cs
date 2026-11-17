@@ -34,6 +34,32 @@ namespace Symlinker.Tests
         }
 
         [Theory]
+        [InlineData(@"Symlinker.exe --location ""C:\""", @"C:\")]
+        [InlineData(@"Symlinker.exe --location ""D:\My Links""", @"D:\My Links")]
+        public void Parse_ReadsTheLocationAsExplorerPassesIt(string commandLine, string expected)
+        {
+            // Explorer passes a drive root as "C:\", which Windows splits into C:"
+            Assert.Equal(expected, LaunchOptions.Parse(CommandLine.Split(commandLine)[1..]).LinkLocation);
+        }
+
+        [Fact]
+        public void Parse_RestoresTheBackslashOfATarget()
+        {
+            var options = LaunchOptions.Parse(CommandLine.Split(@"Symlinker.exe --mode folder --target ""E:\""")[1..]);
+
+            Assert.Equal(@"E:\", options.Target);
+            Assert.Equal("folder", options.Mode);
+        }
+
+        [Fact]
+        public void Parse_KeepsPathsWithSpaces()
+        {
+            var options = LaunchOptions.Parse(CommandLine.Split(@"Symlinker.exe --mode file --target ""D:\My Data\a b.txt""")[1..]);
+
+            Assert.Equal(@"D:\My Data\a b.txt", options.Target);
+        }
+
+        [Theory]
         [InlineData("folder", true)]
         [InlineData("FOLDER", true)]
         [InlineData("file", false)]

@@ -279,4 +279,20 @@ Spostarlo nella destinazione e lasciare un link al suo posto? Tutto ciò che usa
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>La versione di Microsoft Store non può spostare file nella cartella AppData: Windows li terrebbe in una copia privata visibile solo a Symlinker. Scegli una destinazione fuori da AppData, oppure sposta tu i file e crea di nuovo il collegamento.</value>
   </data>
+  <data name="TooltipSettings" xml:space="preserve">
+    <value>Impostazioni</value>
+  </data>
+  <data name="MenuExplorerIntegration" xml:space="preserve">
+    <value>Mostra nel menu contestuale di Esplora file</value>
+  </data>
+  <data name="ExplorerMenuLinkTo" xml:space="preserve">
+    <value>Crea collegamento a questo</value>
+  </data>
+  <data name="ExplorerMenuLinkHere" xml:space="preserve">
+    <value>Crea collegamento qui</value>
+  </data>
+  <data name="ExplorerMenuFailed" xml:space="preserve">
+    <value>Impossibile modificare il menu di Esplora file.
+{0}</value>
+  </data>
 </root>

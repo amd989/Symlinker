@@ -254,6 +254,33 @@ namespace Symlinker.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Couldn't change the Explorer menu. {0}.
+        /// </summary>
+        public static string ExplorerMenuFailed {
+            get {
+                return ResourceManager.GetString("ExplorerMenuFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create link here.
+        /// </summary>
+        public static string ExplorerMenuLinkHere {
+            get {
+                return ResourceManager.GetString("ExplorerMenuLinkHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create link to this.
+        /// </summary>
+        public static string ExplorerMenuLinkTo {
+            get {
+                return ResourceManager.GetString("ExplorerMenuLinkTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to One of the specified directories or files does not exist. Please provide valid paths..
         /// </summary>
         public static string FilesOrFolderNotExists {
@@ -304,6 +331,15 @@ namespace Symlinker.Properties {
         public static string LinkSuccessfullyCreated {
             get {
                 return ResourceManager.GetString("LinkSuccessfullyCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show in Explorer right-click menu.
+        /// </summary>
+        public static string MenuExplorerIntegration {
+            get {
+                return ResourceManager.GetString("MenuExplorerIntegration", resourceCulture);
             }
         }
         
@@ -514,6 +550,15 @@ namespace Symlinker.Properties {
         public static string TooltipLinkTypeTitle {
             get {
                 return ResourceManager.GetString("TooltipLinkTypeTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string TooltipSettings {
+            get {
+                return ResourceManager.GetString("TooltipSettings", resourceCulture);
             }
         }
         

@@ -186,8 +186,51 @@
   <data name="CmdNotFound" xml:space="preserve">
     <value>Cannot find the command-line tool needed to create links.</value>
   </data>
-  <data name="LinkSuccessfullyCreated" xml:space="preserve">
-    <value>Link successfully created.</value>
+  <data name="ResultSymbolicLinkCreated" xml:space="preserve">
+    <value>Symbolic link created</value>
+  </data>
+  <data name="ResultHardLinkCreated" xml:space="preserve">
+    <value>Hard link created</value>
+  </data>
+  <data name="ResultJunctionCreated" xml:space="preserve">
+    <value>Junction created</value>
+  </data>
+  <data name="ResultPointsToSentence" xml:space="preserve">
+    <value>"{0}" now points to "{1}".</value>
+  </data>
+  <data name="ResultHardLinkSentence" xml:space="preserve">
+    <value>"{0}" is now another name for the file "{1}".</value>
+  </data>
+  <data name="ResultLinkPath" xml:space="preserve">
+    <value>Link: {0}</value>
+  </data>
+  <data name="ResultTargetPath" xml:space="preserve">
+    <value>Target: {0}</value>
+  </data>
+  <data name="ResultFailedTitle" xml:space="preserve">
+    <value>Couldn't create the link</value>
+  </data>
+  <data name="ResultNotCreated" xml:space="preserve">
+    <value>Windows reported success, but the link isn't there.</value>
+  </data>
+  <data name="ResultLinkExists" xml:space="preserve">
+    <value>Something named "{0}" is already in that folder. Pick another link name, or remove it first.</value>
+  </data>
+  <data name="ResultAccessDenied" xml:space="preserve">
+    <value>Windows denied access to this folder:
+{0}</value>
+  </data>
+  <data name="ResultNeedsAdmin" xml:space="preserve">
+    <value>Symbolic links need administrator rights or Windows Developer Mode.</value>
+  </data>
+  <data name="ResultHardLinkAcrossDrives" xml:space="preserve">
+    <value>A hard link has to be on the same drive as its target. Use a symbolic link instead.</value>
+  </data>
+  <data name="ResultJunctionNeedsLocalFolder" xml:space="preserve">
+    <value>A junction can only point to a folder on this computer. Use a symbolic link for network folders.</value>
+  </data>
+  <data name="ResultUnknownError" xml:space="preserve">
+    <value>Windows didn't say why.</value>
   </data>
   <data name="DialogFolderExists" xml:space="preserve">
     <value>A folder with this link name already exists in the selected directory. Would you like to delete it and create a new link?</value>

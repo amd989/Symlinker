@@ -167,6 +167,9 @@ Releases are automated via GitHub Actions:
 1. Push a Git tag: `git tag v1.2.3 && git push origin v1.2.3`
 2. [.github/workflows/release.yml](.github/workflows/release.yml) runs `release.ps1` on a Windows runner
 3. The app is published to `gh-pages` and ClickOnce auto-updates existing installs
+4. The `store` job submits the MSIX bundle to the Microsoft Store, when the repository variable `STORE_AUTO_PUBLISH` is `true`. It uses the Store CLI with the `STORE_TENANT_ID`, `STORE_CLIENT_ID`, `STORE_CLIENT_SECRET` and `STORE_SELLER_ID` secrets, copies the last published submission, swaps in the new bundle, sets "What's new" from `packaging/msix/store/listings.json` and submits it for certification.
+
+Before tagging, update `ReleaseNotes` in `listings.json` for every language and set `common.ReleaseNotesVersion` to the new version. If it doesn't match the tag, the job clears "What's new" instead of showing old notes. Wait for the previous Store submission to finish certification first: one still in progress blocks a new one.
 
 ## Known Limitations
 

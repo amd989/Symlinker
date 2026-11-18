@@ -127,8 +127,51 @@
   <data name="CmdNotFound" xml:space="preserve">
     <value>找不到创建链接所需的命令行工具。</value>
   </data>
-  <data name="LinkSuccessfullyCreated" xml:space="preserve">
-    <value>链接创建成功。</value>
+  <data name="ResultSymbolicLinkCreated" xml:space="preserve">
+    <value>已创建符号链接</value>
+  </data>
+  <data name="ResultHardLinkCreated" xml:space="preserve">
+    <value>已创建硬链接</value>
+  </data>
+  <data name="ResultJunctionCreated" xml:space="preserve">
+    <value>已创建目录联接</value>
+  </data>
+  <data name="ResultPointsToSentence" xml:space="preserve">
+    <value>“{0}”现在指向“{1}”。</value>
+  </data>
+  <data name="ResultHardLinkSentence" xml:space="preserve">
+    <value>“{0}”现在是文件“{1}”的另一个名称。</value>
+  </data>
+  <data name="ResultLinkPath" xml:space="preserve">
+    <value>链接：{0}</value>
+  </data>
+  <data name="ResultTargetPath" xml:space="preserve">
+    <value>目标：{0}</value>
+  </data>
+  <data name="ResultFailedTitle" xml:space="preserve">
+    <value>无法创建链接</value>
+  </data>
+  <data name="ResultNotCreated" xml:space="preserve">
+    <value>Windows 报告成功，但找不到该链接。</value>
+  </data>
+  <data name="ResultLinkExists" xml:space="preserve">
+    <value>该文件夹中已有名为“{0}”的项目。请选择其他链接名称，或先将其删除。</value>
+  </data>
+  <data name="ResultAccessDenied" xml:space="preserve">
+    <value>Windows 拒绝访问此文件夹：
+{0}</value>
+  </data>
+  <data name="ResultNeedsAdmin" xml:space="preserve">
+    <value>创建符号链接需要管理员权限或 Windows 开发人员模式。</value>
+  </data>
+  <data name="ResultHardLinkAcrossDrives" xml:space="preserve">
+    <value>硬链接必须与其目标位于同一驱动器上。请改用符号链接。</value>
+  </data>
+  <data name="ResultJunctionNeedsLocalFolder" xml:space="preserve">
+    <value>目录联接只能指向此计算机上的文件夹。网络文件夹请使用符号链接。</value>
+  </data>
+  <data name="ResultUnknownError" xml:space="preserve">
+    <value>Windows 未说明原因。</value>
   </data>
   <data name="DialogFolderExists" xml:space="preserve">
     <value>所选目录中已存在同名链接文件夹。是否删除并创建新链接？</value>

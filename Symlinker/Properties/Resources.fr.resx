@@ -127,8 +127,51 @@
   <data name="CmdNotFound" xml:space="preserve">
     <value>Impossible de trouver l'outil en ligne de commande nécessaire à la création de liens.</value>
   </data>
-  <data name="LinkSuccessfullyCreated" xml:space="preserve">
-    <value>Lien créé avec succès.</value>
+  <data name="ResultSymbolicLinkCreated" xml:space="preserve">
+    <value>Lien symbolique créé</value>
+  </data>
+  <data name="ResultHardLinkCreated" xml:space="preserve">
+    <value>Lien physique créé</value>
+  </data>
+  <data name="ResultJunctionCreated" xml:space="preserve">
+    <value>Jonction créée</value>
+  </data>
+  <data name="ResultPointsToSentence" xml:space="preserve">
+    <value>« {0} » pointe maintenant vers « {1} ».</value>
+  </data>
+  <data name="ResultHardLinkSentence" xml:space="preserve">
+    <value>« {0} » est maintenant un autre nom du fichier « {1} ».</value>
+  </data>
+  <data name="ResultLinkPath" xml:space="preserve">
+    <value>Lien : {0}</value>
+  </data>
+  <data name="ResultTargetPath" xml:space="preserve">
+    <value>Cible : {0}</value>
+  </data>
+  <data name="ResultFailedTitle" xml:space="preserve">
+    <value>Impossible de créer le lien</value>
+  </data>
+  <data name="ResultNotCreated" xml:space="preserve">
+    <value>Windows a signalé une réussite, mais le lien est introuvable.</value>
+  </data>
+  <data name="ResultLinkExists" xml:space="preserve">
+    <value>Un élément nommé « {0} » existe déjà dans ce dossier. Choisissez un autre nom de lien ou supprimez-le d'abord.</value>
+  </data>
+  <data name="ResultAccessDenied" xml:space="preserve">
+    <value>Windows a refusé l'accès à ce dossier :
+{0}</value>
+  </data>
+  <data name="ResultNeedsAdmin" xml:space="preserve">
+    <value>Les liens symboliques nécessitent des droits d'administrateur ou le mode développeur de Windows.</value>
+  </data>
+  <data name="ResultHardLinkAcrossDrives" xml:space="preserve">
+    <value>Un lien physique doit se trouver sur le même lecteur que sa cible. Utilisez plutôt un lien symbolique.</value>
+  </data>
+  <data name="ResultJunctionNeedsLocalFolder" xml:space="preserve">
+    <value>Une jonction ne peut pointer que vers un dossier de cet ordinateur. Utilisez un lien symbolique pour les dossiers réseau.</value>
+  </data>
+  <data name="ResultUnknownError" xml:space="preserve">
+    <value>Windows n'a pas indiqué de raison.</value>
   </data>
   <data name="DialogFolderExists" xml:space="preserve">
     <value>Un dossier portant ce nom de lien existe déjà dans le répertoire sélectionné. Voulez-vous le supprimer et créer un nouveau lien ?</value>

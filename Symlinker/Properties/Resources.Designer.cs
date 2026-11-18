@@ -326,15 +326,6 @@ namespace Symlinker.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Link successfully created..
-        /// </summary>
-        public static string LinkSuccessfullyCreated {
-            get {
-                return ResourceManager.GetString("LinkSuccessfullyCreated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Show in Explorer right-click menu.
         /// </summary>
         public static string MenuExplorerIntegration {
@@ -475,6 +466,141 @@ namespace Symlinker.Properties {
         public static string PlaceholderTargetPath {
             get {
                 return ResourceManager.GetString("PlaceholderTargetPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows denied access to this folder: {0}.
+        /// </summary>
+        public static string ResultAccessDenied {
+            get {
+                return ResourceManager.GetString("ResultAccessDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Couldn't create the link.
+        /// </summary>
+        public static string ResultFailedTitle {
+            get {
+                return ResourceManager.GetString("ResultFailedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A hard link has to be on the same drive as its target. Use a symbolic link instead..
+        /// </summary>
+        public static string ResultHardLinkAcrossDrives {
+            get {
+                return ResourceManager.GetString("ResultHardLinkAcrossDrives", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hard link created.
+        /// </summary>
+        public static string ResultHardLinkCreated {
+            get {
+                return ResourceManager.GetString("ResultHardLinkCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to "{0}" is now another name for the file "{1}"..
+        /// </summary>
+        public static string ResultHardLinkSentence {
+            get {
+                return ResourceManager.GetString("ResultHardLinkSentence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Junction created.
+        /// </summary>
+        public static string ResultJunctionCreated {
+            get {
+                return ResourceManager.GetString("ResultJunctionCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A junction can only point to a folder on this computer. Use a symbolic link for network folders..
+        /// </summary>
+        public static string ResultJunctionNeedsLocalFolder {
+            get {
+                return ResourceManager.GetString("ResultJunctionNeedsLocalFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Something named "{0}" is already in that folder. Pick another link name, or remove it first..
+        /// </summary>
+        public static string ResultLinkExists {
+            get {
+                return ResourceManager.GetString("ResultLinkExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link: {0}.
+        /// </summary>
+        public static string ResultLinkPath {
+            get {
+                return ResourceManager.GetString("ResultLinkPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Symbolic links need administrator rights or Windows Developer Mode..
+        /// </summary>
+        public static string ResultNeedsAdmin {
+            get {
+                return ResourceManager.GetString("ResultNeedsAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows reported success, but the link isn't there..
+        /// </summary>
+        public static string ResultNotCreated {
+            get {
+                return ResourceManager.GetString("ResultNotCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to "{0}" now points to "{1}"..
+        /// </summary>
+        public static string ResultPointsToSentence {
+            get {
+                return ResourceManager.GetString("ResultPointsToSentence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Symbolic link created.
+        /// </summary>
+        public static string ResultSymbolicLinkCreated {
+            get {
+                return ResourceManager.GetString("ResultSymbolicLinkCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target: {0}.
+        /// </summary>
+        public static string ResultTargetPath {
+            get {
+                return ResourceManager.GetString("ResultTargetPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows didn't say why..
+        /// </summary>
+        public static string ResultUnknownError {
+            get {
+                return ResourceManager.GetString("ResultUnknownError", resourceCulture);
             }
         }
         

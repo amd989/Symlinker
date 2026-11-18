@@ -29,6 +29,17 @@ namespace Symlinker.Tests
         private static string Format(string format, params object[] args) =>
             string.Format(CultureInfo.CurrentUICulture, format, args);
 
+        private static string Paths(string link, string target) =>
+            Format(Res.ResultLinkPath, LinkResultMessage.CompactPath(link)) + "\n" + Format(Res.ResultTargetPath, LinkResultMessage.CompactPath(target));
+
+        /// <summary>The success text for a symbolic link or junction.</summary>
+        private static string Created(string linkName, string targetName, string link, string target) =>
+            Format(Res.ResultPointsToSentence, linkName, targetName) + "\n\n" + Paths(link, target);
+
+        /// <summary>The success text after moving an item and linking it.</summary>
+        private static string Moved(string name, string link, string target) =>
+            Format(Res.MoveSucceeded, name) + "\n\n" + Paths(link, target);
+
         private Task Create(string linkName, string destination, bool isFolder = true, LinkKind kind = LinkKind.Symbolic, string linkLocation = null) =>
             creator.CreateAsync(new LinkInput(linkLocation ?? Links, linkName, destination, isFolder, kind));
 
@@ -105,7 +116,7 @@ namespace Symlinker.Tests
             await creator.CreateAsync(new LinkInput($"  {Links} ", " name ", $" {target} ", true, LinkKind.Junction));
 
             AssertLinked("junction", $@"{Links}\name", target, directory: true);
-            Assert.Equal((Res.MessageBoxSuccessTitle, "created"), dialogs.Last);
+            Assert.Equal((Res.ResultJunctionCreated, Created("name", "target", $@"{Links}\name", target)), dialogs.Last);
             Assert.Empty(dialogs.Questions);
         }
 
@@ -129,7 +140,7 @@ namespace Symlinker.Tests
 
             await Create("name", target);
 
-            Assert.Equal((Res.MessageBoxErrorTitle, "access denied"), dialogs.Last);
+            Assert.Equal((Res.ResultFailedTitle, "access denied"), dialogs.Last);
         }
 
         [Fact]
@@ -310,7 +321,7 @@ namespace Symlinker.Tests
             AssertLinked("symbolic", $@"{Links}\name", target, directory: true);
             Assert.Equal("data", File.ReadAllText(Path.Combine(target, "data.txt")));
             Assert.False(Directory.Exists(temp.PathOf("links", "name")));
-            Assert.Equal((Res.MessageBoxSuccessTitle, Format(Res.MoveSucceeded, "name", target)), dialogs.Last);
+            Assert.Equal((Res.ResultSymbolicLinkCreated, Moved("name", $@"{Links}\name", target)), dialogs.Last);
             Assert.True(movingDuringLink);
             Assert.False(creator.IsMoving);
             Assert.Null(dialogs.Progress.Shown);
@@ -340,7 +351,7 @@ namespace Symlinker.Tests
             Assert.Equal(Format(Res.DialogMoveFile, "name.txt", target), Assert.Single(dialogs.Questions).Message);
             Assert.Equal("data", File.ReadAllText(target));
             Assert.False(File.Exists(temp.PathOf("links", "name.txt")));
-            Assert.Equal(Res.MessageBoxSuccessTitle, dialogs.Last.Title);
+            Assert.Equal(Res.ResultSymbolicLinkCreated, dialogs.Last.Title);
         }
 
         [Fact]
@@ -352,7 +363,7 @@ namespace Symlinker.Tests
             await Create("name", target);
 
             Assert.True(File.Exists(Path.Combine(target, "data.txt")));
-            Assert.Equal(Res.MessageBoxSuccessTitle, dialogs.Last.Title);
+            Assert.Equal(Res.ResultSymbolicLinkCreated, dialogs.Last.Title);
         }
 
         [Fact]
@@ -382,7 +393,7 @@ namespace Symlinker.Tests
             await Create("name", target, linkLocation: temp.PathOf("AppData", "Local"));
 
             Assert.True(File.Exists(Path.Combine(target, "data.txt")));
-            Assert.Equal(Res.MessageBoxSuccessTitle, dialogs.Last.Title);
+            Assert.Equal(Res.ResultSymbolicLinkCreated, dialogs.Last.Title);
         }
 
         [Fact]
@@ -397,7 +408,7 @@ namespace Symlinker.Tests
             await Create("name", target);
 
             Assert.True(File.Exists(Path.Combine(target, "data.txt")));
-            Assert.Equal(Res.MessageBoxSuccessTitle, dialogs.Last.Title);
+            Assert.Equal(Res.ResultSymbolicLinkCreated, dialogs.Last.Title);
         }
 
         [Fact]
@@ -426,7 +437,7 @@ namespace Symlinker.Tests
             Assert.Equal("bb", File.ReadAllText(Path.Combine(target, "nested", "b.txt")));
             Assert.False(Directory.Exists(temp.PathOf("links", "name")));
             Assert.False(Directory.Exists(temp.PathOf("links", "name.symlinker-move")));
-            Assert.Equal((Res.MessageBoxSuccessTitle, Format(Res.MoveSucceeded, "name", target)), dialogs.Last);
+            Assert.Equal((Res.ResultSymbolicLinkCreated, Moved("name", $@"{Links}\name", target)), dialogs.Last);
 
             var progress = dialogs.Progress;
             Assert.Equal((Res.ProgressMoveTitle, Res.ProgressMovePreparing, Res.ButtonCancel), progress.Shown);
@@ -449,7 +460,7 @@ namespace Symlinker.Tests
 
             Assert.Equal("data", File.ReadAllText(target));
             Assert.False(File.Exists(temp.PathOf("links", "name.txt")));
-            Assert.Equal(Res.MessageBoxSuccessTitle, dialogs.Last.Title);
+            Assert.Equal(Res.ResultSymbolicLinkCreated, dialogs.Last.Title);
             Assert.Equal(new[] { 0d }, dialogs.Progress.Values);
         }
 

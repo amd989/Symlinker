@@ -127,8 +127,51 @@
   <data name="CmdNotFound" xml:space="preserve">
     <value>リンクの作成に必要なコマンドラインツールが見つかりません。</value>
   </data>
-  <data name="LinkSuccessfullyCreated" xml:space="preserve">
-    <value>リンクが正常に作成されました。</value>
+  <data name="ResultSymbolicLinkCreated" xml:space="preserve">
+    <value>シンボリックリンクを作成しました</value>
+  </data>
+  <data name="ResultHardLinkCreated" xml:space="preserve">
+    <value>ハードリンクを作成しました</value>
+  </data>
+  <data name="ResultJunctionCreated" xml:space="preserve">
+    <value>ジャンクションを作成しました</value>
+  </data>
+  <data name="ResultPointsToSentence" xml:space="preserve">
+    <value>「{0}」は「{1}」を指すようになりました。</value>
+  </data>
+  <data name="ResultHardLinkSentence" xml:space="preserve">
+    <value>「{0}」はファイル「{1}」の別名になりました。</value>
+  </data>
+  <data name="ResultLinkPath" xml:space="preserve">
+    <value>リンク: {0}</value>
+  </data>
+  <data name="ResultTargetPath" xml:space="preserve">
+    <value>ターゲット: {0}</value>
+  </data>
+  <data name="ResultFailedTitle" xml:space="preserve">
+    <value>リンクを作成できませんでした</value>
+  </data>
+  <data name="ResultNotCreated" xml:space="preserve">
+    <value>Windows は成功と報告しましたが、リンクが見つかりません。</value>
+  </data>
+  <data name="ResultLinkExists" xml:space="preserve">
+    <value>このフォルダーには「{0}」という名前の項目が既にあります。別のリンク名を選ぶか、先に削除してください。</value>
+  </data>
+  <data name="ResultAccessDenied" xml:space="preserve">
+    <value>Windows によってこのフォルダーへのアクセスが拒否されました:
+{0}</value>
+  </data>
+  <data name="ResultNeedsAdmin" xml:space="preserve">
+    <value>シンボリックリンクには管理者権限または Windows の開発者モードが必要です。</value>
+  </data>
+  <data name="ResultHardLinkAcrossDrives" xml:space="preserve">
+    <value>ハードリンクはターゲットと同じドライブに作成する必要があります。代わりにシンボリックリンクを使用してください。</value>
+  </data>
+  <data name="ResultJunctionNeedsLocalFolder" xml:space="preserve">
+    <value>ジャンクションはこのコンピューター上のフォルダーしか指定できません。ネットワークフォルダーにはシンボリックリンクを使用してください。</value>
+  </data>
+  <data name="ResultUnknownError" xml:space="preserve">
+    <value>Windows は理由を示しませんでした。</value>
   </data>
   <data name="DialogFolderExists" xml:space="preserve">
     <value>選択したディレクトリに同じリンク名のフォルダーが既に存在します。削除して新しいリンクを作成しますか？</value>

@@ -4,8 +4,6 @@ namespace Symlinker.Tests
     using System.IO;
     using System.Threading.Tasks;
 
-    using Res = Symlinker.Properties.Resources;
-
     public sealed class LinkCommandTests : IDisposable
     {
         private readonly TempDir temp = new();
@@ -52,7 +50,7 @@ namespace Symlinker.Tests
         {
             var result = await LinkCommand.RunAsync(Request(target: "D:\\\"x"), temp.PathOf("no-such-shell.exe"));
 
-            Assert.Equal((false, Res.InvalidQuoteInPath), (result.Success, result.Message));
+            Assert.Equal((false, LinkError.InvalidPath), (result.Success, result.Error));
         }
 
         [Fact]
@@ -60,22 +58,44 @@ namespace Symlinker.Tests
         {
             var result = await LinkCommand.RunAsync(Request(), temp.PathOf("no-such-shell.exe"));
 
-            Assert.Equal((false, Res.CmdNotFound), (result.Success, result.Message));
+            Assert.Equal((false, LinkError.CommandNotFound), (result.Success, result.Error));
         }
 
         [Theory]
-        [InlineData("@echo hello", true, "hello")]
-        [InlineData("@exit 0", true, null)]
-        [InlineData("@echo oops 1>&2\r\n@exit 3", false, "oops")]
-        [InlineData("@echo plain\r\n@exit 2", false, "plain")]
-        public async Task RunAsync_UsesTheShellsOutput(string script, bool success, string message)
+        [InlineData("@echo hello", "hello")]
+        [InlineData("@exit 0", "")]
+        public async Task RunAsync_ChecksThatTheLinkIsThere_EvenWhenTheShellSaysItWorked(string script, string output)
         {
-            // A stand-in for cmd.exe that ignores the mklink arguments
+            // A stand-in for cmd.exe that ignores the mklink arguments, so no link appears
             var shell = temp.File("shell.cmd", script);
 
-            var result = await LinkCommand.RunAsync(Request(), shell);
+            var result = await LinkCommand.RunAsync(Request("junction", temp.PathOf("link"), temp.Dir("target")), shell);
 
-            Assert.Equal((success, message ?? Res.LinkSuccessfullyCreated), (result.Success, result.Message));
+            Assert.Equal((false, LinkError.NotCreated, output), (result.Success, result.Error, result.Message));
+        }
+
+        [Fact]
+        public async Task RunAsync_Succeeds_WhenTheShellWorkedAndTheLinkIsThere()
+        {
+            var target = temp.Dir("target");
+            var link = temp.Junction(temp.PathOf("link"), target).FullName;
+            var shell = temp.File("shell.cmd", "@echo made it");
+
+            var result = await LinkCommand.RunAsync(Request("junction", link, target), shell);
+
+            Assert.Equal((true, LinkError.None, "made it"), (result.Success, result.Error, result.Message));
+        }
+
+        [Theory]
+        [InlineData("@echo oops 1>&2\r\n@exit 3", "oops")]
+        [InlineData("@echo plain\r\n@exit 2", "plain")]
+        public async Task RunAsync_KeepsTheShellsErrorText_WhenTheReasonIsUnknown(string script, string message)
+        {
+            var shell = temp.File("shell.cmd", script);
+
+            var result = await LinkCommand.RunAsync(Request("junction", temp.PathOf("link"), temp.Dir("target")), shell);
+
+            Assert.Equal((false, LinkError.Unknown, message), (result.Success, result.Error, result.Message));
         }
 
         [Fact]
@@ -88,20 +108,45 @@ namespace Symlinker.Tests
             var result = await LinkCommand.RunAsync(Request("junction", link, target));
 
             Assert.True(result.Success, result.Message);
+            Assert.Equal(LinkError.None, result.Error);
             Assert.True(LinkMover.IsLink(new DirectoryInfo(link)));
             Assert.True(File.Exists(Path.Combine(link, "inside.txt")));
         }
 
         [Fact]
-        public async Task RunAsync_ReportsMklinkErrors()
+        public async Task RunAsync_ReportsAnExistingLinkPath_WithMklinksText()
         {
             var target = temp.Dir("target");
             var link = temp.Dir("taken");
 
             var result = await LinkCommand.RunAsync(Request("junction", link, target));
 
-            Assert.False(result.Success);
+            Assert.Equal((false, LinkError.LinkExists), (result.Success, result.Error));
             Assert.NotEmpty(result.Message);
+        }
+
+        [Fact]
+        public async Task RunAsync_CreatesARealHardLink()
+        {
+            var target = temp.File("target.txt", "same");
+            var link = temp.PathOf("link.txt");
+
+            var result = await LinkCommand.RunAsync(Request("hard", link, target, directory: false));
+
+            Assert.True(result.Success, result.Message);
+            Assert.Equal("same", File.ReadAllText(link));
+        }
+
+        [Fact]
+        public async Task RunAsync_CreatesARealSymbolicLink()
+        {
+            SymlinkSupport.Require();
+            var target = temp.Dir("target");
+            var link = temp.PathOf("link");
+
+            var result = await LinkCommand.RunAsync(Request("symbolic", link, target));
+
+            Assert.True(result.Success, result.Message);
         }
 
         [Theory]

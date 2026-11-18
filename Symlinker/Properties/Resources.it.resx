@@ -127,8 +127,51 @@
   <data name="CmdNotFound" xml:space="preserve">
     <value>Impossibile trovare lo strumento da riga di comando necessario per creare i collegamenti.</value>
   </data>
-  <data name="LinkSuccessfullyCreated" xml:space="preserve">
-    <value>Collegamento creato con successo.</value>
+  <data name="ResultSymbolicLinkCreated" xml:space="preserve">
+    <value>Collegamento simbolico creato</value>
+  </data>
+  <data name="ResultHardLinkCreated" xml:space="preserve">
+    <value>Collegamento fisico creato</value>
+  </data>
+  <data name="ResultJunctionCreated" xml:space="preserve">
+    <value>Giunzione creata</value>
+  </data>
+  <data name="ResultPointsToSentence" xml:space="preserve">
+    <value>"{0}" ora punta a "{1}".</value>
+  </data>
+  <data name="ResultHardLinkSentence" xml:space="preserve">
+    <value>"{0}" è ora un altro nome del file "{1}".</value>
+  </data>
+  <data name="ResultLinkPath" xml:space="preserve">
+    <value>Collegamento: {0}</value>
+  </data>
+  <data name="ResultTargetPath" xml:space="preserve">
+    <value>Destinazione: {0}</value>
+  </data>
+  <data name="ResultFailedTitle" xml:space="preserve">
+    <value>Impossibile creare il collegamento</value>
+  </data>
+  <data name="ResultNotCreated" xml:space="preserve">
+    <value>Windows ha segnalato la riuscita, ma il collegamento non c'è.</value>
+  </data>
+  <data name="ResultLinkExists" xml:space="preserve">
+    <value>In quella cartella c'è già un elemento chiamato "{0}". Scegli un altro nome per il collegamento o rimuovilo prima.</value>
+  </data>
+  <data name="ResultAccessDenied" xml:space="preserve">
+    <value>Windows ha negato l'accesso a questa cartella:
+{0}</value>
+  </data>
+  <data name="ResultNeedsAdmin" xml:space="preserve">
+    <value>I collegamenti simbolici richiedono i diritti di amministratore o la Modalità sviluppatore di Windows.</value>
+  </data>
+  <data name="ResultHardLinkAcrossDrives" xml:space="preserve">
+    <value>Un collegamento fisico deve trovarsi sulla stessa unità della destinazione. Usa invece un collegamento simbolico.</value>
+  </data>
+  <data name="ResultJunctionNeedsLocalFolder" xml:space="preserve">
+    <value>Una giunzione può puntare solo a una cartella di questo computer. Per le cartelle di rete usa un collegamento simbolico.</value>
+  </data>
+  <data name="ResultUnknownError" xml:space="preserve">
+    <value>Windows non ha indicato il motivo.</value>
   </data>
   <data name="DialogFolderExists" xml:space="preserve">
     <value>Una cartella con questo nome di collegamento esiste già nella directory selezionata. Vuoi eliminarla e creare un nuovo collegamento?</value>

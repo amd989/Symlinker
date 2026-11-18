@@ -141,7 +141,7 @@ namespace Symlinker.Tests
 
             var result = await runner.RunAsync(Request("junction"));
 
-            Assert.Equal((false, Res.MessageBoxExceptionOcurred + "\npipe broke"), (result.Success, result.Message));
+            Assert.Equal((false, LinkError.Unknown, "pipe broke"), (result.Success, result.Error, result.Message));
         }
 
         [Fact]

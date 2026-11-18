@@ -127,8 +127,51 @@
   <data name="CmdNotFound" xml:space="preserve">
     <value>No se encuentra la herramienta de línea de comandos necesaria para crear enlaces.</value>
   </data>
-  <data name="LinkSuccessfullyCreated" xml:space="preserve">
-    <value>Enlace creado correctamente.</value>
+  <data name="ResultSymbolicLinkCreated" xml:space="preserve">
+    <value>Enlace simbólico creado</value>
+  </data>
+  <data name="ResultHardLinkCreated" xml:space="preserve">
+    <value>Enlace duro creado</value>
+  </data>
+  <data name="ResultJunctionCreated" xml:space="preserve">
+    <value>Unión creada</value>
+  </data>
+  <data name="ResultPointsToSentence" xml:space="preserve">
+    <value>"{0}" ahora apunta a "{1}".</value>
+  </data>
+  <data name="ResultHardLinkSentence" xml:space="preserve">
+    <value>"{0}" es ahora otro nombre del archivo "{1}".</value>
+  </data>
+  <data name="ResultLinkPath" xml:space="preserve">
+    <value>Enlace: {0}</value>
+  </data>
+  <data name="ResultTargetPath" xml:space="preserve">
+    <value>Destino: {0}</value>
+  </data>
+  <data name="ResultFailedTitle" xml:space="preserve">
+    <value>No se pudo crear el enlace</value>
+  </data>
+  <data name="ResultNotCreated" xml:space="preserve">
+    <value>Windows indicó que funcionó, pero el enlace no está.</value>
+  </data>
+  <data name="ResultLinkExists" xml:space="preserve">
+    <value>Ya hay algo llamado "{0}" en esa carpeta. Elige otro nombre para el enlace o quítalo primero.</value>
+  </data>
+  <data name="ResultAccessDenied" xml:space="preserve">
+    <value>Windows denegó el acceso a esta carpeta:
+{0}</value>
+  </data>
+  <data name="ResultNeedsAdmin" xml:space="preserve">
+    <value>Los enlaces simbólicos requieren permisos de administrador o el Modo de desarrollador de Windows.</value>
+  </data>
+  <data name="ResultHardLinkAcrossDrives" xml:space="preserve">
+    <value>Un enlace duro debe estar en la misma unidad que su destino. Usa un enlace simbólico en su lugar.</value>
+  </data>
+  <data name="ResultJunctionNeedsLocalFolder" xml:space="preserve">
+    <value>Una unión solo puede apuntar a una carpeta de este equipo. Usa un enlace simbólico para carpetas de red.</value>
+  </data>
+  <data name="ResultUnknownError" xml:space="preserve">
+    <value>Windows no indicó el motivo.</value>
   </data>
   <data name="DialogFolderExists" xml:space="preserve">
     <value>Ya existe una carpeta con este nombre de enlace en el directorio seleccionado. ¿Desea eliminarla y crear un nuevo enlace?</value>

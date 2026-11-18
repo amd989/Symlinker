@@ -85,7 +85,9 @@ The window is view glue. Logic lives in plain classes that the tests drive with 
 7. **LinkCreator.cs**: The link workflow, for one link (`CreateAsync`) or a batch (`CreateBatchAsync`): replace-existing prompts, and moving an existing file or folder to the target (rename on the same drive, copy with progress across drives, rollback on failure). Each link is planned first (`LinkPlan`: questions asked, nothing on disk changed), then carried out, giving a `LinkOutcome`.
 8. **LinkBatch.cs**: `LinkRow` (one link: location, name, target, its own name auto-fill and errors) and `LinkBatch` (the rows, the selected one, the shortcuts for adding rows, and batch validation including duplicate link paths).
 9. **LinkRunner.cs**: `ILinkRunner`, which `LinkCreator` uses to create links. `LinkRunner` runs mklink unelevated, except symbolic links that need admin, which go through the elevated helper. `PrepareAsync()` starts the helper (one UAC prompt) before anything on disk changes.
-10. **LinkCommand.cs**: `LinkKind`, `LinkRequest`/`LinkResult` and `LinkCommand.RunAsync()`, which runs `cmd.exe /c mklink`. Used unelevated and by the elevated helper.
+10. **LinkCommand.cs**: `LinkKind`, `LinkRequest`/`LinkResult` and `LinkCommand.RunAsync()`, which runs `cmd.exe /c mklink`. Used unelevated and by the elevated helper. Success comes from the exit code plus `LinkCheck.IsCreated()` on disk, never from mklink's text (it is in the language of Windows). A failure carries a `LinkError` code from `LinkCheck.Diagnose()`, which travels over the helper's pipe as a number.
+   - **LinkCheck.cs**: checks on disk that a link exists and leads to its target, and works out why mklink failed (link path taken, hard link across drives, junction to a network folder, no symbolic link privilege, folder access denied).
+   - **LinkResultMessage.cs**: turns a request and its `LinkResult` into the localized dialog title and text. `Reason()` gives one failure line, for reuse in a list of results. Long paths are shortened in the middle (`CompactPath`).
 11. **ElevatedLinker.cs**: Starts `Symlinker.exe --link-helper` as administrator and sends it link requests over a named pipe. `RunHelper()` is the helper's side.
 12. **LinkMover.cs**: File system helpers for moving: copy that keeps attributes and recreates nested links, delete that never follows links.
 13. **InputValidator.cs**: Field checks behind the inline errors, and `ColorContrast` for text on the accent color.
@@ -98,7 +100,7 @@ The window is view glue. Logic lives in plain classes that the tests drive with 
 2. User fills in the link location, link name and target (typing, browsing, or drag and drop).
 3. Create link (or Enter, it is the default button) runs `ValidateInputs()`, which marks the fields `InputValidator` flags.
 4. `RefreshSymlinkAccessNow()` probes again whether a symbolic link needs administrator rights.
-5. `LinkCreator.CreateAsync()` handles an existing item at the link path (replace it, or move it to the target), then runs mklink and shows the result. `ILinkRunner.PrepareAsync()` is called before the first change on disk.
+5. `LinkCreator.CreateAsync()` handles an existing item at the link path (replace it, or move it to the target), then runs mklink and shows the result through `LinkResultMessage`. `ILinkRunner.PrepareAsync()` is called before the first change on disk.
 
 ### Several links at once (batch)
 
@@ -107,7 +109,7 @@ The window is view glue. Logic lives in plain classes that the tests drive with 
 - Shortcuts: a new row starts in the last row's link location, and its target picker opens next to the nearest target above it. Picking several targets (multi-select) or dropping several items on the target card fills the selected row and adds a row for each other one. Picking or dropping a link location also moves the rows that shared the old one (or had none).
 - One mode and link type (the pills) for the whole batch. In batch mode, switching mode keeps every target; ones that don't fit are flagged on Create.
 - Create validates every row (`LinkBatch.Validate`: `InputValidator` plus duplicate link paths), marks bad rows in the list and selects the first one. The footer shows the selected row's error, or a pointer to the marked rows.
-- `LinkCreator.CreateBatchAsync()` asks every replace/move question first (each prefixed with its link path), then calls `PrepareAsync()` once (at most one UAC prompt), then creates each link, continuing past failures. One summary dialog lists what was created and what wasn't, and why (declined questions count as skipped). Links in the batch's main folder are listed by name, others by full path.
+- `LinkCreator.CreateBatchAsync()` asks every replace/move question first (each prefixed with its link path), then calls `PrepareAsync()` once (at most one UAC prompt), then creates each link, continuing past failures. One summary dialog lists what was created and what wasn't, and why (declined questions count as skipped). Links in the batch's main folder are listed by name, others by full path. Each failure line is `LinkResultMessage.Reason()`.
 - After a batch with failures, the created rows are removed so only the rest are left to fix. When all were created, the list stays.
 
 ### Administrator rights
@@ -147,6 +149,8 @@ Symlinker/
 │   ├── LinkBatch.cs             # Batch rows, shortcuts, validation
 │   ├── LinkRunner.cs            # Unelevated or elevated mklink
 │   ├── LinkCommand.cs           # Runs mklink
+│   ├── LinkCheck.cs             # Verifies links on disk, diagnoses failures
+│   ├── LinkResultMessage.cs     # Localized result dialog text
 │   ├── ElevatedLinker.cs        # Elevated link helper over a named pipe
 │   ├── LinkMover.cs             # Move/copy/delete helpers
 │   ├── InputValidator.cs        # Field checks, accent contrast

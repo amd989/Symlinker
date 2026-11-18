@@ -340,9 +340,8 @@ namespace Symlinker
                     plan.Delete(plan.Existing);
 
                 var result = await runner.RunAsync(plan.Request);
-                return result.Success
-                    ? new LinkOutcome(LinkStatus.Created, Res.MessageBoxSuccessTitle, result.Message)
-                    : LinkOutcome.Error(result.Message);
+                var message = LinkResultMessage.For(plan.Request, result);
+                return new LinkOutcome(result.Success ? LinkStatus.Created : LinkStatus.Failed, message.Title, message.Message);
             }
             catch (Exception exception)
             {
@@ -407,7 +406,7 @@ namespace Symlinker
 
                 var linked = await runner.RunAsync(linkRequest);
                 if (!linked.Success)
-                    return RollBackMove(originalPath, currentPath, target, copiedToTarget, targetWasEmptyFolder, MoveFailed(linked.Message));
+                    return RollBackMove(originalPath, currentPath, target, copiedToTarget, targetWasEmptyFolder, MoveFailed(LinkResultMessage.Reason(linkRequest, linked)));
 
                 if (currentPath != target)
                 {
@@ -426,10 +425,8 @@ namespace Symlinker
                     }
                 }
 
-                return new LinkOutcome(
-                    LinkStatus.Created,
-                    Res.MessageBoxSuccessTitle,
-                    string.Format(CultureInfo.CurrentUICulture, Res.MoveSucceeded, source.Name, target));
+                var moved = LinkResultMessage.ForMove(linkRequest, source.Name);
+                return new LinkOutcome(LinkStatus.Created, moved.Title, moved.Message);
             }
             catch (Exception exception)
             {

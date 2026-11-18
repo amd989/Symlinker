@@ -95,7 +95,7 @@ namespace Symlinker
             }
             catch (Exception exception)
             {
-                return LinkResult.Failed(Res.MessageBoxExceptionOcurred + "\n" + exception.Message);
+                return LinkResult.Failed(exception.Message);
             }
         }
 

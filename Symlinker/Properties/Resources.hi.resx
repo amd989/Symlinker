@@ -127,8 +127,51 @@
   <data name="CmdNotFound" xml:space="preserve">
     <value>लिंक बनाने के लिए आवश्यक कमांड-लाइन टूल नहीं मिला।</value>
   </data>
-  <data name="LinkSuccessfullyCreated" xml:space="preserve">
-    <value>लिंक सफलतापूर्वक बनाया गया।</value>
+  <data name="ResultSymbolicLinkCreated" xml:space="preserve">
+    <value>सिम्बॉलिक लिंक बनाया गया</value>
+  </data>
+  <data name="ResultHardLinkCreated" xml:space="preserve">
+    <value>हार्ड लिंक बनाया गया</value>
+  </data>
+  <data name="ResultJunctionCreated" xml:space="preserve">
+    <value>जंक्शन बनाया गया</value>
+  </data>
+  <data name="ResultPointsToSentence" xml:space="preserve">
+    <value>"{0}" अब "{1}" की ओर इशारा करता है।</value>
+  </data>
+  <data name="ResultHardLinkSentence" xml:space="preserve">
+    <value>"{0}" अब फ़ाइल "{1}" का एक और नाम है।</value>
+  </data>
+  <data name="ResultLinkPath" xml:space="preserve">
+    <value>लिंक: {0}</value>
+  </data>
+  <data name="ResultTargetPath" xml:space="preserve">
+    <value>लक्ष्य: {0}</value>
+  </data>
+  <data name="ResultFailedTitle" xml:space="preserve">
+    <value>लिंक नहीं बनाया जा सका</value>
+  </data>
+  <data name="ResultNotCreated" xml:space="preserve">
+    <value>Windows ने सफलता बताई, लेकिन लिंक मौजूद नहीं है।</value>
+  </data>
+  <data name="ResultLinkExists" xml:space="preserve">
+    <value>उस फ़ोल्डर में "{0}" नाम का कुछ पहले से मौजूद है। लिंक के लिए कोई दूसरा नाम चुनें या पहले उसे हटाएं।</value>
+  </data>
+  <data name="ResultAccessDenied" xml:space="preserve">
+    <value>Windows ने इस फ़ोल्डर तक पहुंच अस्वीकार कर दी:
+{0}</value>
+  </data>
+  <data name="ResultNeedsAdmin" xml:space="preserve">
+    <value>सिम्बॉलिक लिंक के लिए व्यवस्थापक अधिकार या Windows डेवलपर मोड चाहिए।</value>
+  </data>
+  <data name="ResultHardLinkAcrossDrives" xml:space="preserve">
+    <value>हार्ड लिंक उसी ड्राइव पर होना चाहिए जिस पर उसका लक्ष्य है। इसके बजाय सिम्बॉलिक लिंक का उपयोग करें।</value>
+  </data>
+  <data name="ResultJunctionNeedsLocalFolder" xml:space="preserve">
+    <value>जंक्शन केवल इसी कंप्यूटर के फ़ोल्डर की ओर इशारा कर सकता है। नेटवर्क फ़ोल्डरों के लिए सिम्बॉलिक लिंक का उपयोग करें।</value>
+  </data>
+  <data name="ResultUnknownError" xml:space="preserve">
+    <value>Windows ने कारण नहीं बताया।</value>
   </data>
   <data name="DialogFolderExists" xml:space="preserve">
     <value>चयनित निर्देशिका में इस लिंक नाम वाला एक फ़ोल्डर पहले से मौजूद है। क्या आप इसे हटाकर एक नया लिंक बनाना चाहते हैं?</value>

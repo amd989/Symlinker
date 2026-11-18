@@ -49,6 +49,31 @@ jobs:
           name: unsigned-portable-${{ steps.version.outputs.version }}
           path: Symlinker/bin/portable/
 
+      # Both builds come before signing, so the two SignPath approvals arrive back to back.
+      - name: Build ClickOnce package (unsigned)
+        shell: pwsh
+        run: ./release.ps1 -OnlyBuild
+
+      - name: Upload unsigned ClickOnce artifacts
+        id: upload-clickonce
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-clickonce-${{ steps.version.outputs.version }}
+          path: Symlinker/bin/publish/
+
+      - name: Notify that signing needs approval
+        shell: pwsh
+        env:
+          PUSHOVER_APP_TOKEN: ${{ secrets.PUSHOVER_APP_TOKEN }}
+          PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
+        run: >
+          ./.github/scripts/notify.ps1 -Priority 1
+          -Title "Symlinker ${{ steps.version.outputs.version }}: approve signing"
+          -Message "Two SignPath requests are coming: the portable build, then ClickOnce right after. Each waits up to an hour."
+          -Url "https://app.signpath.io/Web/${{ secrets.SIGNPATH_ORGANIZATION_ID }}/SigningRequests"
+          -UrlTitle "Open SignPath"
+
+      # SignPath waits for a manual approval. The action's default wait is 10 minutes; give it an hour.
       - name: Sign portable executable
         id: signpath-portable
         uses: signpath/github-action-submit-signing-request@v1
@@ -60,9 +85,39 @@ jobs:
           artifact-configuration-slug: 'Portable'
           github-artifact-id: '${{ steps.upload-portable.outputs.artifact-id }}'
           wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 3600
           output-artifact-directory: 'Symlinker/bin/portable-signed'
           parameters: |
             version: ${{ toJSON(steps.version.outputs.version) }}
+
+      - name: Submit signing request to SignPath
+        id: signpath
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: '${{ secrets.SIGNPATH_ORGANIZATION_ID }}'
+          project-slug: '${{ secrets.SIGNPATH_PROJECT_SLUG }}'
+          signing-policy-slug: '${{ secrets.SIGNPATH_SIGNING_POLICY_SLUG }}'
+          artifact-configuration-slug: 'ClickOnce'
+          github-artifact-id: '${{ steps.upload-clickonce.outputs.artifact-id }}'
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 3600
+          output-artifact-directory: 'signed-clickonce'
+          parameters: |
+            version: ${{ toJSON(steps.version.outputs.version) }}
+
+      - name: Notify if signing failed
+        if: failure() && (steps.signpath-portable.outcome == 'failure' || steps.signpath.outcome == 'failure')
+        shell: pwsh
+        env:
+          PUSHOVER_APP_TOKEN: ${{ secrets.PUSHOVER_APP_TOKEN }}
+          PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
+        run: >
+          ./.github/scripts/notify.ps1
+          -Title "Symlinker ${{ steps.version.outputs.version }}: signing failed"
+          -Message "A SignPath request failed, timed out or was denied. Re-run the failed job to try again."
+          -Url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          -UrlTitle "Open the run"
 
       - name: Create signed portable ZIP
         shell: pwsh
@@ -110,35 +165,21 @@ jobs:
           # The store job uses it right away; a big unsigned bundle needn't stay for 90 days.
           retention-days: 30
 
-      - name: Build ClickOnce package (unsigned)
-        shell: pwsh
-        run: ./release.ps1 -OnlyBuild
-
-      - name: Upload unsigned ClickOnce artifacts
-        id: upload-clickonce
-        uses: actions/upload-artifact@v4
-        with:
-          name: unsigned-clickonce-${{ steps.version.outputs.version }}
-          path: Symlinker/bin/publish/
-
-      - name: Submit signing request to SignPath
-        id: signpath
-        uses: signpath/github-action-submit-signing-request@v1
-        with:
-          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
-          organization-id: '${{ secrets.SIGNPATH_ORGANIZATION_ID }}'
-          project-slug: '${{ secrets.SIGNPATH_PROJECT_SLUG }}'
-          signing-policy-slug: '${{ secrets.SIGNPATH_SIGNING_POLICY_SLUG }}'
-          artifact-configuration-slug: 'ClickOnce'
-          github-artifact-id: '${{ steps.upload-clickonce.outputs.artifact-id }}'
-          wait-for-completion: true
-          output-artifact-directory: 'signed-clickonce'
-          parameters: |
-            version: ${{ toJSON(steps.version.outputs.version) }}
-
       - name: Deploy signed ClickOnce to gh-pages
         shell: pwsh
         run: ./release.ps1 -SignedArtifactDir "signed-clickonce"
+
+      - name: Notify that the Store release needs approval
+        shell: pwsh
+        env:
+          PUSHOVER_APP_TOKEN: ${{ secrets.PUSHOVER_APP_TOKEN }}
+          PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
+        run: >
+          ./.github/scripts/notify.ps1
+          -Title "Symlinker ${{ steps.version.outputs.version }} is out"
+          -Message "GitHub and ClickOnce are done. The Microsoft Store job waits for your approval: Review deployments on the run page."
+          -Url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          -UrlTitle "Review deployments"
 
   store:
     name: Publish to Microsoft Store

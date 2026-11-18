@@ -169,9 +169,11 @@ Symlinker/
 Releases are automated via GitHub Actions:
 
 1. Push a Git tag: `git tag v1.2.3 && git push origin v1.2.3`
-2. [.github/workflows/release.yml](.github/workflows/release.yml) runs `release.ps1` on a Windows runner
+2. [.github/workflows/release.yml](.github/workflows/release.yml) runs `release.ps1` on a Windows runner. It builds the portable and ClickOnce packages first, then sends both to SignPath back to back. Each SignPath request needs a manual approval and waits up to an hour (the action's default is 10 minutes).
 3. The app is published to `gh-pages` and ClickOnce auto-updates existing installs
 4. The `store` job waits for approval in the `microsoft-store` environment (Review deployments on the run page), then submits the MSIX bundle to the Microsoft Store. It uses the Store CLI with the `STORE_TENANT_ID`, `STORE_CLIENT_ID`, `STORE_CLIENT_SECRET` and `STORE_SELLER_ID` secrets, copies the last published submission into a draft, uploads the new bundle, sets "What's new" from `packaging/msix/store/listings.json` and submits it for certification. It can't stop at a draft: Partner Center only attaches an uploaded package on commit, and committing submits it. Rejecting the deployment skips the Store for that release.
+
+With the `PUSHOVER_APP_TOKEN` and `PUSHOVER_USER_KEY` secrets set, [.github/scripts/notify.ps1](.github/scripts/notify.ps1) sends Pushover notifications when the SignPath approvals are coming (high priority), when signing fails, and when the Store job is waiting for approval. Without them the release runs the same and only logs a notice.
 
 Before tagging, update `ReleaseNotes` in `listings.json` for every language and set `common.ReleaseNotesVersion` to the new version. If it doesn't match the tag, the job clears "What's new" instead of showing old notes. Wait for the previous Store submission to finish certification first: one still in progress blocks a new one.
 

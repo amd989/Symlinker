@@ -322,4 +322,38 @@ o modo carpeta (enlazar una carpeta a otra carpeta).</value>
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>La versión de Microsoft Store no puede mover archivos a la carpeta AppData: Windows los guardaría en una copia privada que solo ve Symlinker. Elige un destino fuera de AppData, o mueve tú los archivos allí y vuelve a crear el enlace.</value>
   </data>
+  <!-- Batch links (#6) -->
+  <data name="ButtonAddAnother" xml:space="preserve">
+    <value>Añadir otro</value>
+  </data>
+  <data name="TooltipAddAnother" xml:space="preserve">
+    <value>Añadir otro enlace para crearlo en el mismo paso</value>
+  </data>
+  <data name="ButtonCreateLinks" xml:space="preserve">
+    <value>Crear {0} enlaces</value>
+  </data>
+  <data name="TooltipRemoveLink" xml:space="preserve">
+    <value>Quitar este enlace de la lista</value>
+  </data>
+  <data name="ListLinksLabel" xml:space="preserve">
+    <value>Enlaces para crear</value>
+  </data>
+  <data name="ErrorDuplicateLinkPath" xml:space="preserve">
+    <value>Otro enlace de la lista tiene el mismo nombre en la misma carpeta.</value>
+  </data>
+  <data name="ErrorBatchRows" xml:space="preserve">
+    <value>Corrige los enlaces marcados en la lista.</value>
+  </data>
+  <data name="BatchSummaryPartialTitle" xml:space="preserve">
+    <value>No se crearon todos los enlaces</value>
+  </data>
+  <data name="BatchSummaryCount" xml:space="preserve">
+    <value>Se crearon {0} de {1} enlaces.</value>
+  </data>
+  <data name="BatchSummaryCreated" xml:space="preserve">
+    <value>Creados:</value>
+  </data>
+  <data name="BatchSummaryNotCreated" xml:space="preserve">
+    <value>No creados:</value>
+  </data>
 </root>

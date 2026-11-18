@@ -814,5 +814,104 @@ namespace Symlinker.Properties {
                 return ResourceManager.GetString("MoveIntoAppDataUnsupported", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Add another.
+        /// </summary>
+        public static string ButtonAddAnother {
+            get {
+                return ResourceManager.GetString("ButtonAddAnother", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Add another link to create in the same step.
+        /// </summary>
+        public static string TooltipAddAnother {
+            get {
+                return ResourceManager.GetString("TooltipAddAnother", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Create {0} links.
+        /// </summary>
+        public static string ButtonCreateLinks {
+            get {
+                return ResourceManager.GetString("ButtonCreateLinks", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Remove this link from the list.
+        /// </summary>
+        public static string TooltipRemoveLink {
+            get {
+                return ResourceManager.GetString("TooltipRemoveLink", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Links to create.
+        /// </summary>
+        public static string ListLinksLabel {
+            get {
+                return ResourceManager.GetString("ListLinksLabel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Another link in the list has the same name in the same folder..
+        /// </summary>
+        public static string ErrorDuplicateLinkPath {
+            get {
+                return ResourceManager.GetString("ErrorDuplicateLinkPath", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fix the links marked in the list..
+        /// </summary>
+        public static string ErrorBatchRows {
+            get {
+                return ResourceManager.GetString("ErrorBatchRows", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Not all links were created.
+        /// </summary>
+        public static string BatchSummaryPartialTitle {
+            get {
+                return ResourceManager.GetString("BatchSummaryPartialTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Created {0} of {1} links..
+        /// </summary>
+        public static string BatchSummaryCount {
+            get {
+                return ResourceManager.GetString("BatchSummaryCount", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Created:.
+        /// </summary>
+        public static string BatchSummaryCreated {
+            get {
+                return ResourceManager.GetString("BatchSummaryCreated", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Not created:.
+        /// </summary>
+        public static string BatchSummaryNotCreated {
+            get {
+                return ResourceManager.GetString("BatchSummaryNotCreated", resourceCulture);
+            }
+        }
     }
 }

@@ -322,4 +322,38 @@
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>Microsoft Store संस्करण फ़ाइलों को AppData फ़ोल्डर में नहीं ले जा सकता: Windows उन्हें एक निजी कॉपी में रखेगा जिसे सिर्फ़ Symlinker देख सकता है। AppData के बाहर कोई लक्ष्य चुनें, या फ़ाइलों को खुद वहाँ ले जाएं और फिर से लिंक बनाएं।</value>
   </data>
+  <!-- Batch links (#6) -->
+  <data name="ButtonAddAnother" xml:space="preserve">
+    <value>एक और जोड़ें</value>
+  </data>
+  <data name="TooltipAddAnother" xml:space="preserve">
+    <value>इसी चरण में बनाने के लिए एक और लिंक जोड़ें</value>
+  </data>
+  <data name="ButtonCreateLinks" xml:space="preserve">
+    <value>{0} लिंक बनाएं</value>
+  </data>
+  <data name="TooltipRemoveLink" xml:space="preserve">
+    <value>इस लिंक को सूची से हटाएं</value>
+  </data>
+  <data name="ListLinksLabel" xml:space="preserve">
+    <value>बनाने के लिए लिंक</value>
+  </data>
+  <data name="ErrorDuplicateLinkPath" xml:space="preserve">
+    <value>सूची में किसी दूसरे लिंक का नाम और फ़ोल्डर यही है।</value>
+  </data>
+  <data name="ErrorBatchRows" xml:space="preserve">
+    <value>सूची में चिह्नित लिंक ठीक करें।</value>
+  </data>
+  <data name="BatchSummaryPartialTitle" xml:space="preserve">
+    <value>सभी लिंक नहीं बने</value>
+  </data>
+  <data name="BatchSummaryCount" xml:space="preserve">
+    <value>{1} में से {0} लिंक बनाए गए।</value>
+  </data>
+  <data name="BatchSummaryCreated" xml:space="preserve">
+    <value>बनाए गए:</value>
+  </data>
+  <data name="BatchSummaryNotCreated" xml:space="preserve">
+    <value>नहीं बने:</value>
+  </data>
 </root>

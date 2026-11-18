@@ -322,4 +322,38 @@
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>Microsoft Store 版本无法将文件移动到 AppData 文件夹：Windows 会把它们保存在只有 Symlinker 能看到的私有副本中。请选择 AppData 以外的目标，或者自己移动文件后再重新创建链接。</value>
   </data>
+  <!-- Batch links (#6) -->
+  <data name="ButtonAddAnother" xml:space="preserve">
+    <value>再添加一个</value>
+  </data>
+  <data name="TooltipAddAnother" xml:space="preserve">
+    <value>再添加一个链接，在同一步中创建</value>
+  </data>
+  <data name="ButtonCreateLinks" xml:space="preserve">
+    <value>创建 {0} 个链接</value>
+  </data>
+  <data name="TooltipRemoveLink" xml:space="preserve">
+    <value>从列表中移除此链接</value>
+  </data>
+  <data name="ListLinksLabel" xml:space="preserve">
+    <value>要创建的链接</value>
+  </data>
+  <data name="ErrorDuplicateLinkPath" xml:space="preserve">
+    <value>列表中另一个链接在同一文件夹中使用了相同的名称。</value>
+  </data>
+  <data name="ErrorBatchRows" xml:space="preserve">
+    <value>请修正列表中标出的链接。</value>
+  </data>
+  <data name="BatchSummaryPartialTitle" xml:space="preserve">
+    <value>并非所有链接都已创建</value>
+  </data>
+  <data name="BatchSummaryCount" xml:space="preserve">
+    <value>已创建 {0} 个链接，共 {1} 个。</value>
+  </data>
+  <data name="BatchSummaryCreated" xml:space="preserve">
+    <value>已创建：</value>
+  </data>
+  <data name="BatchSummaryNotCreated" xml:space="preserve">
+    <value>未创建：</value>
+  </data>
 </root>

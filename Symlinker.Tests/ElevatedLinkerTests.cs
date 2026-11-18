@@ -8,8 +8,6 @@ namespace Symlinker.Tests
     using System.Text;
     using System.Threading.Tasks;
 
-    using Res = Symlinker.Properties.Resources;
-
     /// <summary>
     /// Tests the pipe protocol between the window and the elevated helper, in one process and
     /// without UAC: the test holds the window's end, and the helper loop runs on a background thread.
@@ -56,7 +54,12 @@ namespace Symlinker.Tests
             Assert.True(first.Success, first.Message);
             Assert.True(second.Success, second.Message);
             Assert.True(LinkMover.IsLink(new DirectoryInfo(temp.PathOf("second"))));
-            Assert.Equal((false, Res.InvalidQuoteInPath), (refused.Success, refused.Message));
+            Assert.Equal((false, LinkError.InvalidPath), (refused.Success, refused.Error));
+
+            // The reason comes back over the pipe, with mklink's own text as a detail
+            var taken = await linker.CreateLinkAsync(Junction(temp.PathOf("first"), target));
+            Assert.Equal((false, LinkError.LinkExists), (taken.Success, taken.Error));
+            Assert.NotEmpty(taken.Message);
 
             linker.Dispose();
             Assert.Equal(0, await helper.WaitAsync(TimeSpan.FromMilliseconds(Timeout), TestContext.Current.CancellationToken));

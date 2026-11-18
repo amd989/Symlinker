@@ -127,8 +127,51 @@
   <data name="CmdNotFound" xml:space="preserve">
     <value>Das zum Erstellen von Links benötigte Befehlszeilentool wurde nicht gefunden.</value>
   </data>
-  <data name="LinkSuccessfullyCreated" xml:space="preserve">
-    <value>Link erfolgreich erstellt.</value>
+  <data name="ResultSymbolicLinkCreated" xml:space="preserve">
+    <value>Symbolischer Link erstellt</value>
+  </data>
+  <data name="ResultHardLinkCreated" xml:space="preserve">
+    <value>Hardlink erstellt</value>
+  </data>
+  <data name="ResultJunctionCreated" xml:space="preserve">
+    <value>Verzeichnisverknüpfung erstellt</value>
+  </data>
+  <data name="ResultPointsToSentence" xml:space="preserve">
+    <value>"{0}" verweist jetzt auf "{1}".</value>
+  </data>
+  <data name="ResultHardLinkSentence" xml:space="preserve">
+    <value>"{0}" ist jetzt ein weiterer Name für die Datei "{1}".</value>
+  </data>
+  <data name="ResultLinkPath" xml:space="preserve">
+    <value>Link: {0}</value>
+  </data>
+  <data name="ResultTargetPath" xml:space="preserve">
+    <value>Ziel: {0}</value>
+  </data>
+  <data name="ResultFailedTitle" xml:space="preserve">
+    <value>Link nicht erstellt</value>
+  </data>
+  <data name="ResultNotCreated" xml:space="preserve">
+    <value>Windows hat Erfolg gemeldet, aber der Link ist nicht vorhanden.</value>
+  </data>
+  <data name="ResultLinkExists" xml:space="preserve">
+    <value>In diesem Ordner gibt es bereits etwas namens "{0}". Einen anderen Linknamen wählen oder es zuerst entfernen.</value>
+  </data>
+  <data name="ResultAccessDenied" xml:space="preserve">
+    <value>Windows hat den Zugriff auf diesen Ordner verweigert:
+{0}</value>
+  </data>
+  <data name="ResultNeedsAdmin" xml:space="preserve">
+    <value>Symbolische Links benötigen Administratorrechte oder den Windows-Entwicklermodus.</value>
+  </data>
+  <data name="ResultHardLinkAcrossDrives" xml:space="preserve">
+    <value>Ein Hardlink muss auf demselben Laufwerk wie sein Ziel liegen. Stattdessen einen symbolischen Link verwenden.</value>
+  </data>
+  <data name="ResultJunctionNeedsLocalFolder" xml:space="preserve">
+    <value>Eine Verzeichnisverknüpfung kann nur auf einen Ordner auf diesem Computer verweisen. Für Netzwerkordner einen symbolischen Link verwenden.</value>
+  </data>
+  <data name="ResultUnknownError" xml:space="preserve">
+    <value>Windows hat keinen Grund genannt.</value>
   </data>
   <data name="DialogFolderExists" xml:space="preserve">
     <value>Ein Ordner mit diesem Linknamen existiert bereits im ausgewählten Verzeichnis. Möchten Sie ihn löschen und einen neuen Link erstellen?</value>

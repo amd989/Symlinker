@@ -84,7 +84,9 @@ The window is view glue. Logic lives in plain classes that the tests drive with 
 6. **Elevation.cs**: `LaunchOptions` (command-line parsing) and `Elevation` (admin check, symbolic link privilege probe, the UAC shield icon).
 7. **LinkCreator.cs**: The link workflow: replace-existing prompts, and moving an existing file or folder to the target (rename on the same drive, copy with progress across drives, rollback on failure).
 8. **LinkRunner.cs**: `ILinkRunner`, which `LinkCreator` uses to create links. `LinkRunner` runs mklink unelevated, except symbolic links that need admin, which go through the elevated helper. `PrepareAsync()` starts the helper (one UAC prompt) before anything on disk changes.
-9. **LinkCommand.cs**: `LinkKind`, `LinkRequest`/`LinkResult` and `LinkCommand.RunAsync()`, which runs `cmd.exe /c mklink`. Used unelevated and by the elevated helper.
+9. **LinkCommand.cs**: `LinkKind`, `LinkRequest`/`LinkResult` and `LinkCommand.RunAsync()`, which runs `cmd.exe /c mklink`. Used unelevated and by the elevated helper. Success comes from the exit code plus `LinkCheck.IsCreated()` on disk, never from mklink's text (it is in the language of Windows). A failure carries a `LinkError` code from `LinkCheck.Diagnose()`, which travels over the helper's pipe as a number.
+   - **LinkCheck.cs**: checks on disk that a link exists and leads to its target, and works out why mklink failed (link path taken, hard link across drives, junction to a network folder, no symbolic link privilege, folder access denied).
+   - **LinkResultMessage.cs**: turns a request and its `LinkResult` into the localized dialog title and text. `Reason()` gives one failure line, for reuse in a list of results. Long paths are shortened in the middle (`CompactPath`).
 10. **ElevatedLinker.cs**: Starts `Symlinker.exe --link-helper` as administrator and sends it link requests over a named pipe. `RunHelper()` is the helper's side.
 11. **LinkMover.cs**: File system helpers for moving: copy that keeps attributes and recreates nested links, delete that never follows links.
 12. **InputValidator.cs**: Field checks behind the inline errors, and `ColorContrast` for text on the accent color.
@@ -97,7 +99,7 @@ The window is view glue. Logic lives in plain classes that the tests drive with 
 2. User fills in the link location, link name and target (typing, browsing, or drag and drop).
 3. Create link (or Enter, it is the default button) runs `ValidateInputs()`, which marks the fields `InputValidator` flags.
 4. `RefreshSymlinkAccessNow()` probes again whether a symbolic link needs administrator rights.
-5. `LinkCreator.CreateAsync()` handles an existing item at the link path (replace it, or move it to the target), then runs mklink and shows the result. `ILinkRunner.PrepareAsync()` is called before the first change on disk.
+5. `LinkCreator.CreateAsync()` handles an existing item at the link path (replace it, or move it to the target), then runs mklink and shows the result through `LinkResultMessage`. `ILinkRunner.PrepareAsync()` is called before the first change on disk.
 
 ### Administrator rights
 
@@ -135,6 +137,8 @@ Symlinker/
 │   ├── LinkCreator.cs           # Link workflow
 │   ├── LinkRunner.cs            # Unelevated or elevated mklink
 │   ├── LinkCommand.cs           # Runs mklink
+│   ├── LinkCheck.cs             # Verifies links on disk, diagnoses failures
+│   ├── LinkResultMessage.cs     # Localized result dialog text
 │   ├── ElevatedLinker.cs        # Elevated link helper over a named pipe
 │   ├── LinkMover.cs             # Move/copy/delete helpers
 │   ├── InputValidator.cs        # Field checks, accent contrast

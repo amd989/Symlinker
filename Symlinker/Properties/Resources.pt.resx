@@ -127,8 +127,51 @@
   <data name="CmdNotFound" xml:space="preserve">
     <value>Não foi possível encontrar a ferramenta de linha de comando necessária para criar links.</value>
   </data>
-  <data name="LinkSuccessfullyCreated" xml:space="preserve">
-    <value>Link criado com sucesso.</value>
+  <data name="ResultSymbolicLinkCreated" xml:space="preserve">
+    <value>Link simbólico criado</value>
+  </data>
+  <data name="ResultHardLinkCreated" xml:space="preserve">
+    <value>Link físico criado</value>
+  </data>
+  <data name="ResultJunctionCreated" xml:space="preserve">
+    <value>Junção criada</value>
+  </data>
+  <data name="ResultPointsToSentence" xml:space="preserve">
+    <value>"{0}" agora aponta para "{1}".</value>
+  </data>
+  <data name="ResultHardLinkSentence" xml:space="preserve">
+    <value>"{0}" agora é outro nome para o arquivo "{1}".</value>
+  </data>
+  <data name="ResultLinkPath" xml:space="preserve">
+    <value>Link: {0}</value>
+  </data>
+  <data name="ResultTargetPath" xml:space="preserve">
+    <value>Destino: {0}</value>
+  </data>
+  <data name="ResultFailedTitle" xml:space="preserve">
+    <value>Não foi possível criar o link</value>
+  </data>
+  <data name="ResultNotCreated" xml:space="preserve">
+    <value>O Windows informou sucesso, mas o link não está lá.</value>
+  </data>
+  <data name="ResultLinkExists" xml:space="preserve">
+    <value>Já existe algo chamado "{0}" nessa pasta. Escolha outro nome para o link ou remova-o primeiro.</value>
+  </data>
+  <data name="ResultAccessDenied" xml:space="preserve">
+    <value>O Windows negou o acesso a esta pasta:
+{0}</value>
+  </data>
+  <data name="ResultNeedsAdmin" xml:space="preserve">
+    <value>Links simbólicos exigem permissões de administrador ou o Modo de Desenvolvedor do Windows.</value>
+  </data>
+  <data name="ResultHardLinkAcrossDrives" xml:space="preserve">
+    <value>Um link físico precisa estar na mesma unidade que o destino. Use um link simbólico.</value>
+  </data>
+  <data name="ResultJunctionNeedsLocalFolder" xml:space="preserve">
+    <value>Uma junção só pode apontar para uma pasta deste computador. Use um link simbólico para pastas de rede.</value>
+  </data>
+  <data name="ResultUnknownError" xml:space="preserve">
+    <value>O Windows não informou o motivo.</value>
   </data>
   <data name="DialogFolderExists" xml:space="preserve">
     <value>Uma pasta com este nome de link já existe no diretório selecionado. Deseja excluí-la e criar um novo link?</value>

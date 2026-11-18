@@ -152,8 +152,8 @@ namespace Symlinker
             if (existing != null)
                 delete(existing);
 
-            var result = await runner.RunAsync(linkRequest);
-            await dialogs.ShowMessageAsync(result.Success ? Res.MessageBoxSuccessTitle : Res.MessageBoxErrorTitle, result.Message);
+            var result = LinkResultMessage.For(linkRequest, await runner.RunAsync(linkRequest));
+            await dialogs.ShowMessageAsync(result.Title, result.Message);
         }
 
         private static LinkRequest ToLinkRequest(LinkInput input, string linkPath, string target) => new()
@@ -264,7 +264,7 @@ namespace Symlinker
                 var linked = await runner.RunAsync(linkRequest);
                 if (!linked.Success)
                 {
-                    await RollBackMoveAsync(originalPath, currentPath, target, copiedToTarget, targetWasEmptyFolder, string.Format(CultureInfo.CurrentUICulture, Res.MoveFailed, linked.Message));
+                    await RollBackMoveAsync(originalPath, currentPath, target, copiedToTarget, targetWasEmptyFolder, string.Format(CultureInfo.CurrentUICulture, Res.MoveFailed, LinkResultMessage.Reason(linkRequest, linked)));
                     return;
                 }
 
@@ -283,9 +283,8 @@ namespace Symlinker
                     }
                 }
 
-                await dialogs.ShowMessageAsync(
-                    Res.MessageBoxSuccessTitle,
-                    string.Format(CultureInfo.CurrentUICulture, Res.MoveSucceeded, source.Name, target));
+                var moved = LinkResultMessage.ForMove(linkRequest, source.Name);
+                await dialogs.ShowMessageAsync(moved.Title, moved.Message);
             }
             catch (Exception exception)
             {

@@ -322,4 +322,20 @@
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>Microsoft Store संस्करण फ़ाइलों को AppData फ़ोल्डर में नहीं ले जा सकता: Windows उन्हें एक निजी कॉपी में रखेगा जिसे सिर्फ़ Symlinker देख सकता है। AppData के बाहर कोई लक्ष्य चुनें, या फ़ाइलों को खुद वहाँ ले जाएं और फिर से लिंक बनाएं।</value>
   </data>
+  <data name="TooltipSettings" xml:space="preserve">
+    <value>सेटिंग्स</value>
+  </data>
+  <data name="MenuExplorerIntegration" xml:space="preserve">
+    <value>एक्सप्लोरर के राइट-क्लिक मेनू में दिखाएं</value>
+  </data>
+  <data name="ExplorerMenuLinkTo" xml:space="preserve">
+    <value>इसका लिंक बनाएं</value>
+  </data>
+  <data name="ExplorerMenuLinkHere" xml:space="preserve">
+    <value>यहाँ लिंक बनाएं</value>
+  </data>
+  <data name="ExplorerMenuFailed" xml:space="preserve">
+    <value>एक्सप्लोरर मेनू नहीं बदला जा सका।
+{0}</value>
+  </data>
 </root>

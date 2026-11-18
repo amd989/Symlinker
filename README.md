@@ -31,6 +31,7 @@ scoop install extras/symlinker
 - Create **symbolic links**, **hard links**, and **directory junctions** with a few clicks
 - Supports both file and folder link types
 - Drag and drop paths directly into the application
+- Optional Explorer right-click entries ("Create link to this" and "Create link here") that open Symlinker with the form filled in. Turn them on from the settings button next to About. On Windows 11 they are under "Show more options". Not available in the Microsoft Store version
 - Automatic UAC elevation (administrator privileges required for symlink creation)
 - Automatic updates through the Microsoft Store or ClickOnce
 - Light and dark mode support — syncs with your Windows theme and accent color

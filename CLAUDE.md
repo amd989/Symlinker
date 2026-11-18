@@ -78,7 +78,7 @@ The window is view glue. Logic lives in plain classes that the tests drive with 
 
 1. **Program.cs**: Entry point. Parses command-line options (`LaunchOptions`) and opens the main window. It does not elevate. With `--link-helper` it runs the hidden elevated helper instead (see "Administrator rights").
 2. **App.xaml / App.xaml.cs**: Loads MahApps.Metro styles and syncs the theme (light/dark and accent color) with Windows.
-3. **MainWindow.xaml**: The whole UI. Two cards (link location, target), pill toggles for folder/file mode and link type, and a footer with the About button, an inline error line and the Create link button. Styles live in `Window.Resources`.
+3. **MainWindow.xaml**: The whole UI. Two cards (link location, target), pill toggles for folder/file mode and link type, and a footer with the About and settings buttons, an inline error line and the Create link button. Styles live in `Window.Resources`.
 4. **MainWindow.xaml.cs**: Mode switching, link name auto-fill, file pickers, drag and drop. Hands link creation to `LinkCreator`.
 5. **MainWindow.Inputs.cs**: Inline errors (`InputError.HasError` attached property plus the footer message), theme-dependent brushes, restoring launch options, and the up-front admin notice.
 6. **Elevation.cs**: `LaunchOptions` (command-line parsing) and `Elevation` (admin check, symbolic link privilege probe, the UAC shield icon).
@@ -92,6 +92,7 @@ The window is view glue. Logic lives in plain classes that the tests drive with 
 12. **InputValidator.cs**: Field checks behind the inline errors, and `ColorContrast` for text on the accent color.
 13. **Dialogs.cs**: `IDialogService` / `IProgressDialog`, and `MetroDialogService`, which shows them in the window.
 14. **UiHelpers.cs**: Path name extraction, picker start folders, byte formatting, app version, `LinkNameAutoFill`.
+15. **ExplorerMenu.cs**: The optional Explorer right-click entries (see "Explorer menu" below).
 
 ### Link Creation Flow
 
@@ -110,6 +111,15 @@ The window is view glue. Logic lives in plain classes that the tests drive with 
 - Elevation happens before anything on disk changes (deleting an existing item, or the move-and-link flow), so declining the UAC prompt (Win32 error 1223) quietly stops and leaves everything as it was.
 - Both ends check the other's process ID on the pipe (`GetNamedPipeClientProcessId` / `GetNamedPipeServerProcessId`), and `LinkCommand` rejects paths with quotes or line breaks, so the helper only ever runs a single mklink.
 - Command-line options (`--mode`, `--type`, `--location`, `--name`, `--target`) still prefill the form. The old `--engage` flag is still accepted and ignored.
+
+### Explorer menu
+
+- The settings button (cog, next to About) has one checkable item that adds or removes the Explorer right-click entries. Off by default.
+- `ExplorerMenu` writes classic shell verbs under `HKCU\Software\Classes` (no admin): "Create link to this" on files (`*\shell`) and folders (`Directory\shell`), starting Symlinker with `--mode file|folder --target "%1"`, and "Create link here" on folders and a folder's background (`Directory\Background\shell`), with `--location "%1"` or `"%V"`. Verb keys are `Symlinker.LinkTo` and `Symlinker.LinkHere`, with `MultiSelectModel=Single` and the exe's icon.
+- The path is the last argument on purpose: Explorer passes a drive root as `"C:\"`, which Windows splits into `C:"`. `LaunchOptions.Parse` turns a trailing quote on `--location`/`--target` back into a backslash.
+- On every start, `ExplorerMenu.Refresh()` rewrites the entries when they are on but point at another exe (ClickOnce installs each update in a new folder) or use other menu text (the Windows language changed).
+- Hidden in the Store build (`Elevation.IsPackaged()`): registry writes of a packaged app are virtualized, so Explorer would never see them. A Store version would need a `desktop4:FileExplorerContextMenus` entry backed by an `IExplorerCommand` COM handler.
+- Tests point `ExplorerMenu` at a throwaway `HKCU\Software\SymlinkerTests\<guid>` key instead of `Software\Classes`.
 
 ### Important Patterns
 
@@ -144,6 +154,7 @@ Symlinker/
 │   ├── InputValidator.cs        # Field checks, accent contrast
 │   ├── Dialogs.cs               # Dialog abstraction + MahApps implementation
 │   ├── UiHelpers.cs             # Small UI helpers
+│   ├── ExplorerMenu.cs          # Explorer right-click entries
 │   ├── Program.cs               # Entry point
 │   ├── Properties/
 │   │   ├── Resources.resx           # English strings
@@ -179,6 +190,7 @@ Before tagging, update `ReleaseNotes` in `listings.json` for every language and 
 
 - **Drag and drop**: Works because the window always runs unelevated. It does not work if the user starts Symlinker as administrator themselves, because Windows blocks drops from a lower-privilege Explorer.
 - **Store version, moving into AppData**: the Microsoft Store version can't move existing files into a target under `AppData` (see "Publishing (Microsoft Store / MSIX)"). Linking there without moving works.
+- **Explorer menu**: on Windows 11 the entries are under "Show more options" (classic verbs). Not available in the Store version. Uninstalling the ClickOnce or portable version leaves the entries behind, pointing at a missing exe; turn them off first.
 - **Platform**: Windows 10/11 only.
 
 ## Localization

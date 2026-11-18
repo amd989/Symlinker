@@ -381,4 +381,20 @@ Move it to the target and leave a link in its place? Anything using the old path
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>The Microsoft Store version can't move files into the AppData folder: Windows would keep them in a private copy that only Symlinker sees. Pick a target outside AppData, or move the files there yourself and create the link again.</value>
   </data>
+  <data name="TooltipSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="MenuExplorerIntegration" xml:space="preserve">
+    <value>Show in Explorer right-click menu</value>
+  </data>
+  <data name="ExplorerMenuLinkTo" xml:space="preserve">
+    <value>Create link to this</value>
+  </data>
+  <data name="ExplorerMenuLinkHere" xml:space="preserve">
+    <value>Create link here</value>
+  </data>
+  <data name="ExplorerMenuFailed" xml:space="preserve">
+    <value>Couldn't change the Explorer menu.
+{0}</value>
+  </data>
 </root>

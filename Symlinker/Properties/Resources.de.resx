@@ -322,4 +322,20 @@ Ins Ziel verschieben und an ihrer Stelle einen Link anlegen? Alles, was den alte
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>Die Microsoft Store-Version kann keine Dateien in den AppData-Ordner verschieben: Windows würde sie in einer privaten Kopie ablegen, die nur Symlinker sieht. Wählen Sie ein Ziel außerhalb von AppData, oder verschieben Sie die Dateien selbst dorthin und erstellen Sie den Link erneut.</value>
   </data>
+  <data name="TooltipSettings" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="MenuExplorerIntegration" xml:space="preserve">
+    <value>Im Explorer-Kontextmenü anzeigen</value>
+  </data>
+  <data name="ExplorerMenuLinkTo" xml:space="preserve">
+    <value>Link hierauf erstellen</value>
+  </data>
+  <data name="ExplorerMenuLinkHere" xml:space="preserve">
+    <value>Link hier erstellen</value>
+  </data>
+  <data name="ExplorerMenuFailed" xml:space="preserve">
+    <value>Das Explorer-Menü konnte nicht geändert werden.
+{0}</value>
+  </data>
 </root>

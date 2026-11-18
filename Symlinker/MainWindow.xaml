@@ -506,13 +506,32 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Click="AboutButton_Click"
-                        Style="{StaticResource RoundedFlatButton}"
-                        ToolTip="{x:Static p:Resources.TooltipAbout}"
-                        AutomationProperties.Name="{x:Static p:Resources.TooltipAbout}"
-                        VerticalAlignment="Center">
-                    <iconPacks:PackIconMaterial Kind="InformationOutline" Width="18" Height="18"/>
-                </Button>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Click="AboutButton_Click"
+                            Style="{StaticResource RoundedFlatButton}"
+                            ToolTip="{x:Static p:Resources.TooltipAbout}"
+                            AutomationProperties.Name="{x:Static p:Resources.TooltipAbout}"
+                            VerticalAlignment="Center">
+                        <iconPacks:PackIconMaterial Kind="InformationOutline" Width="18" Height="18"/>
+                    </Button>
+
+                    <!-- Settings menu: the Explorer right-click entries (hidden in the Store version) -->
+                    <Button x:Name="settingsButton" Click="SettingsButton_Click"
+                            Style="{StaticResource RoundedFlatButton}"
+                            Margin="6,0,0,0"
+                            ToolTip="{x:Static p:Resources.TooltipSettings}"
+                            AutomationProperties.Name="{x:Static p:Resources.TooltipSettings}"
+                            VerticalAlignment="Center">
+                        <iconPacks:PackIconMaterial Kind="CogOutline" Width="18" Height="18"/>
+                        <Button.ContextMenu>
+                            <ContextMenu Opened="SettingsMenu_Opened">
+                                <MenuItem x:Name="explorerMenuItem" IsCheckable="True"
+                                          Header="{x:Static p:Resources.MenuExplorerIntegration}"
+                                          Click="ExplorerMenuItem_Click"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                </StackPanel>
 
                 <!-- Inline error for the field marked in red -->
                 <Grid x:Name="errorPanel" Grid.Column="1" Margin="12,0" VerticalAlignment="Center"

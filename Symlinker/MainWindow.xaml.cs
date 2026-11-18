@@ -34,6 +34,9 @@ namespace Symlinker
         private readonly LinkRunner linkRunner;
         private readonly LinkCreator linkCreator;
 
+        // The Explorer right-click entries; null in the Store version, where they can't be registered
+        private readonly ExplorerMenu explorerMenu;
+
         private bool isFolder = true;
 
         internal MainWindow(LaunchOptions options = null)
@@ -49,6 +52,12 @@ namespace Symlinker
                 UpdateAdminNotice);
             linkCreator = new LinkCreator(dialogs, linkRunner);
             InitializeInputs();
+
+            // Registry writes of a packaged app are virtualized, so Explorer would never see them
+            if (Elevation.IsPackaged())
+                settingsButton.Visibility = Visibility.Collapsed;
+            else
+                explorerMenu = ExplorerMenu.ForCurrentUser(Environment.ProcessPath);
             Loaded += OnLoaded;
         }
 
@@ -60,6 +69,9 @@ namespace Symlinker
 
             UpdateMode();
             ApplyLaunchOptions();
+
+            // Keep the Explorer entries pointing at this copy (ClickOnce moves the exe on every update)
+            explorerMenu?.Refresh();
         }
 
         private void TypeRadio_Checked(object sender, RoutedEventArgs e)
@@ -210,6 +222,31 @@ namespace Symlinker
             await dialogs.ShowMessageAsync(
                 Res.MessageBoxAboutTitle,
                 string.Format(CultureInfo.CurrentUICulture, Res.AboutDescription, UiHelpers.GetAppVersion(), DateTime.Now.Year));
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var menu = settingsButton.ContextMenu;
+            menu.PlacementTarget = settingsButton;
+            menu.Placement = System.Windows.Controls.Primitives.PlacementMode.Top;
+            menu.IsOpen = true;
+        }
+
+        private void SettingsMenu_Opened(object sender, RoutedEventArgs e)
+        {
+            explorerMenuItem.IsChecked = explorerMenu.IsEnabled;
+        }
+
+        private async void ExplorerMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var error = explorerMenu.TrySetEnabled(explorerMenuItem.IsChecked);
+            if (error != null)
+            {
+                explorerMenuItem.IsChecked = explorerMenu.IsEnabled;
+                await dialogs.ShowMessageAsync(
+                    Res.MessageBoxErrorTitle,
+                    string.Format(CultureInfo.CurrentUICulture, Res.ExplorerMenuFailed, error));
+            }
         }
 
         private void TextBox_DragOver(object sender, DragEventArgs e)

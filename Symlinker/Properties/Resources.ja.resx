@@ -322,4 +322,20 @@
   <data name="MoveIntoAppDataUnsupported" xml:space="preserve">
     <value>Microsoft Store 版では、AppData フォルダーにファイルを移動できません。Windows がファイルを Symlinker だけが見えるプライベートなコピーに保存してしまうためです。AppData の外にあるターゲットを選ぶか、ファイルを自分で移動してからもう一度リンクを作成してください。</value>
   </data>
+  <data name="TooltipSettings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="MenuExplorerIntegration" xml:space="preserve">
+    <value>エクスプローラーの右クリック メニューに表示</value>
+  </data>
+  <data name="ExplorerMenuLinkTo" xml:space="preserve">
+    <value>これへのリンクを作成</value>
+  </data>
+  <data name="ExplorerMenuLinkHere" xml:space="preserve">
+    <value>ここにリンクを作成</value>
+  </data>
+  <data name="ExplorerMenuFailed" xml:space="preserve">
+    <value>エクスプローラーのメニューを変更できませんでした。
+{0}</value>
+  </data>
 </root>

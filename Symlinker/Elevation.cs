@@ -51,9 +51,9 @@ namespace Symlinker
                 {
                     case ModeArg: options.Mode = value; break;
                     case TypeArg: options.LinkType = value; break;
-                    case LocationArg: options.LinkLocation = value; break;
+                    case LocationArg: options.LinkLocation = FixQuotedPath(value); break;
                     case NameArg: options.LinkName = value; break;
-                    case TargetArg: options.Target = value; break;
+                    case TargetArg: options.Target = FixQuotedPath(value); break;
                     default: continue;
                 }
 
@@ -62,6 +62,14 @@ namespace Symlinker
 
             return options;
         }
+
+        /// <summary>
+        /// Windows reads a backslash right before a closing quote as an escaped quote, so a drive
+        /// root passed as "C:\" (Explorer does this for %V) arrives as C:" instead. Paths can't
+        /// contain quotes, so a trailing quote can only be that lost backslash.
+        /// </summary>
+        private static string FixQuotedPath(string value) =>
+            value.EndsWith('"') ? value[..^1] + "\\" : value;
     }
 
     /// <summary>

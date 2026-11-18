@@ -143,11 +143,14 @@ jobs:
   store:
     name: Publish to Microsoft Store
     needs: release
-    # Off until the repository variable STORE_AUTO_PUBLISH is 'true'. Turn it on once the first
-    # submission is published: the Store CLI can't make a first submission, and a submission still
-    # in certification blocks a new one.
-    if: vars.STORE_AUTO_PUBLISH == 'true'
+    # Waits for a reviewer to approve the microsoft-store environment, then uploads the bundle and
+    # submits it for certification. It can't stop at a draft: Partner Center only attaches an
+    # uploaded package when the submission is committed, and committing submits it. A submission
+    # still in certification blocks a new one, so this job fails until it's done.
     runs-on: windows-latest
+    environment:
+      name: microsoft-store
+      url: https://partner.microsoft.com/dashboard/products/9P8H93Z0TGK4/overview
     permissions:
       contents: read
     env:
@@ -182,7 +185,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "msstore reconfigure failed ($LASTEXITCODE)." }
 
       # Makes a new draft from the last published submission (listings, screenshots and options
-      # carry over) and replaces its package with this bundle.
+      # carry over) and uploads this bundle. --noCommit leaves room to set What's new; the bundle
+      # only replaces the old package once the submit step commits.
       - name: Upload bundle to a draft submission
         shell: pwsh
         run: |
@@ -201,3 +205,5 @@ jobs:
           msstore submission publish $env:STORE_APP_ID
           if ($LASTEXITCODE -ne 0) { throw "msstore submission publish failed ($LASTEXITCODE)." }
           msstore submission status $env:STORE_APP_ID
+          $url = "https://partner.microsoft.com/dashboard/products/$env:STORE_APP_ID/overview"
+          "### Microsoft Store`n`nSubmitted $env:VERSION for certification. Partner Center emails the result.`n`n[Open in Partner Center]($url)" >> $env:GITHUB_STEP_SUMMARY

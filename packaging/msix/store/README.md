@@ -12,11 +12,15 @@ Everything Partner Center needs besides the package. Store ID `9P8H93Z0TGK4`.
 
 ## Releasing to the Store
 
-Once the repository variable `STORE_AUTO_PUBLISH` is `true`, pushing a `v*` tag publishes to the Store (the `store` job in `release.yml`):
+Pushing a `v*` tag releases to the Store too (the `store` job in `release.yml`). The job runs in the `microsoft-store` GitHub environment, which needs a reviewer's approval: after the GitHub release and ClickOnce deploy, the run waits until you select **Review deployments > Approve** on its page. Then:
 
-1. `msstore publish --noCommit` makes a draft from the last published submission and swaps in the new bundle. Listings, screenshots, pricing and options carry over.
+1. `msstore publish --noCommit` makes a draft from the last published submission and uploads the new bundle. Listings, screenshots, pricing and options carry over. Any older draft is replaced.
 2. `set-release-notes.ps1` sets "What's new" in every language from `listings.json`, but only when `common.ReleaseNotesVersion` matches the tag. Otherwise it clears "What's new" and the job shows a warning.
-3. `msstore submission publish` sends it to certification. Partner Center emails the result.
+3. `msstore submission publish` commits the draft, which attaches the new bundle and sends it to certification. Partner Center emails the result.
+
+Approving is the only review point. The job can't leave a draft to check in Partner Center instead: Partner Center only attaches an uploaded package when the submission is committed, and committing submits it. An uncommitted draft keeps the previous version's package, so submitting it by hand would resubmit the old version.
+
+To release without approving each time, remove the required reviewer in Settings > Environments > microsoft-store. To skip the Store for a release, reject the deployment.
 
 So before tagging, write the new `ReleaseNotes` in every language and set `ReleaseNotesVersion`. Don't tag while an earlier submission is still in certification.
 
